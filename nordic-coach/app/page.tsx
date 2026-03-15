@@ -63,7 +63,8 @@ export default function NordicCoachPrototype() {
 });
 
 const [savedPlayers, setSavedPlayers] = useState<Record<string, Player[]>>({});
-
+const [savedPlayersMessage, setSavedPlayersMessage] = useState("");
+  
 const [profileForm, setProfileForm] = useState({
   technical: "4",
   tactical: "3",
@@ -71,6 +72,7 @@ const [profileForm, setProfileForm] = useState({
   mental: "4",
   notes: "",
 });
+  
   const teams = [
     { name: "U6", age: 2020, format: "3v3", training: "60 min" },
     { name: "U7", age: 2019, format: "3v3", training: "60 min" },
