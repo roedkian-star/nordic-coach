@@ -42,6 +42,13 @@ export default function NordicCoachPrototype() {
   const [savedDrills, setSavedDrills] = useState<SavedDrill[]>([]);
   const [isSavingDrill, setIsSavingDrill] = useState(false);
   const [drillMessage, setDrillMessage] = useState("");
+  const [playerForm, setPlayerForm] = useState({
+    name: "",
+    year: "2015",
+    position: "CM",
+    team: "U11",
+  });
+  const [savedPlayers, setSavedPlayers] = useState<Record<string, { name: string; position: string; year: number }[]>>({});
 
   const teams = [
     { name: "U6", age: 2020, format: "3v3", training: "60 min" },
@@ -218,7 +225,7 @@ export default function NordicCoachPrototype() {
   ];
 
   const currentTeam = useMemo(() => teams.find((team) => team.name === selectedTeam) || teams[0], [selectedTeam]);
-  const currentPlayers = teamPlayers[selectedTeam] || teamPlayers.U11;
+  const currentPlayers = [...(savedPlayers[selectedTeam] || []), ...(teamPlayers[selectedTeam] || teamPlayers.U11)];
   const currentPlayStyle = playStyle.find((group) => group.title === selectedPlayStyleGroup) || playStyle[0];
   const currentWeeks = periodization[selectedMonth] || [];
 
@@ -275,6 +282,29 @@ export default function NordicCoachPrototype() {
     } finally {
       setIsSavingDrill(false);
     }
+  }
+
+  function handleCreatePlayer(e: React.FormEvent) {
+    e.preventDefault();
+
+    const newPlayer = {
+      name: playerForm.name,
+      position: playerForm.position,
+      year: Number(playerForm.year),
+    };
+
+    setSavedPlayers((prev) => ({
+      ...prev,
+      [playerForm.team]: [newPlayer, ...(prev[playerForm.team] || [])],
+    }));
+
+    setSelectedTeam(playerForm.team);
+    setPlayerForm({
+      name: "",
+      year: playerForm.year,
+      position: "CM",
+      team: playerForm.team,
+    });
   }
 
   function StatCard({ label, value, help }: { label: string; value: string; help: string }) {
@@ -411,6 +441,158 @@ export default function NordicCoachPrototype() {
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  function renderSpillere() {
+    const developmentSummary = [
+      { label: "Teknik", value: "4/5" },
+      { label: "Taktik", value: "3/5" },
+      { label: "Fysik", value: "3/5" },
+      { label: "Mental", value: "4/5" },
+    ];
+
+    return (
+      <>
+        <h1 className="page-title">Spillere</h1>
+        <p className="page-text">
+          Spilleroversigt med holdvalg, profilkort og udviklingsområder.
+        </p>
+
+        <div className="players-layout">
+          <div className="players-sidebar">
+            <div className="section-title">Ny spiller</div>
+            <div className="players-help">Opret en spiller og tilknyt hende til et hold</div>
+
+            <form onSubmit={handleCreatePlayer} className="player-form">
+              <label className="form-label">Navn</label>
+              <input
+                className="form-input"
+                value={playerForm.name}
+                onChange={(e) => setPlayerForm({ ...playerForm, name: e.target.value })}
+                placeholder="Fx Emma Hansen"
+                required
+              />
+
+              <label className="form-label">Hold</label>
+              <select
+                className="form-input"
+                value={playerForm.team}
+                onChange={(e) => setPlayerForm({ ...playerForm, team: e.target.value })}
+              >
+                {teams.map((team) => (
+                  <option key={team.name} value={team.name}>{team.name}</option>
+                ))}
+              </select>
+
+              <label className="form-label">Position</label>
+              <select
+                className="form-input"
+                value={playerForm.position}
+                onChange={(e) => setPlayerForm({ ...playerForm, position: e.target.value })}
+              >
+                <option value="GK">Keeper</option>
+                <option value="CB">Forsvar</option>
+                <option value="CM">Midtbane</option>
+                <option value="Wing">Kant</option>
+                <option value="ST">Angriber</option>
+              </select>
+
+              <label className="form-label">Årgang</label>
+              <input
+                className="form-input"
+                value={playerForm.year}
+                onChange={(e) => setPlayerForm({ ...playerForm, year: e.target.value })}
+                placeholder="2015"
+                required
+              />
+
+              <button type="submit" className="primary-btn">Gem spiller</button>
+            </form>
+
+            <div className="section-title" style={{ marginTop: 24 }}>Vælg hold</div>
+            <div className="players-help">Filtrer spillere efter årgang</div>
+
+            <div className="players-team-list">
+              {teams.map((team) => {
+                const active = selectedTeam === team.name;
+                return (
+                  <button
+                    key={team.name}
+                    onClick={() => setSelectedTeam(team.name)}
+                    className={`players-team-btn ${active ? "active" : ""}`}
+                  >
+                    <div>{team.name}</div>
+                    <div className="players-team-year">Årgang {team.age}</div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="players-main">
+            <div className="stats-grid">
+              <div className="stat-card">
+                <div className="stat-label">Aktivt hold</div>
+                <div className="stat-value">{selectedTeam}</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-label">Spillere</div>
+                <div className="stat-value">{currentPlayers.length}</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-label">Gennemsnit</div>
+                <div className="stat-value">3.5/5</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-label">Status</div>
+                <div className="stat-value">Klar</div>
+              </div>
+            </div>
+
+            <div className="players-grid">
+              {currentPlayers.map((player) => (
+                <div key={`${player.name}-${player.position}-${player.year}`} className="player-card">
+                  <div className="player-top">
+                    <div className="player-avatar">
+                      {player.name.split(" ").map((x) => x[0]).join("").slice(0, 2)}
+                    </div>
+                    <div>
+                      <div className="player-name">{player.name}</div>
+                      <div className="player-sub">
+                        {player.position} · Årgang {player.year}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="player-stats">
+                    {developmentSummary.map((item) => (
+                      <div key={item.label} className="player-stat-row">
+                        <span>{item.label}</span>
+                        <strong>{item.value}</strong>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="player-focus-box">
+                    <div className="player-focus-title">Udviklingsfokus</div>
+                    <div className="player-tags">
+                      <span className="player-tag">Førsteberøring</span>
+                      <span className="player-tag">Overblik</span>
+                      <span className="player-tag">Duelspil</span>
+                    </div>
+                  </div>
+
+                  <div className="player-actions">
+                    <button className="primary-btn">Se profil</button>
+                    <button className="secondary-btn">Vurder</button>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -631,7 +813,6 @@ export default function NordicCoachPrototype() {
         return renderPlaceholder(activePage);
     }
   }
-
  return (
   <div className="app-shell">
     <aside className="sidebar">
