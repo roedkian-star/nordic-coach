@@ -295,66 +295,66 @@ export default function NordicCoachPrototype() {
       </div>
     );
   }
-  
-function renderDashboard() {
-  return (
-    <>
-      <h1 className="page-title">Dashboard</h1>
-      <p className="page-text">
-        Første prototype til Vejle Boldklub. Navigation ligger i venstre side,
-        og arbejdsfladen i midten ændrer sig efter det modul du vælger.
-      </p>
 
-      <div className="stats-grid">
-        <div className="stat-card">
-          <div className="stat-label">Aktiv klub</div>
-          <div className="stat-value">Vejle Boldklub</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-label">Hold</div>
-          <div className="stat-value">15</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-label">Øvelser</div>
-          <div className="stat-value">4</div>
-        </div>
-      </div>
+  function renderDashboard() {
+    return (
+      <>
+        <PageHeader title="Dashboard" text="Første prototype til Vejle Boldklub. Navigation ligger i venstre side, og arbejdsfladen i midten ændrer sig efter det modul du vælger." />
 
-      <div style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "20px" }}>
-        <section>
-          <h2 className="section-title">Holdoversigt</h2>
-          <div className="team-grid">
-            {teams.slice(0, 9).map((team) => (
-              <div key={team.name} className="team-card">
-                <div className="team-card-title">{team.name}</div>
-                <div className="team-card-sub">Årgang {team.age}</div>
-                <div className="team-card-sub">
-                  {team.format} · {team.training}
-                </div>
-              </div>
-            ))}
+        <div className="grid gap-4 md:grid-cols-3">
+          <StatCard label="Aktiv klub" value="Vejle Boldklub" help="Multi-klub struktur klar" />
+          <StatCard label="Hold" value="15" help="U6 til Senior 1" />
+          <StatCard label="Øvelser" value={String(savedDrills.length + drillLibrary.length)} help="Testdata + database" />
+        </div>
+
+        <div className="mt-6 grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-lg font-semibold">Holdoversigt</h2>
+              <button onClick={() => setActivePage("Hold")} className="rounded-xl bg-slate-900 px-3 py-2 text-sm text-white">Åbn hold</button>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              {teams.slice(0, 9).map((team) => (
+                <button
+                  key={team.name}
+                  onClick={() => {
+                    setSelectedTeam(team.name);
+                    setActivePage("Hold");
+                  }}
+                  className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-left transition hover:border-slate-300 hover:bg-white"
+                >
+                  <div className="font-semibold text-slate-900">{team.name}</div>
+                  <div className="mt-1 text-sm text-slate-500">Årgang {team.age}</div>
+                  <div className="mt-2 text-xs text-slate-400">{team.format} · {team.training}</div>
+                </button>
+              ))}
+            </div>
           </div>
-        </section>
 
-        <section>
-          <h2 className="section-title">Ugens træning</h2>
-          <div className="training-list">
-            {weekPlan.map((item) => (
-              <div key={item.title} className="training-item">
-                <div style={{ fontSize: "12px", color: "#64748b", textTransform: "uppercase" }}>
-                  {item.block}
+          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-lg font-semibold">Ugens træning</h2>
+              <button onClick={() => setActivePage("Periodisering")} className="rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700">Se periode</button>
+            </div>
+            <div className="space-y-3">
+              {weekPlan.map((item) => (
+                <div key={item.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="text-xs uppercase tracking-wide text-slate-400">{item.block}</div>
+                      <div className="font-medium text-slate-900">{item.title}</div>
+                    </div>
+                    <div className="rounded-full bg-white px-3 py-1 text-sm text-slate-700">{item.duration} min</div>
+                  </div>
                 </div>
-                <div style={{ fontWeight: 600, marginTop: "4px" }}>{item.title}</div>
-                <div style={{ marginTop: "4px", color: "#64748b" }}>{item.duration} min</div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </section>
-      </div>
-    </>
-  );
-}
- 
+        </div>
+      </>
+    );
+  }
+
   function renderHold() {
     return (
       <>
@@ -419,45 +419,91 @@ function renderDashboard() {
   }
 
   function renderSpillere() {
+    const developmentSummary = [
+      { label: "Teknik", value: "4/5" },
+      { label: "Taktik", value: "3/5" },
+      { label: "Fysik", value: "3/5" },
+      { label: "Mental", value: "4/5" },
+    ];
+
     return (
       <>
-        <PageHeader title="Spillere" text="Oversigt over spillere på det valgte hold. Her bygger vi senere udviklingsvurderinger og historik ovenpå." />
-        <div className="mb-4 flex items-center gap-3">
-          <span className="text-sm text-slate-500">Viser hold:</span>
-          <select value={selectedTeam} onChange={(e) => setSelectedTeam(e.target.value)} className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm">
-            {teams.map((team) => (
-              <option key={team.name} value={team.name}>{team.name}</option>
-            ))}
-          </select>
-        </div>
+        <PageHeader title="Spillere" text="Spilleroversigt med holdvalg, profilkort og udviklingsområder. Næste version kan gemme vurderinger direkte i databasen." />
 
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {currentPlayers.map((player) => (
-            <div key={player.name} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-              <div className="mb-4 flex items-center gap-4">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-900 text-lg font-bold text-white">
-                  {player.name.split(" ").map((x) => x[0]).join("").slice(0, 2)}
-                </div>
-                <div>
-                  <div className="font-semibold text-slate-900">{player.name}</div>
-                  <div className="text-sm text-slate-500">{player.position} · Årgang {player.year}</div>
-                </div>
+        <div className="grid gap-6 xl:grid-cols-[320px_1fr]">
+          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div className="mb-4 flex items-center justify-between">
+              <div>
+                <div className="text-sm font-semibold text-slate-500">Vælg hold</div>
+                <div className="text-xs text-slate-400">Filtrer spillere efter årgang</div>
               </div>
-              <div className="space-y-2 text-sm">
-                {[
-                  ["Teknik", "4/5"],
-                  ["Taktik", "3/5"],
-                  ["Fysik", "3/5"],
-                  ["Mental", "4/5"],
-                ].map(([label, value]) => (
-                  <div key={label} className="flex items-center justify-between rounded-xl bg-slate-50 px-3 py-2">
-                    <span className="text-slate-500">{label}</span>
-                    <span className="font-medium text-slate-900">{value}</span>
-                  </div>
-                ))}
-              </div>
+              <div className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-600">{currentPlayers.length} spillere</div>
             </div>
-          ))}
+
+            <div className="space-y-2">
+              {teams.map((team) => {
+                const active = selectedTeam === team.name;
+                return (
+                  <button
+                    key={team.name}
+                    onClick={() => setSelectedTeam(team.name)}
+                    className={`w-full rounded-2xl px-4 py-3 text-left transition ${active ? "bg-slate-900 text-white" : "border border-slate-200 bg-slate-50 text-slate-900 hover:bg-white"}`}
+                  >
+                    <div className="font-semibold">{team.name}</div>
+                    <div className={`text-sm ${active ? "text-slate-300" : "text-slate-500"}`}>Årgang {team.age}</div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            <div className="grid gap-4 md:grid-cols-4">
+              <StatCard label="Aktivt hold" value={selectedTeam} help="Valgt hold i oversigten" />
+              <StatCard label="Spillere" value={String(currentPlayers.length)} help="Profiler i denne testversion" />
+              <StatCard label="Gennemsnit" value="3.5/5" help="Samlet udviklingsniveau" />
+              <StatCard label="Status" value="Klar" help="Modul klar til database" />
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
+              {currentPlayers.map((player) => (
+                <div key={player.name} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+                  <div className="mb-5 flex items-center gap-4">
+                    <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-900 text-lg font-bold text-white">
+                      {player.name.split(" ").map((x) => x[0]).join("").slice(0, 2)}
+                    </div>
+                    <div>
+                      <div className="text-lg font-semibold text-slate-900">{player.name}</div>
+                      <div className="text-sm text-slate-500">{player.position} · Årgang {player.year}</div>
+                    </div>
+                  </div>
+
+                  <div className="mb-4 grid gap-2">
+                    {developmentSummary.map((item) => (
+                      <div key={item.label} className="flex items-center justify-between rounded-xl bg-slate-50 px-3 py-2 text-sm">
+                        <span className="text-slate-500">{item.label}</span>
+                        <span className="font-medium text-slate-900">{item.value}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                    <div className="mb-2 text-sm font-semibold text-slate-700">Udviklingsfokus</div>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="rounded-full bg-white px-3 py-1 text-xs text-slate-700">Førsteberøring</span>
+                      <span className="rounded-full bg-white px-3 py-1 text-xs text-slate-700">Overblik</span>
+                      <span className="rounded-full bg-white px-3 py-1 text-xs text-slate-700">Duelspil</span>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 flex gap-2">
+                    <button className="flex-1 rounded-xl bg-slate-900 px-3 py-2 text-sm text-white">Se profil</button>
+                    <button className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">Vurder</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </>
     );
@@ -678,37 +724,41 @@ function renderDashboard() {
   }
 
   return (
-  <div className="app-shell">
-    <aside className="sidebar">
-      <div className="sidebar-title">Nordic Coach</div>
-      <div className="sidebar-subtitle">Football Coaching & Development Platform</div>
+    <div className="min-h-screen bg-slate-100 text-slate-900">
+      <div className="grid min-h-screen xl:grid-cols-[280px_1fr]">
+        <aside className="border-r border-slate-200 bg-slate-950 p-5 text-white">
+          <div className="mb-8">
+            <div className="text-2xl font-bold tracking-tight">Nordic Coach</div>
+            <div className="mt-1 text-sm text-slate-400">Football Coaching & Development Platform</div>
+          </div>
 
-      <div className="club-box">
-        <div className="club-label">Aktiv klub</div>
-        <div className="club-name">Vejle Boldklub</div>
+          <div className="mb-6 rounded-2xl bg-slate-900 p-4">
+            <div className="text-xs uppercase tracking-wide text-slate-500">Aktiv klub</div>
+            <div className="mt-1 font-semibold">Vejle Boldklub</div>
+          </div>
+
+          <nav className="space-y-2">
+            {navigation.map((item) => {
+              const active = activePage === item;
+              return (
+                <button
+                  key={item}
+                  onClick={() => setActivePage(item)}
+                  className={`w-full rounded-2xl px-4 py-3 text-left text-sm transition ${active ? "bg-white text-slate-950" : "bg-slate-900 text-slate-300 hover:bg-slate-800 hover:text-white"}`}
+                >
+                  {item}
+                </button>
+              );
+            })}
+          </nav>
+        </aside>
+
+        <main className="p-6 xl:p-8">
+          <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-6 shadow-sm xl:p-8">
+            {renderPage()}
+          </div>
+        </main>
       </div>
-
-      <nav className="sidebar-nav">
-        {navigation.map((item) => {
-          const active = activePage === item;
-          return (
-            <button
-              key={item}
-              onClick={() => setActivePage(item)}
-              className={`sidebar-btn ${active ? "active" : ""}`}
-            >
-              {item}
-            </button>
-          );
-        })}
-      </nav>
-    </aside>
-
-    <main className="main-content">
-      <div className="content-card">
-        {renderPage()}
-      </div>
-    </main>
-  </div>
-);
+    </div>
+  );
 }
