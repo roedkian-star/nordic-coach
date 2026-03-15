@@ -398,3 +398,82 @@ body {
   width: 100%;
   margin-top: 10px;
 }
+.stat-help {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 4px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 0.9fr;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.dashboard-card {
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 24px;
+  padding: 20px;
+}
+
+.team-card-button {
+  border: none;
+  background: transparent;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.team-card {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 16px;
+  padding: 14px;
+  transition: 0.2s ease;
+}
+
+.team-card:hover {
+  background: white;
+  border-color: #94a3b8;
+}
+
+.team-card-meta {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 6px;
+}
+
+.training-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.training-block {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+
+.training-title {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.training-duration {
+  font-size: 13px;
+  color: #475569;
+  background: #f1f5f9;
+  border-radius: 999px;
+  padding: 6px 10px;
+}
+
+@media (max-width: 1100px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
