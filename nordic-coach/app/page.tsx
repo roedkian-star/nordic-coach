@@ -326,64 +326,79 @@ export default function NordicCoachPrototype() {
     );
   }
 
-  function renderDashboard() {
-    return (
-      <>
-        <PageHeader title="Dashboard" text="Første prototype til Vejle Boldklub. Navigation ligger i venstre side, og arbejdsfladen i midten ændrer sig efter det modul du vælger." />
+ function renderDashboard() {
+  return (
+    <>
+      <h1 className="page-title">Dashboard</h1>
+      <p className="page-text">
+        Første prototype til Vejle Boldklub. Navigation ligger i venstre side, og arbejdsfladen i midten ændrer sig efter det modul du vælger.
+      </p>
 
-        <div className="grid gap-4 md:grid-cols-3">
-          <StatCard label="Aktiv klub" value="Vejle Boldklub" help="Multi-klub struktur klar" />
-          <StatCard label="Hold" value="15" help="U6 til Senior 1" />
-          <StatCard label="Øvelser" value={String(savedDrills.length + drillLibrary.length)} help="Testdata + database" />
+      <div className="stats-grid">
+        <div className="stat-card">
+          <div className="stat-label">Aktiv klub</div>
+          <div className="stat-value">Vejle Boldklub</div>
+          <div className="stat-help">Multi-klub struktur klar</div>
         </div>
 
-        <div className="mt-6 grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Holdoversigt</h2>
-              <button onClick={() => setActivePage("Hold")} className="rounded-xl bg-slate-900 px-3 py-2 text-sm text-white">Åbn hold</button>
-            </div>
-            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-              {teams.slice(0, 9).map((team) => (
-                <button
-                  key={team.name}
-                  onClick={() => {
-                    setSelectedTeam(team.name);
-                    setActivePage("Hold");
-                  }}
-                  className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-left transition hover:border-slate-300 hover:bg-white"
-                >
-                  <div className="font-semibold text-slate-900">{team.name}</div>
-                  <div className="mt-1 text-sm text-slate-500">Årgang {team.age}</div>
-                  <div className="mt-2 text-xs text-slate-400">{team.format} · {team.training}</div>
-                </button>
-              ))}
-            </div>
-          </div>
+        <div className="stat-card">
+          <div className="stat-label">Hold</div>
+          <div className="stat-value">15</div>
+          <div className="stat-help">U6 til Senior 1</div>
+        </div>
 
-          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Ugens træning</h2>
-              <button onClick={() => setActivePage("Periodisering")} className="rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700">Se periode</button>
-            </div>
-            <div className="space-y-3">
-              {weekPlan.map((item) => (
-                <div key={item.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-xs uppercase tracking-wide text-slate-400">{item.block}</div>
-                      <div className="font-medium text-slate-900">{item.title}</div>
-                    </div>
-                    <div className="rounded-full bg-white px-3 py-1 text-sm text-slate-700">{item.duration} min</div>
+        <div className="stat-card">
+          <div className="stat-label">Øvelser</div>
+          <div className="stat-value">{savedDrills.length + drillLibrary.length}</div>
+          <div className="stat-help">Testdata + database</div>
+        </div>
+      </div>
+
+      <div className="dashboard-grid">
+        <div className="dashboard-card">
+          <div className="section-title">Holdoversigt</div>
+          <div className="team-grid">
+            {teams.slice(0, 9).map((team) => (
+              <button
+                key={team.name}
+                onClick={() => {
+                  setSelectedTeam(team.name);
+                  setActivePage("Hold");
+                }}
+                className="team-card-button"
+              >
+                <div className="team-card">
+                  <div className="team-card-title">{team.name}</div>
+                  <div className="team-card-sub">Årgang {team.age}</div>
+                  <div className="team-card-meta">
+                    {team.format} · {team.training}
                   </div>
                 </div>
-              ))}
-            </div>
+              </button>
+            ))}
           </div>
         </div>
-      </>
-    );
-  }
+
+        <div className="dashboard-card">
+          <div className="section-title">Ugens træning</div>
+          <div className="training-list">
+            {weekPlan.map((item) => (
+              <div key={item.title} className="training-item">
+                <div className="training-top">
+                  <div>
+                    <div className="training-block">{item.block}</div>
+                    <div className="training-title">{item.title}</div>
+                  </div>
+                  <div className="training-duration">{item.duration} min</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
 
   function renderHold() {
     return (
