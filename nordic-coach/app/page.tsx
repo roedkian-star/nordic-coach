@@ -468,52 +468,69 @@ export default function NordicCoachPrototype() {
             <div className="section-title">Ny spiller</div>
             <div className="players-help">Opret en spiller og tilknyt hende til et hold</div>
 
-            <form onSubmit={handleCreatePlayer} className="player-form">
-              <label className="form-label">Navn</label>
-              <input
-                className="form-input"
-                value={playerForm.name}
-                onChange={(e) => setPlayerForm({ ...playerForm, name: e.target.value })}
-                placeholder="Fx Emma Hansen"
-                required
-              />
+           <form onSubmit={handleCreatePlayer} className="player-form">
 
-              <label className="form-label">Hold</label>
-              <select
-                className="form-input"
-                value={playerForm.team}
-                onChange={(e) => setPlayerForm({ ...playerForm, team: e.target.value })}
-              >
-                {teams.map((team) => (
-                  <option key={team.name} value={team.name}>{team.name}</option>
-                ))}
-              </select>
+  <div className="form-group">
+    <label className="form-label">Navn</label>
+    <input
+      className="form-input"
+      value={playerForm.name}
+      onChange={(e) => setPlayerForm({ ...playerForm, name: e.target.value })}
+      placeholder="Fx Emma Hansen"
+      required
+    />
+  </div>
 
-              <label className="form-label">Position</label>
-              <select
-                className="form-input"
-                value={playerForm.position}
-                onChange={(e) => setPlayerForm({ ...playerForm, position: e.target.value })}
-              >
-                <option value="GK">Keeper</option>
-                <option value="CB">Forsvar</option>
-                <option value="CM">Midtbane</option>
-                <option value="Wing">Kant</option>
-                <option value="ST">Angriber</option>
-              </select>
+  <div className="form-row">
 
-              <label className="form-label">Årgang</label>
-              <input
-                className="form-input"
-                value={playerForm.year}
-                onChange={(e) => setPlayerForm({ ...playerForm, year: e.target.value })}
-                placeholder="2015"
-                required
-              />
+    <div className="form-group">
+      <label className="form-label">Hold</label>
+      <select
+        className="form-input"
+        value={playerForm.team}
+        onChange={(e) => setPlayerForm({ ...playerForm, team: e.target.value })}
+      >
+        {teams.map((team) => (
+          <option key={team.name} value={team.name}>
+            {team.name}
+          </option>
+        ))}
+      </select>
+    </div>
 
-              <button type="submit" className="primary-btn">Gem spiller</button>
-            </form>
+    <div className="form-group">
+      <label className="form-label">Position</label>
+      <select
+        className="form-input"
+        value={playerForm.position}
+        onChange={(e) => setPlayerForm({ ...playerForm, position: e.target.value })}
+      >
+        <option value="GK">Keeper</option>
+        <option value="CB">Forsvar</option>
+        <option value="CM">Midtbane</option>
+        <option value="Wing">Kant</option>
+        <option value="ST">Angriber</option>
+      </select>
+    </div>
 
+  </div>
+
+  <div className="form-group">
+    <label className="form-label">Årgang</label>
+    <input
+      className="form-input"
+      value={playerForm.year}
+      onChange={(e) => setPlayerForm({ ...playerForm, year: e.target.value })}
+      placeholder="2015"
+      required
+    />
+  </div>
+
+  <button type="submit" className="primary-btn form-button">
+    Gem spiller
+  </button>
+
+</form>
             <div className="section-title" style={{ marginTop: 24 }}>Vælg hold</div>
             <div className="players-help">Filtrer spillere efter årgang</div>
 
