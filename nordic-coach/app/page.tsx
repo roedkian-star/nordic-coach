@@ -295,66 +295,66 @@ export default function NordicCoachPrototype() {
       </div>
     );
   }
+  
+function renderDashboard() {
+  return (
+    <>
+      <h1 className="page-title">Dashboard</h1>
+      <p className="page-text">
+        Første prototype til Vejle Boldklub. Navigation ligger i venstre side,
+        og arbejdsfladen i midten ændrer sig efter det modul du vælger.
+      </p>
 
-  function renderDashboard() {
-    return (
-      <>
-        <PageHeader title="Dashboard" text="Første prototype til Vejle Boldklub. Navigation ligger i venstre side, og arbejdsfladen i midten ændrer sig efter det modul du vælger." />
-
-        <div className="grid gap-4 md:grid-cols-3">
-          <StatCard label="Aktiv klub" value="Vejle Boldklub" help="Multi-klub struktur klar" />
-          <StatCard label="Hold" value="15" help="U6 til Senior 1" />
-          <StatCard label="Øvelser" value={String(savedDrills.length + drillLibrary.length)} help="Testdata + database" />
+      <div className="stats-grid">
+        <div className="stat-card">
+          <div className="stat-label">Aktiv klub</div>
+          <div className="stat-value">Vejle Boldklub</div>
         </div>
+        <div className="stat-card">
+          <div className="stat-label">Hold</div>
+          <div className="stat-value">15</div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-label">Øvelser</div>
+          <div className="stat-value">4</div>
+        </div>
+      </div>
 
-        <div className="mt-6 grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Holdoversigt</h2>
-              <button onClick={() => setActivePage("Hold")} className="rounded-xl bg-slate-900 px-3 py-2 text-sm text-white">Åbn hold</button>
-            </div>
-            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-              {teams.slice(0, 9).map((team) => (
-                <button
-                  key={team.name}
-                  onClick={() => {
-                    setSelectedTeam(team.name);
-                    setActivePage("Hold");
-                  }}
-                  className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-left transition hover:border-slate-300 hover:bg-white"
-                >
-                  <div className="font-semibold text-slate-900">{team.name}</div>
-                  <div className="mt-1 text-sm text-slate-500">Årgang {team.age}</div>
-                  <div className="mt-2 text-xs text-slate-400">{team.format} · {team.training}</div>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Ugens træning</h2>
-              <button onClick={() => setActivePage("Periodisering")} className="rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700">Se periode</button>
-            </div>
-            <div className="space-y-3">
-              {weekPlan.map((item) => (
-                <div key={item.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-xs uppercase tracking-wide text-slate-400">{item.block}</div>
-                      <div className="font-medium text-slate-900">{item.title}</div>
-                    </div>
-                    <div className="rounded-full bg-white px-3 py-1 text-sm text-slate-700">{item.duration} min</div>
-                  </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "20px" }}>
+        <section>
+          <h2 className="section-title">Holdoversigt</h2>
+          <div className="team-grid">
+            {teams.slice(0, 9).map((team) => (
+              <div key={team.name} className="team-card">
+                <div className="team-card-title">{team.name}</div>
+                <div className="team-card-sub">Årgang {team.age}</div>
+                <div className="team-card-sub">
+                  {team.format} · {team.training}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-        </div>
-      </>
-    );
-  }
+        </section>
 
+        <section>
+          <h2 className="section-title">Ugens træning</h2>
+          <div className="training-list">
+            {weekPlan.map((item) => (
+              <div key={item.title} className="training-item">
+                <div style={{ fontSize: "12px", color: "#64748b", textTransform: "uppercase" }}>
+                  {item.block}
+                </div>
+                <div style={{ fontWeight: 600, marginTop: "4px" }}>{item.title}</div>
+                <div style={{ marginTop: "4px", color: "#64748b" }}>{item.duration} min</div>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+    </>
+  );
+}
+ 
   function renderHold() {
     return (
       <>
