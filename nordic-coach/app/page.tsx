@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { addDoc, collection, getDocs, orderBy, query, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, doc, getDocs, orderBy, query, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "./firebase";
 
 type DrillForm = {
@@ -49,7 +49,15 @@ export default function NordicCoachPrototype() {
     team: "U11",
   });
   const [savedPlayers, setSavedPlayers] = useState<Record<string, { name: string; position: string; year: number }[]>>({});
-  const [selectedPlayer, setSelectedPlayer] = useState<{ name: string; position: string; year: number } | null>(null);
+  const [selectedPlayer, setSelectedPlayer] = useState<{ id?: string; name: string; position: string; year: number; team?: string; technical?: number; tactical?: number; physical?: number; mental?: number; notes?: string } | null>(null);
+  const [savedPlayersMessage, setSavedPlayersMessage] = useState("");
+  const [profileForm, setProfileForm] = useState({
+    technical: "4",
+    tactical: "3",
+    physical: "3",
+    mental: "4",
+    notes: "",
+  });
 
   const teams = [
     { name: "U6", age: 2020, format: "3v3", training: "60 min" },
@@ -216,6 +224,7 @@ export default function NordicCoachPrototype() {
     "Dashboard",
     "Hold",
     "Spillere",
+    "Spillerprofil",
     "Spillestil",
     "Træningsbank",
     "Periodisering",
@@ -226,7 +235,14 @@ export default function NordicCoachPrototype() {
   ];
 
   const currentTeam = useMemo(() => teams.find((team) => team.name === selectedTeam) || teams[0], [selectedTeam]);
-  const currentPlayers = [...(savedPlayers[selectedTeam] || []), ...(teamPlayers[selectedTeam] || teamPlayers.U11)];
+  const currentPlayers = [...(savedPlayers[selectedTeam] || []), ...(teamPlayers[selectedTeam] || teamPlayers.U11)].map((player) => ({
+    technical: 4,
+    tactical: 3,
+    physical: 3,
+    mental: 4,
+    notes: "",
+    ...player,
+  }));
   const currentPlayStyle = playStyle.find((group) => group.title === selectedPlayStyleGroup) || playStyle[0];
   const currentWeeks = periodization[selectedMonth] || [];
 
@@ -242,7 +258,35 @@ export default function NordicCoachPrototype() {
       }
     }
 
+    async function loadPlayers() {
+      try {
+        const snapshot = await getDocs(collection(db, "players"));
+        const grouped: Record<string, { id?: string; name: string; position: string; year: number; team?: string; technical?: number; tactical?: number; physical?: number; mental?: number; notes?: string }[]> = {};
+        snapshot.docs.forEach((playerDoc) => {
+          const data = playerDoc.data() as any;
+          const team = data.team || "U11";
+          if (!grouped[team]) grouped[team] = [];
+          grouped[team].push({
+            id: playerDoc.id,
+            name: data.name,
+            position: data.position,
+            year: data.year,
+            team,
+            technical: data.technical ?? 4,
+            tactical: data.tactical ?? 3,
+            physical: data.physical ?? 3,
+            mental: data.mental ?? 4,
+            notes: data.notes ?? "",
+          });
+        });
+        setSavedPlayers(grouped);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
     loadDrills();
+    loadPlayers();
   }, []);
 
   async function handleCreateDrill(e: React.FormEvent) {
@@ -285,27 +329,95 @@ export default function NordicCoachPrototype() {
     }
   }
 
-  function handleCreatePlayer(e: React.FormEvent) {
+  async function handleCreatePlayer(e: React.FormEvent) {
     e.preventDefault();
+    setSavedPlayersMessage("");
 
     const newPlayer = {
       name: playerForm.name,
       position: playerForm.position,
       year: Number(playerForm.year),
+      team: playerForm.team,
+      technical: 4,
+      tactical: 3,
+      physical: 3,
+      mental: 4,
+      notes: "",
     };
 
-    setSavedPlayers((prev) => ({
-      ...prev,
-      [playerForm.team]: [newPlayer, ...(prev[playerForm.team] || [])],
-    }));
+    try {
+      const ref = await addDoc(collection(db, "players"), {
+        ...newPlayer,
+        createdAt: serverTimestamp(),
+      });
 
-    setSelectedTeam(playerForm.team);
-    setPlayerForm({
-      name: "",
-      year: playerForm.year,
-      position: "CM",
-      team: playerForm.team,
-    });
+      setSavedPlayers((prev) => ({
+        ...prev,
+        [playerForm.team]: [{ id: ref.id, ...newPlayer }, ...(prev[playerForm.team] || [])],
+      }));
+
+      setSelectedTeam(playerForm.team);
+      setPlayerForm({
+        name: "",
+        year: playerForm.year,
+        position: "CM",
+        team: playerForm.team,
+      });
+      setSavedPlayersMessage("Spilleren er gemt i databasen.");
+    } catch (error) {
+      console.error(error);
+      setSavedPlayersMessage("Der opstod en fejl ved gemning af spilleren.");
+    }
+  }
+
+  async function handleSaveProfile() {
+    if (!selectedPlayer?.id) return;
+
+    try {
+      await updateDoc(doc(db, "players", selectedPlayer.id), {
+        technical: Number(profileForm.technical),
+        tactical: Number(profileForm.tactical),
+        physical: Number(profileForm.physical),
+        mental: Number(profileForm.mental),
+        notes: profileForm.notes,
+      });
+
+      setSavedPlayers((prev) => {
+        const teamKey = selectedPlayer.team || selectedTeam;
+        return {
+          ...prev,
+          [teamKey]: (prev[teamKey] || []).map((player) =>
+            player.id === selectedPlayer.id
+              ? {
+                  ...player,
+                  technical: Number(profileForm.technical),
+                  tactical: Number(profileForm.tactical),
+                  physical: Number(profileForm.physical),
+                  mental: Number(profileForm.mental),
+                  notes: profileForm.notes,
+                }
+              : player
+          ),
+        };
+      });
+
+      setSelectedPlayer((prev) =>
+        prev
+          ? {
+              ...prev,
+              technical: Number(profileForm.technical),
+              tactical: Number(profileForm.tactical),
+              physical: Number(profileForm.physical),
+              mental: Number(profileForm.mental),
+              notes: profileForm.notes,
+            }
+          : prev
+      );
+      setSavedPlayersMessage("Spillerprofilen er gemt i databasen.");
+    } catch (error) {
+      console.error(error);
+      setSavedPlayersMessage("Der opstod en fejl ved gemning af profilen.");
+    }
   }
 
   function StatCard({ label, value, help }: { label: string; value: string; help: string }) {
@@ -327,167 +439,128 @@ export default function NordicCoachPrototype() {
     );
   }
 
-function renderDashboard() {
-  return (
-    <>
-      <h1 className="page-title">Dashboard</h1>
-      <p className="page-text">
-        Første prototype til Vejle Boldklub. Navigation ligger i venstre side, og arbejdsfladen i midten ændrer sig efter det modul du vælger.
-      </p>
+  function renderDashboard() {
+    return (
+      <>
+        <PageHeader title="Dashboard" text="Første prototype til Vejle Boldklub. Navigation ligger i venstre side, og arbejdsfladen i midten ændrer sig efter det modul du vælger." />
 
-      <div className="stats-grid">
-        <div className="stat-card">
-          <div className="stat-label">Aktiv klub</div>
-          <div className="stat-value">Vejle Boldklub</div>
-          <div className="stat-help">Multi-klub struktur klar</div>
+        <div className="grid gap-4 md:grid-cols-3">
+          <StatCard label="Aktiv klub" value="Vejle Boldklub" help="Multi-klub struktur klar" />
+          <StatCard label="Hold" value="15" help="U6 til Senior 1" />
+          <StatCard label="Øvelser" value={String(savedDrills.length + drillLibrary.length)} help="Testdata + database" />
         </div>
 
-        <div className="stat-card">
-          <div className="stat-label">Hold</div>
-          <div className="stat-value">15</div>
-          <div className="stat-help">U6 til Senior 1</div>
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-label">Øvelser</div>
-          <div className="stat-value">{savedDrills.length + drillLibrary.length}</div>
-          <div className="stat-help">Testdata + database</div>
-        </div>
-      </div>
-
-      <div className="dashboard-grid">
-        <div className="dashboard-card">
-          <div className="section-title">Holdoversigt</div>
-          <div className="team-grid">
-            {teams.slice(0, 9).map((team) => (
-              <button
-                key={team.name}
-                onClick={() => {
-                  setSelectedTeam(team.name);
-                  setActivePage("Hold");
-                }}
-                className="team-card-button"
-              >
-                <div className="team-card">
-                  <div className="team-card-title">{team.name}</div>
-                  <div className="team-card-sub">Årgang {team.age}</div>
-                  <div className="team-card-meta">
-                    {team.format} · {team.training}
-                  </div>
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="dashboard-card">
-          <div className="section-title">Ugens træning</div>
-          <div className="training-list">
-            {weekPlan.map((item) => (
-              <div key={item.title} className="training-item">
-                <div className="training-top">
-                  <div>
-                    <div className="training-block">{item.block}</div>
-                    <div className="training-title">{item.title}</div>
-                  </div>
-                  <div className="training-duration">{item.duration} min</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </>
-  );
-} 
-  
-  function renderHold() {
-  return (
-    <>
-      <h1 className="page-title">Hold</h1>
-      <p className="page-text">
-        Vælg et hold i venstre kolonne. Detaljer, spillere og seneste træningspas vises i midten.
-      </p>
-
-      <div className="hold-layout">
-        <div className="hold-sidebar">
-          <div className="section-title">Alle hold</div>
-          <div className="hold-list">
-            {teams.map((team) => {
-              const active = selectedTeam === team.name;
-              return (
+        <div className="mt-6 grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-lg font-semibold">Holdoversigt</h2>
+              <button onClick={() => setActivePage("Hold")} className="rounded-xl bg-slate-900 px-3 py-2 text-sm text-white">Åbn hold</button>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              {teams.slice(0, 9).map((team) => (
                 <button
                   key={team.name}
-                  onClick={() => setSelectedTeam(team.name)}
-                  className={`hold-list-btn ${active ? "active" : ""}`}
+                  onClick={() => {
+                    setSelectedTeam(team.name);
+                    setActivePage("Hold");
+                  }}
+                  className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-left transition hover:border-slate-300 hover:bg-white"
                 >
-                  <div>{team.name}</div>
-                  <div className="hold-list-year">Årgang {team.age}</div>
+                  <div className="font-semibold text-slate-900">{team.name}</div>
+                  <div className="mt-1 text-sm text-slate-500">Årgang {team.age}</div>
+                  <div className="mt-2 text-xs text-slate-400">{team.format} · {team.training}</div>
                 </button>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="hold-main">
-          <div className="hold-header-card">
-            <div>
-              <div className="hold-main-title">{currentTeam.name}</div>
-              <div className="hold-main-sub">
-                Årgang {currentTeam.age} · {currentTeam.format} · {currentTeam.training}
-              </div>
-            </div>
-
-            <button
-              onClick={() => setActivePage("Spillere")}
-              className="primary-btn"
-            >
-              Se spillere
-            </button>
-          </div>
-
-          <div className="stats-grid">
-            <div className="stat-card">
-              <div className="stat-label">Format</div>
-              <div className="stat-value">{currentTeam.format}</div>
-              <div className="stat-help">Kampformat</div>
-            </div>
-
-            <div className="stat-card">
-              <div className="stat-label">Varighed</div>
-              <div className="stat-value">{currentTeam.training}</div>
-              <div className="stat-help">Standard træningstid</div>
-            </div>
-
-            <div className="stat-card">
-              <div className="stat-label">Spillere</div>
-              <div className="stat-value">{currentPlayers.length}</div>
-              <div className="stat-help">Testspillere i denne version</div>
+              ))}
             </div>
           </div>
 
-          <div className="dashboard-card" style={{ marginTop: 24 }}>
-            <div className="section-title">Seneste træningsblokke</div>
-            <div className="training-list">
+          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-lg font-semibold">Ugens træning</h2>
+              <button onClick={() => setActivePage("Periodisering")} className="rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700">Se periode</button>
+            </div>
+            <div className="space-y-3">
               {weekPlan.map((item) => (
-                <div key={item.title} className="training-item">
-                  <div className="training-top">
+                <div key={item.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <div className="flex items-center justify-between">
                     <div>
-                      <div className="training-block">{item.block}</div>
-                      <div className="training-title">{item.title}</div>
+                      <div className="text-xs uppercase tracking-wide text-slate-400">{item.block}</div>
+                      <div className="font-medium text-slate-900">{item.title}</div>
                     </div>
-                    <div className="training-duration">{item.duration} min</div>
+                    <div className="rounded-full bg-white px-3 py-1 text-sm text-slate-700">{item.duration} min</div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
-      </div>
-    </>
-  );
-}
- 
+      </>
+    );
+  }
+
+  function renderHold() {
+    return (
+      <>
+        <PageHeader title="Hold" text="Vælg et hold i venstre kolonne. Detaljer, spillere og seneste træningspas vises i midten." />
+        <div className="grid gap-6 xl:grid-cols-[320px_1fr]">
+          <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div className="mb-3 text-sm font-semibold text-slate-500">Alle hold</div>
+            <div className="space-y-2">
+              {teams.map((team) => {
+                const active = selectedTeam === team.name;
+                return (
+                  <button
+                    key={team.name}
+                    onClick={() => setSelectedTeam(team.name)}
+                    className={`w-full rounded-2xl px-4 py-3 text-left transition ${active ? "bg-slate-900 text-white" : "border border-slate-200 bg-slate-50 text-slate-900 hover:bg-white"}`}
+                  >
+                    <div className="font-semibold">{team.name}</div>
+                    <div className={`text-sm ${active ? "text-slate-300" : "text-slate-500"}`}>Årgang {team.age}</div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold text-slate-900">{currentTeam.name}</h2>
+                  <p className="text-slate-500">Årgang {currentTeam.age} · {currentTeam.format} · {currentTeam.training}</p>
+                </div>
+                <button onClick={() => setActivePage("Spillere")} className="rounded-xl bg-slate-900 px-4 py-2 text-sm text-white">Se spillere</button>
+              </div>
+
+              <div className="mt-6 grid gap-4 md:grid-cols-3">
+                <StatCard label="Format" value={currentTeam.format} help="Kampformat" />
+                <StatCard label="Varighed" value={currentTeam.training} help="Standard træningstid" />
+                <StatCard label="Spillere" value={String(currentPlayers.length)} help="Testspillere i denne version" />
+              </div>
+            </div>
+
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 className="mb-4 text-lg font-semibold">Seneste træningsblokke</h3>
+              <div className="grid gap-3">
+                {weekPlan.map((item) => (
+                  <div key={item.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="font-medium text-slate-900">{item.title}</div>
+                        <div className="text-sm text-slate-500">{item.block}</div>
+                      </div>
+                      <div className="text-sm text-slate-500">{item.duration} min</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
   function renderSpillere() {
     const developmentSummary = [
       { label: "Teknik", value: "4/5" },
@@ -562,6 +635,7 @@ function renderDashboard() {
               </div>
 
               <button type="submit" className="primary-btn form-button">Gem spiller</button>
+              {savedPlayersMessage ? <div className="form-feedback">{savedPlayersMessage}</div> : null}
             </form>
 
             <div className="section-title" style={{ marginTop: 24 }}>Vælg hold</div>
@@ -642,6 +716,13 @@ function renderDashboard() {
                       className="primary-btn"
                       onClick={() => {
                         setSelectedPlayer(player);
+                        setProfileForm({
+                          technical: String(player.technical ?? 4),
+                          tactical: String(player.tactical ?? 3),
+                          physical: String(player.physical ?? 3),
+                          mental: String(player.mental ?? 4),
+                          notes: player.notes ?? "",
+                        });
                         setActivePage("Spillerprofil");
                       }}
                     >
@@ -670,10 +751,10 @@ function renderDashboard() {
     }
 
     const profileStats = [
-      { label: "Teknik", value: "4/5" },
-      { label: "Taktik", value: "3/5" },
-      { label: "Fysik", value: "3/5" },
-      { label: "Mental", value: "4/5" },
+      { key: "technical", label: "Teknik", value: profileForm.technical },
+      { key: "tactical", label: "Taktik", value: profileForm.tactical },
+      { key: "physical", label: "Fysik", value: profileForm.physical },
+      { key: "mental", label: "Mental", value: profileForm.mental },
     ];
 
     return (
@@ -681,7 +762,7 @@ function renderDashboard() {
         <div className="profile-topbar">
           <div>
             <h1 className="page-title" style={{ marginBottom: 4 }}>Spillerprofil</h1>
-            <p className="page-text">Detaljeret profil med vurdering, fokusområder og trænernoter.</p>
+            <p className="page-text">Redigér vurdering og noter, og gem dem direkte i databasen.</p>
           </div>
           <button className="secondary-btn" onClick={() => setActivePage("Spillere")}>← Tilbage til spillere</button>
         </div>
@@ -694,14 +775,14 @@ function renderDashboard() {
               </div>
               <div>
                 <div className="profile-name">{selectedPlayer.name}</div>
-                <div className="profile-sub">{selectedPlayer.position} · {selectedTeam} · Årgang {selectedPlayer.year}</div>
+                <div className="profile-sub">{selectedPlayer.position} · {selectedPlayer.team || selectedTeam} · Årgang {selectedPlayer.year}</div>
               </div>
             </div>
 
             <div className="profile-info-grid">
               <div className="profile-info-box">
                 <div className="profile-info-label">Hold</div>
-                <div className="profile-info-value">{selectedTeam}</div>
+                <div className="profile-info-value">{selectedPlayer.team || selectedTeam}</div>
               </div>
               <div className="profile-info-box">
                 <div className="profile-info-label">Position</div>
@@ -715,12 +796,22 @@ function renderDashboard() {
           </div>
 
           <div className="profile-card">
-            <div className="section-title">Udviklingsvurdering</div>
-            <div className="profile-stats-grid">
+            <div className="section-title">Vurdering</div>
+            <div className="profile-form-grid">
               {profileStats.map((item) => (
-                <div key={item.label} className="profile-stat-box">
-                  <div className="profile-info-label">{item.label}</div>
-                  <div className="profile-stat-value">{item.value}</div>
+                <div key={item.key} className="profile-form-group">
+                  <label className="form-label">{item.label}</label>
+                  <select
+                    className="form-input"
+                    value={item.value}
+                    onChange={(e) => setProfileForm((prev) => ({ ...prev, [item.key]: e.target.value }))}
+                  >
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </select>
                 </div>
               ))}
             </div>
@@ -738,8 +829,15 @@ function renderDashboard() {
 
           <div className="profile-card">
             <div className="section-title">Trænernoter</div>
-            <div className="profile-notes">
-              Spilleren viser gode tekniske forudsætninger og et fint overblik i småspillet. Næste fokus bør være duelstyrke og beslutningstagning i højere tempo.
+            <textarea
+              className="profile-notes-input"
+              value={profileForm.notes}
+              onChange={(e) => setProfileForm((prev) => ({ ...prev, notes: e.target.value }))}
+              placeholder="Skriv noter om spillerens udvikling, fokusområder og næste skridt"
+            />
+            <div className="profile-actions">
+              <button className="primary-btn" onClick={handleSaveProfile}>Gem profil</button>
+              {savedPlayersMessage ? <div className="form-feedback">{savedPlayersMessage}</div> : null}
             </div>
           </div>
         </div>
