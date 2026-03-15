@@ -1,0 +1,62 @@
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; background: #f8fafc; color: #0f172a; }
+a { color: inherit; text-decoration: none; }
+button, select { font: inherit; }
+.page { min-height: 100vh; }
+.shell { display: grid; min-height: 100vh; grid-template-columns: 260px 1fr; }
+.sidebar { border-right: 1px solid #e2e8f0; background: white; padding: 20px; }
+.brand { margin-bottom: 32px; }
+.brand h1 { margin: 0; font-size: 28px; }
+.brand p { margin: 4px 0 0; color: #64748b; font-size: 14px; }
+.nav { display: grid; gap: 8px; }
+.nav button { border: none; background: transparent; text-align: left; padding: 10px 12px; border-radius: 12px; color: #334155; cursor: pointer; }
+.nav button.active { background: #0f172a; color: white; }
+.nav button:hover { background: #f1f5f9; }
+.nav button.active:hover { background: #0f172a; }
+.main { padding: 24px 32px; }
+.header { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; margin-bottom: 24px; }
+.header h2 { margin: 0; font-size: 34px; }
+.muted { color: #64748b; }
+.club-box, .card, .stat, .pill, .list-item, .week-item { border: 1px solid #e2e8f0; background: white; border-radius: 20px; }
+.club-box { padding: 16px; min-width: 180px; }
+.grid { display: grid; gap: 20px; }
+.grid-3 { grid-template-columns: 2fr 1fr; }
+.grid-2 { grid-template-columns: 1fr 1fr; }
+.card { padding: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+.card h3 { margin-top: 0; }
+.team-grid { display: grid; gap: 12px; grid-template-columns: repeat(3, minmax(0,1fr)); }
+.team-item, .player-card { border: 1px solid #e2e8f0; background: #f8fafc; border-radius: 16px; padding: 16px; }
+.team-item button { all: unset; display:block; cursor:pointer; width:100%; }
+.small { font-size: 12px; color: #64748b; }
+.list { display: grid; gap: 12px; }
+.list-item { background: #f8fafc; padding: 14px; }
+.badge { display: inline-block; border: 1px solid #e2e8f0; background: white; border-radius: 999px; padding: 6px 10px; font-size: 14px; margin: 4px 8px 4px 0; }
+.stats { display: grid; gap: 12px; grid-template-columns: repeat(3, minmax(0,1fr)); margin-top: 20px; }
+.stat { background: #f8fafc; padding: 14px; }
+.players-grid { display: grid; gap: 16px; grid-template-columns: repeat(3, minmax(0,1fr)); }
+.avatar { width: 56px; height: 56px; border-radius: 999px; background: #0f172a; color: white; display:flex; align-items:center; justify-content:center; font-weight: bold; }
+.row { display:flex; gap: 12px; align-items: center; }
+.meta { display:grid; gap:8px; margin-top:14px; }
+.meta-item { display:flex; justify-content: space-between; background:#f8fafc; border-radius:12px; padding:10px 12px; }
+.section-grid { display:grid; gap:16px; grid-template-columns: repeat(3, minmax(0,1fr)); }
+.section-box { border:1px solid #e2e8f0; background:#f8fafc; border-radius:16px; padding:16px; }
+.section-box h4 { margin-top:0; }
+.point { border:1px solid #e2e8f0; background:white; border-radius:12px; padding:10px 12px; margin-bottom:8px; font-size:14px; }
+.drill-grid { display:grid; gap:16px; grid-template-columns: 1fr 1fr; }
+.drill-meta { display:grid; gap:12px; grid-template-columns: repeat(3, minmax(0,1fr)); margin-top:16px; }
+.drill-meta > div { background:#f8fafc; border-radius:12px; padding:12px; }
+.placeholder { margin-top:16px; border:1px dashed #cbd5e1; background:#f8fafc; border-radius:16px; padding:20px; color:#64748b; }
+.month-grid { display:grid; gap:20px; grid-template-columns: 1fr 1fr; }
+.week-item { background:#f8fafc; padding:14px; margin-bottom:12px; }
+.select { border:1px solid #e2e8f0; border-radius:14px; background:white; padding:10px 14px; }
+.primary-btn { border:none; border-radius:14px; background:#0f172a; color:white; padding:10px 14px; cursor:pointer; }
+@media (max-width: 1024px) {
+  .shell, .grid-3, .grid-2, .team-grid, .players-grid, .section-grid, .drill-grid, .month-grid { grid-template-columns: 1fr; }
+  .stats, .drill-meta { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .shell { grid-template-columns: 1fr; }
+  .sidebar { border-right: none; border-bottom: 1px solid #e2e8f0; }
+  .main { padding: 20px; }
+  .header { flex-direction: column; }
+}
