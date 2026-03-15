@@ -17,8 +17,6 @@ type Player = {
   notes?: string;
 };
 
-const [savedPlayers, setSavedPlayers] = useState<Record<string, Player[]>>({});
-
 type DrillForm = {
   title: string;
   category: string;
@@ -63,8 +61,7 @@ export default function NordicCoachPrototype() {
     position: "CM",
     team: "U11",
   });
-
-  const [savedPlayersMessage, setSavedPlayersMessage] = useState("");
+const [savedPlayers, setSavedPlayers] = useState<Record<string, Player[]>>({});
   const [profileForm, setProfileForm] = useState({
 };
 
