@@ -4,6 +4,21 @@ import { useEffect, useMemo, useState } from "react";
 import { addDoc, collection, doc, getDocs, orderBy, query, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "./firebase";
 
+type Player = {
+  id?: string;
+  name: string;
+  position: string;
+  year: number;
+  team?: string;
+  technical?: number;
+  tactical?: number;
+  physical?: number;
+  mental?: number;
+  notes?: string;
+};
+
+const [savedPlayers, setSavedPlayers] = useState<Record<string, Player[]>>({});
+
 type DrillForm = {
   title: string;
   category: string;
@@ -51,20 +66,7 @@ export default function NordicCoachPrototype() {
 
   const [savedPlayersMessage, setSavedPlayersMessage] = useState("");
   const [profileForm, setProfileForm] = useState({
-  type Player = {
-  id?: string;
-  name: string;
-  position: string;
-  year: number;
-  team?: string;
-  technical?: number;
-  tactical?: number;
-  physical?: number;
-  mental?: number;
-  notes?: string;
 };
-
-const [savedPlayers, setSavedPlayers] = useState<Record<string, Player[]>>({});
 
   const teams = [
     { name: "U6", age: 2020, format: "3v3", training: "60 min" },
