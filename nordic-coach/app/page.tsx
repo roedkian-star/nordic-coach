@@ -56,15 +56,21 @@ export default function NordicCoachPrototype() {
   const [isSavingDrill, setIsSavingDrill] = useState(false);
   const [drillMessage, setDrillMessage] = useState("");
   const [playerForm, setPlayerForm] = useState({
-    name: "",
-    year: "2015",
-    position: "CM",
-    team: "U11",
-  };
-const [savedPlayers, setSavedPlayers] = useState<Record<string, Player[]>>({});
-  const [profileForm, setProfileForm] = useState({
-};
+  name: "",
+  year: "2015",
+  position: "CM",
+  team: "U11",
+});
 
+const [savedPlayers, setSavedPlayers] = useState<Record<string, Player[]>>({});
+
+const [profileForm, setProfileForm] = useState({
+  technical: "4",
+  tactical: "3",
+  physical: "3",
+  mental: "4",
+  notes: "",
+});
   const teams = [
     { name: "U6", age: 2020, format: "3v3", training: "60 min" },
     { name: "U7", age: 2019, format: "3v3", training: "60 min" },
