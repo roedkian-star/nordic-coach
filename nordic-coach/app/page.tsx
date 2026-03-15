@@ -62,10 +62,10 @@ export default function NordicCoachPrototype() {
   team: "U11",
 });
 
-const [savedPlayers, setSavedPlayers] = useState<Record<string, Player[]>>({});
-const [savedPlayersMessage, setSavedPlayersMessage] = useState("");
-  
-const [profileForm, setProfileForm] = useState({
+  const [savedPlayers, setSavedPlayers] = useState<Record<string, Player[]>>({});
+  const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
+  const [savedPlayersMessage, setSavedPlayersMessage] = useState("");
+  const [profileForm, setProfileForm] = useState({
   technical: "4",
   tactical: "3",
   physical: "3",
