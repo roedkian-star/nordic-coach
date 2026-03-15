@@ -190,3 +190,171 @@ body {
     padding: 20px;
   }
 }
+.players-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 24px;
+}
+
+.players-sidebar,
+.players-main {
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 24px;
+  padding: 20px;
+}
+
+.players-help {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 14px;
+}
+
+.players-team-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.players-team-btn {
+  width: 100%;
+  text-align: left;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  border-radius: 14px;
+  padding: 12px;
+  cursor: pointer;
+}
+
+.players-team-btn.active {
+  background: #0f172a;
+  color: white;
+  border-color: #0f172a;
+}
+
+.players-team-year {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.players-team-btn.active .players-team-year {
+  color: #cbd5e1;
+}
+
+.players-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.player-card {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 20px;
+  padding: 16px;
+}
+
+.player-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.player-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: #0f172a;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.player-name {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.player-sub {
+  font-size: 14px;
+  color: #64748b;
+}
+
+.player-stats {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.player-stat-row {
+  display: flex;
+  justify-content: space-between;
+  background: white;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.player-focus-box {
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 16px;
+  padding: 12px;
+}
+
+.player-focus-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.player-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.player-tag {
+  background: #f1f5f9;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+.player-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.primary-btn {
+  flex: 1;
+  border: none;
+  border-radius: 12px;
+  background: #0f172a;
+  color: white;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.secondary-btn {
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: white;
+  color: #0f172a;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+@media (max-width: 1100px) {
+  .players-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .players-grid {
+    grid-template-columns: 1fr;
+  }
+}
