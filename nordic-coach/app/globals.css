@@ -59,4 +59,7 @@ button, select { font: inherit; }
   .sidebar { border-right: none; border-bottom: 1px solid #e2e8f0; }
   .main { padding: 20px; }
   .header { flex-direction: column; }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 }
