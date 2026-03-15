@@ -678,41 +678,40 @@ export default function NordicCoachPrototype() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-900">
-      <div className="grid min-h-screen xl:grid-cols-[280px_1fr]">
-        <aside className="border-r border-slate-200 bg-slate-950 p-5 text-white">
-          <div className="mb-8">
-            <div className="text-2xl font-bold tracking-tight">Nordic Coach</div>
-            <div className="mt-1 text-sm text-slate-400">Football Coaching & Development Platform</div>
-          </div>
+  <div className="min-h-screen bg-slate-100 text-slate-900">
+    
+    <div className="grid grid-cols-[260px_1fr] min-h-screen">
 
-          <div className="mb-6 rounded-2xl bg-slate-900 p-4">
-            <div className="text-xs uppercase tracking-wide text-slate-500">Aktiv klub</div>
-            <div className="mt-1 font-semibold">Vejle Boldklub</div>
-          </div>
+      {/* SIDEBAR */}
+      <aside className="bg-slate-900 text-white p-6">
+        <h1 className="text-xl font-bold mb-6">Nordic Coach</h1>
 
-          <nav className="space-y-2">
-            {navigation.map((item) => {
-              const active = activePage === item;
-              return (
-                <button
-                  key={item}
-                  onClick={() => setActivePage(item)}
-                  className={`w-full rounded-2xl px-4 py-3 text-left text-sm transition ${active ? "bg-white text-slate-950" : "bg-slate-900 text-slate-300 hover:bg-slate-800 hover:text-white"}`}
-                >
-                  {item}
-                </button>
-              );
-            })}
-          </nav>
-        </aside>
+        <nav className="flex flex-col gap-2">
+          {navigation.map((item) => {
+            const active = activePage === item;
+            return (
+              <button
+                key={item}
+                onClick={() => setActivePage(item)}
+                className={`text-left p-2 rounded transition ${
+                  active
+                    ? "bg-white text-black"
+                    : "hover:bg-slate-700"
+                }`}
+              >
+                {item}
+              </button>
+            );
+          })}
+        </nav>
+      </aside>
 
-        <main className="p-6 xl:p-8">
-          <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-6 shadow-sm xl:p-8">
-            {renderPage()}
-          </div>
-        </main>
-      </div>
+      {/* MAIN CONTENT */}
+      <main className="p-8">
+        {renderPage()}
+      </main>
+
     </div>
-  );
+  </div>
+);
 }
