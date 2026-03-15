@@ -216,7 +216,6 @@ export default function NordicCoachPrototype() {
     "Dashboard",
     "Hold",
     "Spillere",
-    "Spillerprofil",
     "Spillestil",
     "Træningsbank",
     "Periodisering",
