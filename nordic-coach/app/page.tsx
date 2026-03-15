@@ -655,6 +655,95 @@ export default function NordicCoachPrototype() {
       </>
     );
   }
+  
+ function renderSpillerprofil() {
+    if (!selectedPlayer) {
+      return (
+        <>
+          <h1 className="page-title">Spillerprofil</h1>
+          <p className="page-text">Vælg først en spiller fra spillersiden.</p>
+          <button className="primary-btn" onClick={() => setActivePage("Spillere")}>Gå til spillere</button>
+        </>
+      );
+    }
+
+    const profileStats = [
+      { label: "Teknik", value: "4/5" },
+      { label: "Taktik", value: "3/5" },
+      { label: "Fysik", value: "3/5" },
+      { label: "Mental", value: "4/5" },
+    ];
+
+    return (
+      <>
+        <div className="profile-topbar">
+          <div>
+            <h1 className="page-title" style={{ marginBottom: 4 }}>Spillerprofil</h1>
+            <p className="page-text">Detaljeret profil med vurdering, fokusområder og trænernoter.</p>
+          </div>
+          <button className="secondary-btn" onClick={() => setActivePage("Spillere")}>← Tilbage til spillere</button>
+        </div>
+
+        <div className="profile-layout">
+          <div className="profile-card">
+            <div className="profile-header">
+              <div className="profile-avatar">
+                {selectedPlayer.name.split(" ").map((x) => x[0]).join("").slice(0, 2)}
+              </div>
+              <div>
+                <div className="profile-name">{selectedPlayer.name}</div>
+                <div className="profile-sub">{selectedPlayer.position} · {selectedTeam} · Årgang {selectedPlayer.year}</div>
+              </div>
+            </div>
+
+            <div className="profile-info-grid">
+              <div className="profile-info-box">
+                <div className="profile-info-label">Hold</div>
+                <div className="profile-info-value">{selectedTeam}</div>
+              </div>
+              <div className="profile-info-box">
+                <div className="profile-info-label">Position</div>
+                <div className="profile-info-value">{selectedPlayer.position}</div>
+              </div>
+              <div className="profile-info-box">
+                <div className="profile-info-label">Årgang</div>
+                <div className="profile-info-value">{selectedPlayer.year}</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="profile-card">
+            <div className="section-title">Udviklingsvurdering</div>
+            <div className="profile-stats-grid">
+              {profileStats.map((item) => (
+                <div key={item.label} className="profile-stat-box">
+                  <div className="profile-info-label">{item.label}</div>
+                  <div className="profile-stat-value">{item.value}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="profile-card">
+            <div className="section-title">Udviklingsfokus</div>
+            <div className="player-tags">
+              <span className="player-tag">Førsteberøring</span>
+              <span className="player-tag">Overblik</span>
+              <span className="player-tag">Duelspil</span>
+              <span className="player-tag">Retvendt modtagelse</span>
+            </div>
+          </div>
+
+          <div className="profile-card">
+            <div className="section-title">Trænernoter</div>
+            <div className="profile-notes">
+              Spilleren viser gode tekniske forudsætninger og et fint overblik i småspillet. Næste fokus bør være duelstyrke og beslutningstagning i højere tempo.
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   function renderSpillestil() {
     return (
