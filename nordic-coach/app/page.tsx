@@ -401,67 +401,91 @@ export default function NordicCoachPrototype() {
 }
 
   function renderHold() {
-    return (
-      <>
-        <PageHeader title="Hold" text="Vælg et hold i venstre kolonne. Detaljer, spillere og seneste træningspas vises i midten." />
-        <div className="grid gap-6 xl:grid-cols-[320px_1fr]">
-          <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
-            <div className="mb-3 text-sm font-semibold text-slate-500">Alle hold</div>
-            <div className="space-y-2">
-              {teams.map((team) => {
-                const active = selectedTeam === team.name;
-                return (
-                  <button
-                    key={team.name}
-                    onClick={() => setSelectedTeam(team.name)}
-                    className={`w-full rounded-2xl px-4 py-3 text-left transition ${active ? "bg-slate-900 text-white" : "border border-slate-200 bg-slate-50 text-slate-900 hover:bg-white"}`}
-                  >
-                    <div className="font-semibold">{team.name}</div>
-                    <div className={`text-sm ${active ? "text-slate-300" : "text-slate-500"}`}>Årgang {team.age}</div>
-                  </button>
-                );
-              })}
+  return (
+    <>
+      <h1 className="page-title">Hold</h1>
+      <p className="page-text">
+        Vælg et hold i venstre kolonne. Detaljer, spillere og seneste træningspas vises i midten.
+      </p>
+
+      <div className="hold-layout">
+        <div className="hold-sidebar">
+          <div className="section-title">Alle hold</div>
+          <div className="hold-list">
+            {teams.map((team) => {
+              const active = selectedTeam === team.name;
+              return (
+                <button
+                  key={team.name}
+                  onClick={() => setSelectedTeam(team.name)}
+                  className={`hold-list-btn ${active ? "active" : ""}`}
+                >
+                  <div>{team.name}</div>
+                  <div className="hold-list-year">Årgang {team.age}</div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="hold-main">
+          <div className="hold-header-card">
+            <div>
+              <div className="hold-main-title">{currentTeam.name}</div>
+              <div className="hold-main-sub">
+                Årgang {currentTeam.age} · {currentTeam.format} · {currentTeam.training}
+              </div>
+            </div>
+
+            <button
+              onClick={() => setActivePage("Spillere")}
+              className="primary-btn"
+            >
+              Se spillere
+            </button>
+          </div>
+
+          <div className="stats-grid">
+            <div className="stat-card">
+              <div className="stat-label">Format</div>
+              <div className="stat-value">{currentTeam.format}</div>
+              <div className="stat-help">Kampformat</div>
+            </div>
+
+            <div className="stat-card">
+              <div className="stat-label">Varighed</div>
+              <div className="stat-value">{currentTeam.training}</div>
+              <div className="stat-help">Standard træningstid</div>
+            </div>
+
+            <div className="stat-card">
+              <div className="stat-label">Spillere</div>
+              <div className="stat-value">{currentPlayers.length}</div>
+              <div className="stat-help">Testspillere i denne version</div>
             </div>
           </div>
 
-          <div className="space-y-6">
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                <div>
-                  <h2 className="text-2xl font-bold text-slate-900">{currentTeam.name}</h2>
-                  <p className="text-slate-500">Årgang {currentTeam.age} · {currentTeam.format} · {currentTeam.training}</p>
-                </div>
-                <button onClick={() => setActivePage("Spillere")} className="rounded-xl bg-slate-900 px-4 py-2 text-sm text-white">Se spillere</button>
-              </div>
-
-              <div className="mt-6 grid gap-4 md:grid-cols-3">
-                <StatCard label="Format" value={currentTeam.format} help="Kampformat" />
-                <StatCard label="Varighed" value={currentTeam.training} help="Standard træningstid" />
-                <StatCard label="Spillere" value={String(currentPlayers.length)} help="Testspillere i denne version" />
-              </div>
-            </div>
-
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h3 className="mb-4 text-lg font-semibold">Seneste træningsblokke</h3>
-              <div className="grid gap-3">
-                {weekPlan.map((item) => (
-                  <div key={item.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="font-medium text-slate-900">{item.title}</div>
-                        <div className="text-sm text-slate-500">{item.block}</div>
-                      </div>
-                      <div className="text-sm text-slate-500">{item.duration} min</div>
+          <div className="dashboard-card" style={{ marginTop: 24 }}>
+            <div className="section-title">Seneste træningsblokke</div>
+            <div className="training-list">
+              {weekPlan.map((item) => (
+                <div key={item.title} className="training-item">
+                  <div className="training-top">
+                    <div>
+                      <div className="training-block">{item.block}</div>
+                      <div className="training-title">{item.title}</div>
                     </div>
+                    <div className="training-duration">{item.duration} min</div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
-      </>
-    );
-  }
+      </div>
+    </>
+  );
+}
 
   function renderSpillere() {
     const developmentSummary = [
