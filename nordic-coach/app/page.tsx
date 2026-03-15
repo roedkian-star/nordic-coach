@@ -60,7 +60,7 @@ export default function NordicCoachPrototype() {
     year: "2015",
     position: "CM",
     team: "U11",
-  });
+  };
 const [savedPlayers, setSavedPlayers] = useState<Record<string, Player[]>>({});
   const [profileForm, setProfileForm] = useState({
 };
