@@ -678,40 +678,37 @@ export default function NordicCoachPrototype() {
   }
 
   return (
-  <div className="min-h-screen bg-slate-100 text-slate-900">
-    
-    <div className="grid grid-cols-[260px_1fr] min-h-screen">
+  <div className="app-shell">
+    <aside className="sidebar">
+      <div className="sidebar-title">Nordic Coach</div>
+      <div className="sidebar-subtitle">Football Coaching & Development Platform</div>
 
-      {/* SIDEBAR */}
-      <aside className="bg-slate-900 text-white p-6">
-        <h1 className="text-xl font-bold mb-6">Nordic Coach</h1>
+      <div className="club-box">
+        <div className="club-label">Aktiv klub</div>
+        <div className="club-name">Vejle Boldklub</div>
+      </div>
 
-        <nav className="flex flex-col gap-2">
-          {navigation.map((item) => {
-            const active = activePage === item;
-            return (
-              <button
-                key={item}
-                onClick={() => setActivePage(item)}
-                className={`text-left p-2 rounded transition ${
-                  active
-                    ? "bg-white text-black"
-                    : "hover:bg-slate-700"
-                }`}
-              >
-                {item}
-              </button>
-            );
-          })}
-        </nav>
-      </aside>
+      <nav className="sidebar-nav">
+        {navigation.map((item) => {
+          const active = activePage === item;
+          return (
+            <button
+              key={item}
+              onClick={() => setActivePage(item)}
+              className={`sidebar-btn ${active ? "active" : ""}`}
+            >
+              {item}
+            </button>
+          );
+        })}
+      </nav>
+    </aside>
 
-      {/* MAIN CONTENT */}
-      <main className="p-8">
+    <main className="main-content">
+      <div className="content-card">
         {renderPage()}
-      </main>
-
-    </div>
+      </div>
+    </main>
   </div>
 );
 }
