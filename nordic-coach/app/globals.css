@@ -358,3 +358,43 @@ body {
     grid-template-columns: 1fr;
   }
 }
+.player-form {
+  margin-top: 10px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 4px;
+}
+
+.form-input {
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  background: white;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #0f172a;
+}
+
+.form-button {
+  width: 100%;
+  margin-top: 10px;
+}
