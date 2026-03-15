@@ -418,97 +418,109 @@ export default function NordicCoachPrototype() {
     );
   }
 
-  function renderSpillere() {
-    const developmentSummary = [
-      { label: "Teknik", value: "4/5" },
-      { label: "Taktik", value: "3/5" },
-      { label: "Fysik", value: "3/5" },
-      { label: "Mental", value: "4/5" },
-    ];
+ function renderSpillere() {
+  const developmentSummary = [
+    { label: "Teknik", value: "4/5" },
+    { label: "Taktik", value: "3/5" },
+    { label: "Fysik", value: "3/5" },
+    { label: "Mental", value: "4/5" },
+  ];
 
-    return (
-      <>
-        <PageHeader title="Spillere" text="Spilleroversigt med holdvalg, profilkort og udviklingsområder. Næste version kan gemme vurderinger direkte i databasen." />
+  return (
+    <>
+      <h1 className="page-title">Spillere</h1>
+      <p className="page-text">
+        Spilleroversigt med holdvalg, profilkort og udviklingsområder.
+      </p>
 
-        <div className="grid gap-6 xl:grid-cols-[320px_1fr]">
-          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="mb-4 flex items-center justify-between">
-              <div>
-                <div className="text-sm font-semibold text-slate-500">Vælg hold</div>
-                <div className="text-xs text-slate-400">Filtrer spillere efter årgang</div>
-              </div>
-              <div className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-600">{currentPlayers.length} spillere</div>
-            </div>
+      <div className="players-layout">
+        <div className="players-sidebar">
+          <div className="section-title">Vælg hold</div>
+          <div className="players-help">Filtrer spillere efter årgang</div>
 
-            <div className="space-y-2">
-              {teams.map((team) => {
-                const active = selectedTeam === team.name;
-                return (
-                  <button
-                    key={team.name}
-                    onClick={() => setSelectedTeam(team.name)}
-                    className={`w-full rounded-2xl px-4 py-3 text-left transition ${active ? "bg-slate-900 text-white" : "border border-slate-200 bg-slate-50 text-slate-900 hover:bg-white"}`}
-                  >
-                    <div className="font-semibold">{team.name}</div>
-                    <div className={`text-sm ${active ? "text-slate-300" : "text-slate-500"}`}>Årgang {team.age}</div>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            <div className="grid gap-4 md:grid-cols-4">
-              <StatCard label="Aktivt hold" value={selectedTeam} help="Valgt hold i oversigten" />
-              <StatCard label="Spillere" value={String(currentPlayers.length)} help="Profiler i denne testversion" />
-              <StatCard label="Gennemsnit" value="3.5/5" help="Samlet udviklingsniveau" />
-              <StatCard label="Status" value="Klar" help="Modul klar til database" />
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
-              {currentPlayers.map((player) => (
-                <div key={player.name} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-                  <div className="mb-5 flex items-center gap-4">
-                    <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-900 text-lg font-bold text-white">
-                      {player.name.split(" ").map((x) => x[0]).join("").slice(0, 2)}
-                    </div>
-                    <div>
-                      <div className="text-lg font-semibold text-slate-900">{player.name}</div>
-                      <div className="text-sm text-slate-500">{player.position} · Årgang {player.year}</div>
-                    </div>
-                  </div>
-
-                  <div className="mb-4 grid gap-2">
-                    {developmentSummary.map((item) => (
-                      <div key={item.label} className="flex items-center justify-between rounded-xl bg-slate-50 px-3 py-2 text-sm">
-                        <span className="text-slate-500">{item.label}</span>
-                        <span className="font-medium text-slate-900">{item.value}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                    <div className="mb-2 text-sm font-semibold text-slate-700">Udviklingsfokus</div>
-                    <div className="flex flex-wrap gap-2">
-                      <span className="rounded-full bg-white px-3 py-1 text-xs text-slate-700">Førsteberøring</span>
-                      <span className="rounded-full bg-white px-3 py-1 text-xs text-slate-700">Overblik</span>
-                      <span className="rounded-full bg-white px-3 py-1 text-xs text-slate-700">Duelspil</span>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 flex gap-2">
-                    <button className="flex-1 rounded-xl bg-slate-900 px-3 py-2 text-sm text-white">Se profil</button>
-                    <button className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">Vurder</button>
-                  </div>
-                </div>
-              ))}
-            </div>
+          <div className="players-team-list">
+            {teams.map((team) => {
+              const active = selectedTeam === team.name;
+              return (
+                <button
+                  key={team.name}
+                  onClick={() => setSelectedTeam(team.name)}
+                  className={`players-team-btn ${active ? "active" : ""}`}
+                >
+                  <div>{team.name}</div>
+                  <div className="players-team-year">Årgang {team.age}</div>
+                </button>
+              );
+            })}
           </div>
         </div>
-      </>
-    );
-  }
 
+        <div className="players-main">
+          <div className="stats-grid">
+            <div className="stat-card">
+              <div className="stat-label">Aktivt hold</div>
+              <div className="stat-value">{selectedTeam}</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-label">Spillere</div>
+              <div className="stat-value">{currentPlayers.length}</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-label">Gennemsnit</div>
+              <div className="stat-value">3.5/5</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-label">Status</div>
+              <div className="stat-value">Klar</div>
+            </div>
+          </div>
+
+          <div className="players-grid">
+            {currentPlayers.map((player) => (
+              <div key={player.name} className="player-card">
+                <div className="player-top">
+                  <div className="player-avatar">
+                    {player.name.split(" ").map((x) => x[0]).join("").slice(0, 2)}
+                  </div>
+                  <div>
+                    <div className="player-name">{player.name}</div>
+                    <div className="player-sub">
+                      {player.position} · Årgang {player.year}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="player-stats">
+                  {developmentSummary.map((item) => (
+                    <div key={item.label} className="player-stat-row">
+                      <span>{item.label}</span>
+                      <strong>{item.value}</strong>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="player-focus-box">
+                  <div className="player-focus-title">Udviklingsfokus</div>
+                  <div className="player-tags">
+                    <span className="player-tag">Førsteberøring</span>
+                    <span className="player-tag">Overblik</span>
+                    <span className="player-tag">Duelspil</span>
+                  </div>
+                </div>
+
+                <div className="player-actions">
+                  <button className="primary-btn">Se profil</button>
+                  <button className="secondary-btn">Vurder</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+ 
   function renderSpillestil() {
     return (
       <>
