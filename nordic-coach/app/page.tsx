@@ -1371,9 +1371,12 @@ function renderSpillerprofil() {
     >
       Tildel ugens fokus til hold
     </button>
-  </div>
-)}
-
+         </div>
+        </div>
+      </>
+    );
+  }
+            
   function renderPlaceholder(title: string) {
     return (
       <>
