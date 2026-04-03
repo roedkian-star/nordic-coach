@@ -1931,7 +1931,19 @@ function renderPeriodisering() {
   );
 }
 
-
+function renderPlaceholder(title: string) {
+  return (
+    <>
+      <PageHeader
+        title={title}
+        text="Dette modul bliver bygget i næste version af Nordic Coach."
+      />
+      <div className="rounded-3xl border border-slate-200 bg-white p-10 text-slate-500 shadow-sm">
+        Indhold kommer snart.
+      </div>
+    </>
+  );
+}
   
   function renderPage() {
     switch (activePage) {
