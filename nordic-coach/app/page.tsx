@@ -886,160 +886,188 @@ function handleAddDevelopmentFocus() {
     );
   }
 
-  function renderSpillerprofil() {
-    if (!selectedPlayer) {
-      return (
-        <>
-          <h1 className="page-title">Spillerprofil</h1>
-          <p className="page-text">Vælg først en spiller fra spillersiden.</p>
-          <button className="primary-btn" onClick={() => setActivePage("Spillere")}>Gå til spillere</button>
-        </>
-      );
-    }
-
-    const profileStats = [
-      { key: "technical", label: "Teknik", value: profileForm.technical },
-      { key: "tactical", label: "Taktik", value: profileForm.tactical },
-      { key: "physical", label: "Fysik", value: profileForm.physical },
-      { key: "mental", label: "Mental", value: profileForm.mental },
-    ];
-
+function renderSpillerprofil() {
+  if (!selectedPlayer) {
     return (
       <>
-        <div className="profile-topbar">
-          <div>
-            <h1 className="page-title" style={{ marginBottom: 4 }}>Spillerprofil</h1>
-            <p className="page-text">Redigér vurdering og noter, og gem dem direkte i databasen.</p>
-          </div>
-          <button className="secondary-btn" onClick={() => setActivePage("Spillere")}>← Tilbage til spillere</button>
-        </div>
-
-        <div className="profile-layout">
-          <div className="profile-card">
-            <div className="profile-header">
-              <div className="profile-avatar">
-                {selectedPlayer.name.split(" ").map((x) => x[0]).join("").slice(0, 2)}
-              </div>
-              <div>
-                <div className="profile-name">{selectedPlayer.name}</div>
-                <div className="profile-sub">{selectedPlayer.position} · {selectedPlayer.team || selectedTeam} · Årgang {selectedPlayer.year}</div>
-              </div>
-            </div>
-
-            <div className="profile-info-grid">
-              <div className="profile-info-box">
-                <div className="profile-info-label">Hold</div>
-                <div className="profile-info-value">{selectedPlayer.team || selectedTeam}</div>
-              </div>
-              <div className="profile-info-box">
-                <div className="profile-info-label">Position</div>
-                <div className="profile-info-value">{selectedPlayer.position}</div>
-              </div>
-              <div className="profile-info-box">
-                <div className="profile-info-label">Årgang</div>
-                <div className="profile-info-value">{selectedPlayer.year}</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="profile-card">
-            <div className="section-title">Vurdering</div>
-            <div className="profile-form-grid">
-              {profileStats.map((item) => (
-                <div key={item.key} className="profile-form-group">
-                  <label className="form-label">{item.label}</label>
-                  <select
-                    className="form-input"
-                    value={item.value}
-                    onChange={(e) => setProfileForm((prev) => ({ ...prev, [item.key]: e.target.value }))}
-                  >
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                  </select>
-                </div>
-              ))}
-            </div>
-          </div>
-
-<div className="profile-card">
-  <div className="section-title">Udviklingsfokus</div>
-
-  <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
-   <select
-  className="form-input"
-  value={focusInput}
-  onChange={(e) => setFocusInput(e.target.value)}
->
-  <option value="">Vælg fokuspunkt</option>
-
-  {Object.entries(developmentFocusOptions).map(([category, items]) => (
-    <optgroup key={category} label={category}>
-      {items.map((item) => (
-        <option key={item} value={item}>
-          {item}
-        </option>
-      ))}
-    </optgroup>
-  ))}
-</select>
-       <button
-      type="button"
-      className="primary-btn"
-      onClick={handleAddDevelopmentFocus}
-    >
-      Tilføj
-    </button>
-  </div>
-
-<div className="player-tags">
-  {(selectedPlayer.developmentFocus ?? []).length > 0 ? (
-    (selectedPlayer.developmentFocus ?? []).map((focus) => (
-      <div
-        key={focus}
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 6,
-          marginRight: 8,
-          marginBottom: 8,
-          background: "#f1f5f9",
-          borderRadius: 9999,
-          padding: "6px 10px",
-        }}
-      >
-        <span className="player-tag" style={{ margin: 0 }}>
-          {focus}
-        </span>
-
-        <button
-          type="button"
-          onClick={() => handleRemoveDevelopmentFocus(focus)}
-          style={{
-            border: "none",
-            background: "transparent",
-            cursor: "pointer",
-            fontSize: "14px",
-            fontWeight: 700,
-            lineHeight: 1,
-            padding: 0,
-          }}
-        >
-          ×
+        <h1 className="page-title">Spillerprofil</h1>
+        <p className="page-text">Vælg først en spiller fra spillersiden.</p>
+        <button className="primary-btn" onClick={() => setActivePage("Spillere")}>
+          Gå til spillere
         </button>
-      </div>
-    ))
-  ) : (
-    <span className="player-tag">Ingen fokus valgt</span>
-  )}
-</div>
-   </div>
       </>
     );
   }
 
+  const profileStats = [
+    { key: "technical", label: "Teknik", value: profileForm.technical },
+    { key: "tactical", label: "Taktik", value: profileForm.tactical },
+    { key: "physical", label: "Fysik", value: profileForm.physical },
+    { key: "mental", label: "Mental", value: profileForm.mental },
+  ];
+
+  return (
+    <>
+      <div className="profile-topbar">
+        <div>
+          <h1 className="page-title" style={{ marginBottom: 4 }}>Spillerprofil</h1>
+          <p className="page-text">Redigér vurdering og noter, og gem dem direkte i databasen.</p>
+        </div>
+        <button className="secondary-btn" onClick={() => setActivePage("Spillere")}>
+          ← Tilbage til spillere
+        </button>
+      </div>
+
+      <div className="profile-layout">
+        <div className="profile-card">
+          <div className="profile-header">
+            <div className="profile-avatar">
+              {selectedPlayer.name.split(" ").map((x) => x[0]).join("").slice(0, 2)}
+            </div>
+            <div>
+              <div className="profile-name">{selectedPlayer.name}</div>
+              <div className="profile-sub">
+                {selectedPlayer.position} · {selectedPlayer.team || selectedTeam} · Årgang {selectedPlayer.year}
+              </div>
+            </div>
+          </div>
+
+          <div className="profile-info-grid">
+            <div className="profile-info-box">
+              <div className="profile-info-label">Hold</div>
+              <div className="profile-info-value">{selectedPlayer.team || selectedTeam}</div>
+            </div>
+            <div className="profile-info-box">
+              <div className="profile-info-label">Position</div>
+              <div className="profile-info-value">{selectedPlayer.position}</div>
+            </div>
+            <div className="profile-info-box">
+              <div className="profile-info-label">Årgang</div>
+              <div className="profile-info-value">{selectedPlayer.year}</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="profile-card">
+          <div className="section-title">Vurdering</div>
+          <div className="profile-form-grid">
+            {profileStats.map((item) => (
+              <div key={item.key} className="profile-form-group">
+                <label className="form-label">{item.label}</label>
+                <select
+                  className="form-input"
+                  value={item.value}
+                  onChange={(e) =>
+                    setProfileForm((prev) => ({ ...prev, [item.key]: e.target.value }))
+                  }
+                >
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="profile-card">
+          <div className="section-title">Udviklingsfokus</div>
+
+          <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
+            <select
+              className="form-input"
+              value={focusInput}
+              onChange={(e) => setFocusInput(e.target.value)}
+            >
+              <option value="">Vælg fokuspunkt</option>
+
+              {Object.entries(developmentFocusOptions).map(([category, items]) => (
+                <optgroup key={category} label={category}>
+                  {items.map((item) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </optgroup>
+              ))}
+            </select>
+
+            <button
+              type="button"
+              className="primary-btn"
+              onClick={handleAddDevelopmentFocus}
+            >
+              Tilføj
+            </button>
+          </div>
+
+          <div className="player-tags">
+            {(selectedPlayer.developmentFocus ?? []).length > 0 ? (
+              (selectedPlayer.developmentFocus ?? []).map((focus) => (
+                <div
+                  key={focus}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 6,
+                    marginRight: 8,
+                    marginBottom: 8,
+                    background: "#f1f5f9",
+                    borderRadius: 9999,
+                    padding: "6px 10px",
+                  }}
+                >
+                  <span className="player-tag" style={{ margin: 0 }}>
+                    {focus}
+                  </span>
+
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveDevelopmentFocus(focus)}
+                    style={{
+                      border: "none",
+                      background: "transparent",
+                      cursor: "pointer",
+                      fontSize: "14px",
+                      fontWeight: 700,
+                      lineHeight: 1,
+                      padding: 0,
+                    }}
+                  >
+                    ×
+                  </button>
+                </div>
+              ))
+            ) : (
+              <span className="player-tag">Ingen fokus valgt</span>
+            )}
+          </div>
+        </div>
+
+        <div className="profile-card">
+          <div className="section-title">Trænernoter</div>
+          <textarea
+            className="profile-notes-input"
+            value={profileForm.notes}
+            onChange={(e) => setProfileForm((prev) => ({ ...prev, notes: e.target.value }))}
+            placeholder="Skriv noter om spillerens udvikling, fokusområder og næste skridt"
+          />
+          <div className="profile-actions">
+            <button className="primary-btn" onClick={handleSaveProfile}>
+              Gem profil
+            </button>
+            {savedPlayersMessage ? (
+              <div className="form-feedback">{savedPlayersMessage}</div>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+        
   function renderSpillestil() {
     return (
       <>
