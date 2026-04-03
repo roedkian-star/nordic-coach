@@ -15,6 +15,7 @@ type Player = {
   physical?: number;
   mental?: number;
   notes?: string;
+  developmentFocus?: string[];
 };
 
 type DrillForm = {
@@ -52,6 +53,7 @@ export default function NordicCoachPrototype() {
     ageGroup: "U11-U12",
     description: "",
   });
+  const [focusInput, setFocusInput] = useState("");
   const [savedDrills, setSavedDrills] = useState<SavedDrill[]>([]);
   const [isSavingDrill, setIsSavingDrill] = useState(false);
   const [drillMessage, setDrillMessage] = useState("");
@@ -253,6 +255,7 @@ const currentPlayers = (savedPlayers[selectedTeam] || []).map((player) => ({
   physical: 3,
   mental: 4,
   notes: "",
+  developmentFocus: [],
   ...player,
 }));
   
@@ -291,6 +294,7 @@ const currentPlayers = (savedPlayers[selectedTeam] || []).map((player) => ({
             physical: data.physical ?? 3,
             mental: data.mental ?? 4,
             notes: data.notes ?? "",
+            developmentFocus: data.developmentFocus ?? [],
           });
         });
         setSavedPlayers(grouped);
@@ -357,6 +361,7 @@ const currentPlayers = (savedPlayers[selectedTeam] || []).map((player) => ({
       physical: 3,
       mental: 4,
       notes: "",
+      developmentFocus: [],
     };
 
     try {
@@ -384,55 +389,82 @@ const currentPlayers = (savedPlayers[selectedTeam] || []).map((player) => ({
     }
   }
 
-  async function handleSaveProfile() {
-    if (!selectedPlayer?.id) return;
+async function handleSaveProfile() {
+  if (!selectedPlayer?.id) return;
 
-    try {
-      await updateDoc(doc(db, "players", selectedPlayer.id), {
-        technical: Number(profileForm.technical),
-        tactical: Number(profileForm.tactical),
-        physical: Number(profileForm.physical),
-        mental: Number(profileForm.mental),
-        notes: profileForm.notes,
-      });
+  try {
+    await updateDoc(doc(db, "players", selectedPlayer.id), {
+      technical: Number(profileForm.technical),
+      tactical: Number(profileForm.tactical),
+      physical: Number(profileForm.physical),
+      mental: Number(profileForm.mental),
+      notes: profileForm.notes,
+      developmentFocus: selectedPlayer.developmentFocus ?? [],
+    });
 
-      setSavedPlayers((prev) => {
-        const teamKey = selectedPlayer.team || selectedTeam;
-        return {
-          ...prev,
-          [teamKey]: (prev[teamKey] || []).map((player) =>
-            player.id === selectedPlayer.id
-              ? {
-                  ...player,
-                  technical: Number(profileForm.technical),
-                  tactical: Number(profileForm.tactical),
-                  physical: Number(profileForm.physical),
-                  mental: Number(profileForm.mental),
-                  notes: profileForm.notes,
-                }
-              : player
-          ),
-        };
-      });
+    setSavedPlayers((prev) => {
+      const teamKey = selectedPlayer.team || selectedTeam;
+      return {
+        ...prev,
+        [teamKey]: (prev[teamKey] || []).map((player) =>
+          player.id === selectedPlayer.id
+            ? {
+                ...player,
+                technical: Number(profileForm.technical),
+                tactical: Number(profileForm.tactical),
+                physical: Number(profileForm.physical),
+                mental: Number(profileForm.mental),
+                notes: profileForm.notes,
+                developmentFocus: selectedPlayer.developmentFocus ?? [],
+              }
+            : player
+        ),
+      };
+    });
 
-      setSelectedPlayer((prev) =>
-        prev
-          ? {
-              ...prev,
-              technical: Number(profileForm.technical),
-              tactical: Number(profileForm.tactical),
-              physical: Number(profileForm.physical),
-              mental: Number(profileForm.mental),
-              notes: profileForm.notes,
-            }
-          : prev
-      );
-      setSavedPlayersMessage("Spillerprofilen er gemt i databasen.");
-    } catch (error) {
-      console.error(error);
-      setSavedPlayersMessage("Der opstod en fejl ved gemning af profilen.");
-    }
+    setSelectedPlayer((prev) =>
+      prev
+        ? {
+            ...prev,
+            technical: Number(profileForm.technical),
+            tactical: Number(profileForm.tactical),
+            physical: Number(profileForm.physical),
+            mental: Number(profileForm.mental),
+            notes: profileForm.notes,
+            developmentFocus: selectedPlayer.developmentFocus ?? [],
+          }
+        : prev
+    );
+
+    setSavedPlayersMessage("Spillerprofilen er gemt i databasen.");
+  } catch (error) {
+    console.error(error);
+    setSavedPlayersMessage("Der opstod en fejl ved gemning af profilen.");
   }
+}
+
+function handleAddDevelopmentFocus() {
+  const value = focusInput.trim();
+
+  if (!value) return;
+  if (!selectedPlayer) return;
+
+  const currentFocus = selectedPlayer.developmentFocus ?? [];
+
+  if (currentFocus.includes(value)) {
+    setFocusInput("");
+    return;
+  }
+
+  const updatedFocus = [...currentFocus, value];
+
+  setSelectedPlayer({
+    ...selectedPlayer,
+    developmentFocus: updatedFocus,
+  });
+
+  setFocusInput("");
+}
 
   function StatCard({ label, value, help }: { label: string; value: string; help: string }) {
     return (
