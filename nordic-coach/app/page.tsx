@@ -294,7 +294,7 @@ const currentPlayers = (savedPlayers[selectedTeam] || []).map((player) => ({
   
   const currentTeam = teams.find((team) => team.name === selectedTeam) || teams[0];
   const currentPlayStyle = playStyle.find((group) => group.title === selectedPlayStyleGroup) || playStyle[0];
-  const currentWeeks = periodization[selectedMonth] || [];
+  const currentWeeks: any[] = periodization[selectedMonth] || [];
 
   useEffect(() => {
     async function loadDrills() {
