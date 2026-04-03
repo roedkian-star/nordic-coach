@@ -1319,10 +1319,18 @@ function renderPeriodisering() {
   <strong>Underfokus:</strong>
 </div>
 <div className="mt-2 text-sm text-slate-500">Overordnet tema</div>
-<div className="mt-1">
-  <span className="rounded-full bg-slate-900 px-3 py-1 text-xs text-white">
-    {week.mainTheme}
-  </span>
+<div className="mt-2">
+  <select
+    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900"
+    value={week.mainTheme}
+    disabled
+  >
+    {mainThemeOptions.map((theme) => (
+      <option key={theme} value={theme}>
+        {theme}
+      </option>
+    ))}
+  </select>
 </div>
 
   <div className="mt-2 flex flex-wrap gap-2">
