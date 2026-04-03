@@ -744,13 +744,24 @@ export default function NordicCoachPrototype() {
                   </div>
 
                   <div className="player-stats">
-                    {developmentSummary.map((item) => (
-                      <div key={item.label} className="player-stat-row">
-                        <span>{item.label}</span>
-                        <strong>{item.value}</strong>
-                      </div>
-                    ))}
-                  </div>
+  <div className="player-stat-row">
+    <span>Teknik</span>
+    <strong>{player.technical ?? 4}/5</strong>
+  </div>
+  <div className="player-stat-row">
+    <span>Taktik</span>
+    <strong>{player.tactical ?? 3}/5</strong>
+  </div>
+  <div className="player-stat-row">
+    <span>Fysik</span>
+    <strong>{player.physical ?? 3}/5</strong>
+  </div>
+  <div className="player-stat-row">
+    <span>Mental</span>
+    <strong>{player.mental ?? 4}/5</strong>
+  </div>
+</div>
+            
 
                   <div className="player-focus-box">
                     <div className="player-focus-title">Udviklingsfokus</div>
