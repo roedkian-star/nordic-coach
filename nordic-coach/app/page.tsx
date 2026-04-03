@@ -1696,6 +1696,7 @@ function renderPeriodisering() {
                   onClick={() => {
                   setSelectedWeek(week);
                   setSelectedSubThemes(week.subThemes || []);
+                   }}
                     style={{
                       border: active ? "1px solid #0f172a" : "1px solid #e2e8f0",
                       background: active ? "#0f172a" : "#ffffff",
