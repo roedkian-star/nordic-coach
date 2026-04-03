@@ -1270,24 +1270,28 @@ function renderSpillerprofil() {
     );
   }
 
-function renderPeriodisering() {
+   function renderPeriodisering() {
   return (
     <>
       <PageHeader
         title="Periodisering"
-        text="Måneder vælges i venstre side. Uger og fokusområder vises i midten som en arbejdsflade."
+        text="Vælg måned og uge. Hver uge viser overordnet tema, underfokus og konkrete udviklingsfokus."
       />
 
-      <div className="grid gap-6 xl:grid-cols-[260px_1fr]">
+      <div className="grid gap-6 xl:grid-cols-[240px_1fr]">
         <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
           <div className="mb-3 text-sm font-semibold text-slate-500">Måneder</div>
           <div className="space-y-2">
             {Object.keys(periodization).map((month) => {
               const active = selectedMonth === month;
+
               return (
                 <button
                   key={month}
-                  onClick={() => setSelectedMonth(month)}
+                  onClick={() => {
+                    setSelectedMonth(month);
+                    setSelectedWeek(null);
+                  }}
                   className={`w-full rounded-2xl px-4 py-3 text-left transition ${
                     active
                       ? "bg-slate-900 text-white"
@@ -1302,129 +1306,151 @@ function renderPeriodisering() {
         </div>
 
         <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="mb-5 text-2xl font-bold text-slate-900">{selectedMonth}</h2>
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-slate-900">{selectedMonth}</h2>
+            <div className="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-600">
+              {(currentWeeks || []).length} uger
+            </div>
+          </div>
 
           <div className="grid gap-4 md:grid-cols-2">
-            {currentWeeks.map((week) => (
-              <div
-                key={week.week}
-                onClick={() => setSelectedWeek(week)}
-                className="rounded-2xl border border-slate-200 bg-slate-50 p-5 cursor-pointer"
-              >
-                <div className="font-semibold text-slate-900">{week.week}</div>
-                <div className="mt-2 text-sm text-slate-600">
-                  <strong>Overordnet tema:</strong> {week.mainTheme}
-                </div>
-<div className="mt-1 text-sm text-slate-500">
-  <strong>Underfokus:</strong>
-</div>
-<div className="mt-2 text-sm text-slate-500">Overordnet tema</div>
-<div className="mt-2">
-  <select
-    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900"
-    value={week.mainTheme}
-    disabled
-  >
-    {mainThemeOptions.map((theme) => (
-      <option key={theme} value={theme}>
-        {theme}
-      </option>
-    ))}
-  </select>
-</div>
-  <div className="mt-3 text-sm text-slate-500">Underfokus</div>
-  <div className="mt-2 flex flex-wrap gap-2">
-  {(week.subThemes || []).map((sub: string) => (
-    <span
-      key={sub}
-      className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-700"
-    >
-      {sub}
-    </span>
-  ))}
-              </div>
-              </div>
-            ))}
+            {(currentWeeks || []).map((week: any) => {
+              const active = selectedWeek?.week === week.week;
+
+              return (
+                <button
+                  key={week.week}
+                  type="button"
+                  onClick={() => setSelectedWeek(week)}
+                  className={`rounded-2xl border p-5 text-left transition ${
+                    active
+                      ? "border-slate-900 bg-slate-900 text-white shadow-md"
+                      : "border-slate-200 bg-slate-50 text-slate-900 hover:bg-white hover:shadow-sm"
+                  }`}
+                >
+                  <div className="mb-2 text-lg font-semibold">{week.week}</div>
+
+                  <div className={`text-sm ${active ? "text-slate-200" : "text-slate-500"}`}>
+                    Overordnet tema
+                  </div>
+                  <div className="mt-2">
+                    <select
+                      className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900"
+                      value={week.mainTheme}
+                      disabled
+                    >
+                      {mainThemeOptions.map((theme) => (
+                        <option key={theme} value={theme}>
+                          {theme}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className={`mt-3 text-sm ${active ? "text-slate-200" : "text-slate-500"}`}>
+                    Underfokus
+                  </div>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {(week.subThemes || []).map((sub: string) => (
+                      <span
+                        key={sub}
+                        className={`rounded-full px-3 py-1 text-xs ${
+                          active
+                            ? "bg-white/15 text-white"
+                            : "border border-slate-200 bg-white text-slate-700"
+                        }`}
+                      >
+                        {sub}
+                      </span>
+                    ))}
+                  </div>
+                </button>
+              );
+            })}
           </div>
 
           {selectedWeek && (
-            <div style={{ marginTop: 20 }}>
-              <div className="section-title">Ugens fokus</div>
+            <div className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-5">
+              <div className="mb-4 flex items-center justify-between">
+                <div>
+                  <div className="text-sm text-slate-500">Valgt uge</div>
+                  <div className="text-xl font-bold text-slate-900">{selectedWeek.week}</div>
+                </div>
 
-          <div style={{ marginBottom: 10 }}>
-            
-<div className="text-sm text-slate-500">Underfokus</div>
-
-<div className="mt-2">
-  <select
-    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900"
-    value={(selectedWeek.subThemes || [])[0] || ""}
-    disabled
-  >
-    {(selectedWeek.subThemes || []).map((sub: string) => (
-      <option key={sub} value={sub}>
-        {sub}
-      </option>
-    ))}
-  </select>
-</div>
-
-<div className="mt-2 flex flex-wrap gap-2" style={{ marginBottom: 12 }}>
-  {(selectedWeek.subThemes || []).map((sub: string) => (
-    <span
-      key={sub}
-      className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-700"
-    >
-      {sub}
-    </span>
-  ))}
-</div>
-              
-             <div style={{ marginBottom: 6 }}>
-    <div className="text-sm text-slate-500">Overordnet tema</div>
-
-<div className="mt-2">
-  <select
-    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900"
-    value={selectedWeek.mainTheme}
-    disabled
-  >
-    {mainThemeOptions.map((theme) => (
-      <option key={theme} value={theme}>
-        {theme}
-      </option>
-    ))}
-  </select>
-</div>
+                <button
+                  type="button"
+                  className="primary-btn"
+                  onClick={handleAssignSelectedWeekToTeam}
+                >
+                  Tildel ugens fokus til hold
+                </button>
               </div>
 
-              <div style={{ marginBottom: 10 }}>
-                <strong>Underfokus:</strong> {selectedWeek.subTheme}
+              <div className="mb-4">
+                <div className="text-sm text-slate-500">Overordnet tema</div>
+                <div className="mt-2">
+                  <select
+                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900"
+                    value={selectedWeek.mainTheme}
+                    disabled
+                  >
+                    {mainThemeOptions.map((theme) => (
+                      <option key={theme} value={theme}>
+                        {theme}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
-              <div className="player-tags" style={{ marginBottom: 12 }}>
-                {(selectedWeek.focus ?? []).map((f: string) => (
-                  <span key={f} className="player-tag">
-                    {f}
-                  </span>
-                ))}
+              <div className="mb-4">
+                <div className="text-sm text-slate-500">Underfokus</div>
+                <div className="mt-2">
+                  <select
+                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900"
+                    value={(selectedWeek.subThemes || [])[0] || ""}
+                    disabled
+                  >
+                    {(selectedWeek.subThemes || []).map((sub: string) => (
+                      <option key={sub} value={sub}>
+                        {sub}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {(selectedWeek.subThemes || []).map((sub: string) => (
+                    <span
+                      key={sub}
+                      className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-700"
+                    >
+                      {sub}
+                    </span>
+                  ))}
+                </div>
               </div>
 
-              <button
-                type="button"
-                className="primary-btn"
-                onClick={handleAssignSelectedWeekToTeam}
-              >
-                Tildel ugens fokus til hold
-              </button>
+              <div>
+                <div className="text-sm text-slate-500">Udviklingsfokus</div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {(selectedWeek.focus || []).map((f: string) => (
+                    <span
+                      key={f}
+                      className="rounded-full bg-slate-900 px-3 py-1 text-xs text-white"
+                    >
+                      {f}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
         </div>
       </div>
     </>
   );
-}
-            
+}    
   function renderPlaceholder(title: string) {
     return (
       <>
