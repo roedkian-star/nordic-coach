@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import { addDoc, collection, doc, getDocs, orderBy, query, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "./firebase";
 
-
 type Player = {
   id?: string;
   name: string;
@@ -1694,23 +1693,23 @@ function renderPeriodisering() {
                     key={week.week}
                     type="button"
                     onClick={() => setSelectedWeek(week)}
-                   style={{
-                  border: active ? "1px solid #0f172a" : "1px solid #e2e8f0",
-                  background: active ? "#0f172a" : "#ffffff",
-                  color: active ? "#ffffff" : "#0f172a",
-                  borderRadius: 28,
-                  padding: 24,
-                  textAlign: "left",
-                  minHeight: 200,
-                  cursor: "pointer",
-                  transition: "all 0.2s ease",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  boxShadow: active
-    ? "0 10px 25px rgba(0,0,0,0.2)"
-    : "0 4px 12px rgba(0,0,0,0.05)",
-}}        
+                    style={{
+                      border: active ? "1px solid #0f172a" : "1px solid #e2e8f0",
+                      background: active ? "#0f172a" : "#ffffff",
+                      color: active ? "#ffffff" : "#0f172a",
+                      borderRadius: 28,
+                      padding: 24,
+                      textAlign: "left",
+                      minHeight: 200,
+                      cursor: "pointer",
+                      transition: "all 0.2s ease",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                      boxShadow: active
+                        ? "0 10px 25px rgba(0,0,0,0.2)"
+                        : "0 4px 12px rgba(0,0,0,0.05)",
+                    }}
                   >
                     <div>
                       <div
@@ -1805,39 +1804,44 @@ function renderPeriodisering() {
             </div>
           </div>
 
-{selectedWeek ? (
-  <div className="dashboard-card" style={{ marginTop: 24 }}>
-    <div
-      className="hold-header-card"
-      style={{
-        marginTop: 16,
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-    >
-      <div>
-        <div className="text-sm text-slate-500">Valgt uge</div>
+          {selectedWeek ? (
+            <div
+              className="dashboard-card"
+              style={{
+                marginTop: 32,
+                padding: 28,
+                borderRadius: 28,
+                boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
+              }}
+            >
+              <div
+                className="hold-header-card"
+                style={{
+                  marginTop: 16,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <div>
+                  <div className="text-sm text-slate-500">Valgt uge</div>
 
-        <div className="hold-main-title">
-          {selectedWeek.week}
-        </div>
+                  <div className="hold-main-title">{selectedWeek.week}</div>
 
-        <div className="hold-main-sub">
-          Aktiv uge i {selectedMonth}
-        </div>
-      </div>
+                  <div className="hold-main-sub">
+                    Aktiv uge i {selectedMonth}
+                  </div>
+                </div>
 
-      <button
-        type="button"
-        className="primary-btn"
-        onClick={handleAssignSelectedWeekToTeam}
-      >
-        Tildel fokus
-      </button>
-    </div>
+                <button
+                  type="button"
+                  className="primary-btn"
+                  onClick={handleAssignSelectedWeekToTeam}
+                >
+                  Tildel fokus
+                </button>
+              </div>
 
-    <div className="stats-grid" style={{ marginTop: 24 }}>
               <div className="stats-grid" style={{ marginTop: 24 }}>
                 <div className="stat-card">
                   <div className="stat-label">Overordnet tema</div>
@@ -1946,7 +1950,7 @@ function renderPeriodisering() {
     </>
   );
 }
-
+  
 function renderPlaceholder(title: string) {
   return (
     <>
