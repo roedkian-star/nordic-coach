@@ -1332,7 +1332,7 @@ function renderPeriodisering() {
     ))}
   </select>
 </div>
-
+  <div className="mt-3 text-sm text-slate-500">Underfokus</div>
   <div className="mt-2 flex flex-wrap gap-2">
   {(week.subThemes || []).map((sub: string) => (
     <span
@@ -1352,7 +1352,21 @@ function renderPeriodisering() {
               <div className="section-title">Ugens fokus</div>
 
           <div style={{ marginBottom: 10 }}>
-  <div className="text-sm text-slate-500">Underfokus</div>
+            
+<div className="text-sm text-slate-500">Underfokus</div>
+
+<div className="mt-2">
+  <select
+    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900"
+    value={(selectedWeek.subThemes || [])[0] || ""}
+    disabled
+  >
+    {(selectedWeek.subThemes || []).map((sub: string) => (
+      <option key={sub} value={sub}>
+        {sub}
+      </option>
+    ))}
+  </select>
 </div>
 
 <div className="mt-2 flex flex-wrap gap-2" style={{ marginBottom: 12 }}>
@@ -1367,12 +1381,20 @@ function renderPeriodisering() {
 </div>
               
              <div style={{ marginBottom: 6 }}>
-             <div className="text-sm text-slate-500">Overordnet tema</div>
+    <div className="text-sm text-slate-500">Overordnet tema</div>
 
-<div style={{ marginTop: 4 }}>
-  <span className="rounded-full bg-slate-900 px-3 py-1 text-xs text-white">
-    {selectedWeek.mainTheme}
-  </span>
+<div className="mt-2">
+  <select
+    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900"
+    value={selectedWeek.mainTheme}
+    disabled
+  >
+    {mainThemeOptions.map((theme) => (
+      <option key={theme} value={theme}>
+        {theme}
+      </option>
+    ))}
+  </select>
 </div>
               </div>
 
