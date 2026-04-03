@@ -224,12 +224,332 @@ export default function NordicCoachPrototype() {
     },
   ];
 
-  const periodization: Record<string, string[]> = {
-    Januar: ["Uge 1 – Pasningsspil", "Uge 2 – Førsteberøring", "Uge 3 – Afslutninger", "Uge 4 – Vende spillet"],
-    Februar: ["Uge 5 – Dybde og bredde", "Uge 6 – Spil og løb", "Uge 7 – Gennembrudsstrategier", "Uge 8 – Pres"],
-    Marts: ["Uge 9 – Build up", "Uge 10 – Pres", "Uge 11 – Afslutninger", "Uge 12 – Kampforberedelse"],
-  };
+const periodization = {
+  Januar: [
+    {
+      week: "Uge 1",
+      mainTheme: "Opbygningsspil",
+      subThemes: ["Pasninger", "Førsteberøring", "Vendespil"],
+      focus: ["Pasninger", "Afleveringer", "Førsteberøring"],
+    },
+    {
+      week: "Uge 2",
+      mainTheme: "Opbygningsspil",
+      subThemes: ["Spilbarhed", "Pasninger"],
+      focus: ["Pasninger", "Boldkontrol"],
+    },
+    {
+      week: "Uge 3",
+      mainTheme: "Afslutningsspil",
+      subThemes: ["Afslutninger", "Løb i felt"],
+      focus: ["Afslutninger", "Spark (kraft/præcision)"],
+    },
+    {
+      week: "Uge 4",
+      mainTheme: "Forsvarsspil",
+      subThemes: ["Positionering", "Kompakthed"],
+      focus: ["Positionering", "Kommunikation"],
+    },
+  ],
 
+  Februar: [
+    {
+      week: "Uge 5",
+      mainTheme: "Opbygningsspil",
+      subThemes: ["Vendespil", "Pasninger"],
+      focus: ["Afleveringer", "Spilforståelse"],
+    },
+    {
+      week: "Uge 6",
+      mainTheme: "Afslutningsspil",
+      subThemes: ["Indlæg", "Cutbacks"],
+      focus: ["Afslutninger", "Timing i løb"],
+    },
+    {
+      week: "Uge 7",
+      mainTheme: "Erobringsspil",
+      subThemes: ["Pres", "Genpres"],
+      focus: ["Pres og genpres", "Acceleration"],
+    },
+    {
+      week: "Uge 8",
+      mainTheme: "Forsvarsspil",
+      subThemes: ["Restforsvar", "1v1 defensivt"],
+      focus: ["Positionering", "Rolleforståelse"],
+    },
+  ],
+
+  Marts: [
+    {
+      week: "Uge 9",
+      mainTheme: "Opbygningsspil",
+      subThemes: ["Førsteberøring", "Pasninger"],
+      focus: ["Førsteberøring", "Afleveringer"],
+    },
+    {
+      week: "Uge 10",
+      mainTheme: "Afslutningsspil",
+      subThemes: ["Afslutninger", "Indlæg"],
+      focus: ["Spark (kraft/præcision)", "Afslutninger"],
+    },
+    {
+      week: "Uge 11",
+      mainTheme: "Erobringsspil",
+      subThemes: ["Duelspil", "Aggressivitet"],
+      focus: ["Pres og genpres", "Styrke"],
+    },
+    {
+      week: "Uge 12",
+      mainTheme: "Forsvarsspil",
+      subThemes: ["Kompakthed", "Positionering"],
+      focus: ["Kommunikation", "Positionering"],
+    },
+  ],
+
+  April: [
+    {
+      week: "Uge 13",
+      mainTheme: "Opbygningsspil",
+      subThemes: ["Pasninger", "Spilbarhed"],
+      focus: ["Pasninger", "Boldkontrol"],
+    },
+    {
+      week: "Uge 14",
+      mainTheme: "Afslutningsspil",
+      subThemes: ["Løb i felt", "Cutbacks"],
+      focus: ["Afslutninger", "Timing i løb"],
+    },
+    {
+      week: "Uge 15",
+      mainTheme: "Erobringsspil",
+      subThemes: ["Genpres", "Pres"],
+      focus: ["Pres og genpres", "Kommunikation"],
+    },
+    {
+      week: "Uge 16",
+      mainTheme: "Forsvarsspil",
+      subThemes: ["Restforsvar", "1v1 defensivt"],
+      focus: ["Positionering", "Rolleforståelse"],
+    },
+  ],
+
+  Maj: [
+    {
+      week: "Uge 17",
+      mainTheme: "Opbygningsspil",
+      subThemes: ["Vendespil", "Førsteberøring"],
+      focus: ["Førsteberøring", "Spilforståelse"],
+    },
+    {
+      week: "Uge 18",
+      mainTheme: "Afslutningsspil",
+      subThemes: ["Afslutninger", "Indlæg"],
+      focus: ["Afslutninger", "Spark (kraft/præcision)"],
+    },
+    {
+      week: "Uge 19",
+      mainTheme: "Erobringsspil",
+      subThemes: ["Duelspil", "Aggressivitet"],
+      focus: ["Styrke", "Pres og genpres"],
+    },
+    {
+      week: "Uge 20",
+      mainTheme: "Forsvarsspil",
+      subThemes: ["Kompakthed", "Positionering"],
+      focus: ["Kommunikation", "Positionering"],
+    },
+  ],
+
+  Juni: [
+    {
+      week: "Uge 21",
+      mainTheme: "Opbygningsspil",
+      subThemes: ["Pasninger", "Spilbarhed"],
+      focus: ["Pasninger", "Afleveringer"],
+    },
+    {
+      week: "Uge 22",
+      mainTheme: "Afslutningsspil",
+      subThemes: ["Cutbacks", "Løb i felt"],
+      focus: ["Afslutninger", "Timing i løb"],
+    },
+    {
+      week: "Uge 23",
+      mainTheme: "Erobringsspil",
+      subThemes: ["Pres", "Genpres"],
+      focus: ["Pres og genpres", "Acceleration"],
+    },
+    {
+      week: "Uge 24",
+      mainTheme: "Forsvarsspil",
+      subThemes: ["Restforsvar", "1v1 defensivt"],
+      focus: ["Positionering", "Rolleforståelse"],
+    },
+  ],
+
+  Juli: [
+    {
+      week: "Uge 25",
+      mainTheme: "Pause",
+      subThemes: ["Sommerpause"],
+      focus: ["Fri"],
+    },
+    {
+      week: "Uge 26",
+      mainTheme: "Pause",
+      subThemes: ["Sommerpause"],
+      focus: ["Fri"],
+    },
+    {
+      week: "Uge 27",
+      mainTheme: "Pause",
+      subThemes: ["Sommerpause"],
+      focus: ["Fri"],
+    },
+    {
+      week: "Uge 28",
+      mainTheme: "Pause",
+      subThemes: ["Sommerpause"],
+      focus: ["Fri"],
+    },
+  ],
+
+  August: [
+    {
+      week: "Uge 29",
+      mainTheme: "Opbygningsspil",
+      subThemes: ["Pasninger", "Førsteberøring"],
+      focus: ["Pasninger", "Førsteberøring"],
+    },
+    {
+      week: "Uge 30",
+      mainTheme: "Afslutningsspil",
+      subThemes: ["Afslutninger", "Indlæg"],
+      focus: ["Afslutninger", "Spark (kraft/præcision)"],
+    },
+    {
+      week: "Uge 31",
+      mainTheme: "Erobringsspil",
+      subThemes: ["Pres", "Duelspil"],
+      focus: ["Pres og genpres", "Styrke"],
+    },
+    {
+      week: "Uge 32",
+      mainTheme: "Forsvarsspil",
+      subThemes: ["Positionering", "Kompakthed"],
+      focus: ["Kommunikation", "Positionering"],
+    },
+  ],
+
+  September: [
+    {
+      week: "Uge 33",
+      mainTheme: "Opbygningsspil",
+      subThemes: ["Vendespil", "Spilbarhed"],
+      focus: ["Afleveringer", "Spilforståelse"],
+    },
+    {
+      week: "Uge 34",
+      mainTheme: "Afslutningsspil",
+      subThemes: ["Løb i felt", "Cutbacks"],
+      focus: ["Timing i løb", "Afslutninger"],
+    },
+    {
+      week: "Uge 35",
+      mainTheme: "Erobringsspil",
+      subThemes: ["Genpres", "Aggressivitet"],
+      focus: ["Pres og genpres", "Acceleration"],
+    },
+    {
+      week: "Uge 36",
+      mainTheme: "Forsvarsspil",
+      subThemes: ["Restforsvar", "1v1 defensivt"],
+      focus: ["Positionering", "Rolleforståelse"],
+    },
+  ],
+
+  Oktober: [
+    {
+      week: "Uge 37",
+      mainTheme: "Opbygningsspil",
+      subThemes: ["Pasninger", "Førsteberøring"],
+      focus: ["Pasninger", "Boldkontrol"],
+    },
+    {
+      week: "Uge 38",
+      mainTheme: "Afslutningsspil",
+      subThemes: ["Indlæg", "Afslutninger"],
+      focus: ["Spark (kraft/præcision)", "Afslutninger"],
+    },
+    {
+      week: "Uge 39",
+      mainTheme: "Erobringsspil",
+      subThemes: ["Pres", "Duelspil"],
+      focus: ["Pres og genpres", "Kommunikation"],
+    },
+    {
+      week: "Uge 40",
+      mainTheme: "Forsvarsspil",
+      subThemes: ["Kompakthed", "Positionering"],
+      focus: ["Kommunikation", "Positionering"],
+    },
+  ],
+
+  November: [
+    {
+      week: "Uge 41",
+      mainTheme: "Opbygningsspil",
+      subThemes: ["Spilbarhed", "Vendespil"],
+      focus: ["Spilforståelse", "Afleveringer"],
+    },
+    {
+      week: "Uge 42",
+      mainTheme: "Afslutningsspil",
+      subThemes: ["Cutbacks", "Løb i felt"],
+      focus: ["Timing i løb", "Afslutninger"],
+    },
+    {
+      week: "Uge 43",
+      mainTheme: "Erobringsspil",
+      subThemes: ["Genpres", "Aggressivitet"],
+      focus: ["Pres og genpres", "Styrke"],
+    },
+    {
+      week: "Uge 44",
+      mainTheme: "Forsvarsspil",
+      subThemes: ["Restforsvar", "1v1 defensivt"],
+      focus: ["Positionering", "Rolleforståelse"],
+    },
+  ],
+
+  December: [
+    {
+      week: "Uge 45",
+      mainTheme: "Opbygningsspil",
+      subThemes: ["Pasninger", "Førsteberøring"],
+      focus: ["Pasninger", "Førsteberøring"],
+    },
+    {
+      week: "Uge 46",
+      mainTheme: "Afslutningsspil",
+      subThemes: ["Afslutninger", "Indlæg"],
+      focus: ["Afslutninger", "Spark (kraft/præcision)"],
+    },
+    {
+      week: "Uge 47",
+      mainTheme: "Erobringsspil",
+      subThemes: ["Pres", "Genpres"],
+      focus: ["Pres og genpres", "Kommunikation"],
+    },
+    {
+      week: "Uge 48",
+      mainTheme: "Forsvarsspil",
+      subThemes: ["Kompakthed", "Positionering"],
+      focus: ["Positionering", "Kommunikation"],
+    },
+  ],
+};
+  
   const weekPlan = [
     { block: "Opvarmning", title: "3v1 possession", duration: 15 },
     { block: "Teknisk", title: "1v1 retvendt", duration: 20 },
@@ -1313,7 +1633,7 @@ function renderPeriodisering() {
             </div>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             {(currentWeeks || []).map((week: any) => {
               const active = selectedWeek?.week === week.week;
 
@@ -1495,7 +1815,7 @@ function renderPeriodisering() {
         })}
       </nav>
     </aside>
-
+  
     <main className="main-content">
       <div className="content-card">
         {renderPage()}
