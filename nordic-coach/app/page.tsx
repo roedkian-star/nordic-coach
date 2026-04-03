@@ -278,7 +278,7 @@ const currentPlayers = (savedPlayers[selectedTeam] || []).map((player) => ({
     async function loadPlayers() {
       try {
         const snapshot = await getDocs(collection(db, "players"));
-        const grouped: Record<string, { id?: string; name: string; position: string; year: number; team?: string; technical?: number; tactical?: number; physical?: number; mental?: number; notes?: string }[]> = {};
+       const grouped: Record<string, Player[]> = {};
         snapshot.docs.forEach((playerDoc) => {
           const data = playerDoc.data() as any;
           const team = data.team || "U11";
