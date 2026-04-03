@@ -885,48 +885,7 @@ function handleAddDevelopmentFocus() {
       </>
     );
   }
-async function handleAssignSelectedWeekToTeam() {
-  if (!selectedWeek) return;
-
-  const teamPlayersList = savedPlayers[selectedTeam] || [];
-  if (teamPlayersList.length === 0) {
-    setSavedPlayersMessage("Der er ingen spillere på holdet.");
-    return;
-  }
-
-  try {
-    const weekFocus: string[] = selectedWeek.focus ?? [];
-
-    for (const player of teamPlayersList) {
-      if (!player.id) continue;
-
-      const existingFocus = player.developmentFocus ?? [];
-      const mergedFocus = [...new Set([...existingFocus, ...weekFocus])];
-
-      await updateDoc(doc(db, "players", player.id), {
-        developmentFocus: mergedFocus,
-      });
-    }
-
-    setSavedPlayers((prev) => ({
-      ...prev,
-      [selectedTeam]: (prev[selectedTeam] || []).map((player) => {
-        const existingFocus = player.developmentFocus ?? [];
-        const mergedFocus = [...new Set([...existingFocus, ...(selectedWeek.focus ?? [])])];
-
-        return {
-          ...player,
-          developmentFocus: mergedFocus,
-        };
-      }),
-    }));
-
-    setSavedPlayersMessage(`Ugens fokus er tildelt til ${selectedTeam}.`);
-  } catch (error) {
-    console.error(error);
-    setSavedPlayersMessage("Der opstod en fejl ved tildeling til holdet.");
-  }
-}
+  
   async function handleAssignSelectedWeekToTeam() {
   if (!selectedWeek) return;
 
