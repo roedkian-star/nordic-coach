@@ -248,7 +248,39 @@ export default function NordicCoachPrototype() {
     "Spillerudvikling",
     "Indstillinger",
   ];
-
+const developmentFocusOptions = {
+  "Teknisk profil": [
+    "Førsteberøring",
+    "Pasninger",
+    "Afleveringer",
+    "Spark (kraft/præcision)",
+    "Driblinger",
+    "Boldkontrol",
+  ],
+  "Taktisk profil": [
+    "Spilforståelse",
+    "Positionering",
+    "Pres og genpres",
+    "Kommunikation",
+    "Omstilling",
+    "Rolleforståelse",
+  ],
+  "Fysisk profil": [
+    "Hurtighed",
+    "Acceleration",
+    "Styrke",
+    "Udholdenhed",
+    "Smidighed",
+  ],
+  "Mental profil": [
+    "Fokus / koncentration",
+    "Træningsindsats",
+    "Holdånd",
+    "Læringsvillighed",
+    "Selvtillid",
+  ],
+};
+  
 const currentPlayers = (savedPlayers[selectedTeam] || []).map((player) => ({
   technical: 4,
   tactical: 3,
@@ -915,13 +947,24 @@ function handleAddDevelopmentFocus() {
   <div className="section-title">Udviklingsfokus</div>
 
   <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
-    <input
-      className="form-input"
-      value={focusInput}
-      onChange={(e) => setFocusInput(e.target.value)}
-      placeholder="Skriv et fokuspunkt"
-    />
-    <button
+   <select
+  className="form-input"
+  value={focusInput}
+  onChange={(e) => setFocusInput(e.target.value)}
+>
+  <option value="">Vælg fokuspunkt</option>
+
+  {Object.entries(developmentFocusOptions).map(([category, items]) => (
+    <optgroup key={category} label={category}>
+      {items.map((item) => (
+        <option key={item} value={item}>
+          {item}
+        </option>
+      ))}
+    </optgroup>
+  ))}
+</select>
+       <button
       type="button"
       className="primary-btn"
       onClick={handleAddDevelopmentFocus}
