@@ -885,7 +885,91 @@ function handleAddDevelopmentFocus() {
       </>
     );
   }
+async function handleAssignSelectedWeekToTeam() {
+  if (!selectedWeek) return;
 
+  const teamPlayersList = savedPlayers[selectedTeam] || [];
+  if (teamPlayersList.length === 0) {
+    setSavedPlayersMessage("Der er ingen spillere på holdet.");
+    return;
+  }
+
+  try {
+    const weekFocus: string[] = selectedWeek.focus ?? [];
+
+    for (const player of teamPlayersList) {
+      if (!player.id) continue;
+
+      const existingFocus = player.developmentFocus ?? [];
+      const mergedFocus = [...new Set([...existingFocus, ...weekFocus])];
+
+      await updateDoc(doc(db, "players", player.id), {
+        developmentFocus: mergedFocus,
+      });
+    }
+
+    setSavedPlayers((prev) => ({
+      ...prev,
+      [selectedTeam]: (prev[selectedTeam] || []).map((player) => {
+        const existingFocus = player.developmentFocus ?? [];
+        const mergedFocus = [...new Set([...existingFocus, ...(selectedWeek.focus ?? [])])];
+
+        return {
+          ...player,
+          developmentFocus: mergedFocus,
+        };
+      }),
+    }));
+
+    setSavedPlayersMessage(`Ugens fokus er tildelt til ${selectedTeam}.`);
+  } catch (error) {
+    console.error(error);
+    setSavedPlayersMessage("Der opstod en fejl ved tildeling til holdet.");
+  }
+}
+  async function handleAssignSelectedWeekToTeam() {
+  if (!selectedWeek) return;
+
+  const teamPlayersList = savedPlayers[selectedTeam] || [];
+  if (teamPlayersList.length === 0) {
+    setSavedPlayersMessage("Der er ingen spillere på holdet.");
+    return;
+  }
+
+  try {
+    const weekFocus: string[] = selectedWeek.focus ?? [];
+
+    for (const player of teamPlayersList) {
+      if (!player.id) continue;
+
+      const existingFocus = player.developmentFocus ?? [];
+      const mergedFocus = [...new Set([...existingFocus, ...weekFocus])];
+
+      await updateDoc(doc(db, "players", player.id), {
+        developmentFocus: mergedFocus,
+      });
+    }
+
+    setSavedPlayers((prev) => ({
+      ...prev,
+      [selectedTeam]: (prev[selectedTeam] || []).map((player) => {
+        const existingFocus = player.developmentFocus ?? [];
+        const mergedFocus = [...new Set([...existingFocus, ...(selectedWeek.focus ?? [])])];
+
+        return {
+          ...player,
+          developmentFocus: mergedFocus,
+        };
+      }),
+    }));
+
+    setSavedPlayersMessage(`Ugens fokus er tildelt til ${selectedTeam}.`);
+  } catch (error) {
+    console.error(error);
+    setSavedPlayersMessage("Der opstod en fejl ved tildeling til holdet.");
+  }
+}
+  
 function renderSpillerprofil() {
   if (!selectedPlayer) {
     return (
@@ -1239,12 +1323,54 @@ function renderSpillerprofil() {
           <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
             <h2 className="mb-5 text-2xl font-bold text-slate-900">{selectedMonth}</h2>
             <div className="grid gap-4 md:grid-cols-2">
-              {currentWeeks.map((week) => (
-                <div key={week} className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                  <div className="font-semibold text-slate-900">{week}</div>
-                  <div className="mt-2 text-sm text-slate-500">Klikbar uge-mapning udbygges i næste version.</div>
-                </div>
-              ))}
+             {currentWeeks.map((week) => (
+  <div
+    {selectedWeek && (
+  <div style={{ marginTop: 20 }}>
+    <div className="section-title">Ugens fokus</div>
+
+    <div style={{ marginBottom: 10 }}>
+      <strong>{selectedWeek.week}</strong>
+    </div>
+
+    <div style={{ marginBottom: 6 }}>
+      <strong>Overordnet tema:</strong> {selectedWeek.mainTheme}
+    </div>
+
+    <div style={{ marginBottom: 10 }}>
+      <strong>Underfokus:</strong> {selectedWeek.subTheme}
+    </div>
+
+    <div className="player-tags" style={{ marginBottom: 12 }}>
+      {(selectedWeek.focus ?? []).map((f: string) => (
+        <span key={f} className="player-tag">
+          {f}
+        </span>
+      ))}
+    </div>
+
+    <button
+      type="button"
+      className="primary-btn"
+      onClick={handleAssignSelectedWeekToTeam}
+    >
+      Tildel ugens fokus til hold
+    </button>
+  </div>
+)}
+    key={week.week}
+    onClick={() => setSelectedWeek(week)}
+    className="rounded-2xl border border-slate-200 bg-slate-50 p-5 cursor-pointer"
+  >
+    <div className="font-semibold text-slate-900">{week.week}</div>
+    <div className="mt-2 text-sm text-slate-600">
+      <strong>Overordnet tema:</strong> {week.mainTheme}
+    </div>
+    <div className="mt-1 text-sm text-slate-500">
+      <strong>Underfokus:</strong> {week.subTheme}
+    </div>
+  </div>
+))}
             </div>
           </div>
         </div>
