@@ -1805,69 +1805,39 @@ function renderPeriodisering() {
             </div>
           </div>
 
-          {selectedWeek ? (
-            <div className="dashboard-card" style={{ marginTop: 24 }}>
-           <div
-  style={{
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
-  }}
->
-  <div>
-    <div className="text-sm text-slate-500">Valgt uge</div>
-    <div className="text-xl font-bold text-slate-900">
-      {selectedWeek.week}
-    </div>
-  </div>
+{selectedWeek ? (
+  <div className="dashboard-card" style={{ marginTop: 24 }}>
+    <div
+      className="hold-header-card"
+      style={{
+        marginTop: 16,
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+    >
+      <div>
+        <div className="text-sm text-slate-500">Valgt uge</div>
 
-  <button
-    type="button"
-    onClick={handleAssignSelectedWeekToTeam}
-    className="primary-btn"
-  >
-    Tildel fokus
-  </button>
-</div>
-           <div
-  className="hold-header-card"
-  style={{
-    marginTop: 16,
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  }}
->
-  <div>
-    <div className="text-sm text-slate-500">Valgt uge</div>
+        <div className="hold-main-title">
+          {selectedWeek.week}
+        </div>
 
-    <div className="hold-main-title">
-      {selectedWeek.week}
+        <div className="hold-main-sub">
+          Aktiv uge i {selectedMonth}
+        </div>
+      </div>
+
+      <button
+        type="button"
+        className="primary-btn"
+        onClick={handleAssignSelectedWeekToTeam}
+      >
+        Tildel fokus
+      </button>
     </div>
 
-    <div className="hold-main-sub">
-      Aktiv uge i {selectedMonth}
-    </div>
-  </div>
-
-  <button
-    type="button"
-    className="primary-btn"
-    onClick={handleAssignSelectedWeekToTeam}
-  >
-    Tildel fokus
-  </button>
-</div>
-
-                <button
-                  type="button"
-                  className="primary-btn"
-                  onClick={handleAssignSelectedWeekToTeam}
-                >
-                 </button>
-              </div>
-
+    <div className="stats-grid" style={{ marginTop: 24 }}>
               <div className="stats-grid" style={{ marginTop: 24 }}>
                 <div className="stat-card">
                   <div className="stat-label">Overordnet tema</div>
