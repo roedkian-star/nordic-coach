@@ -1352,20 +1352,16 @@ function renderPeriodisering() {
                   </div>
                   <div className="mt-2 flex flex-wrap gap-2">
                     {(week.subThemes || []).map((sub: string) => (
-                      <button
+                      <span
                         key={sub}
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                        }}
-                        className={`rounded-full px-3 py-1 text-xs transition ${
+                        className={`rounded-full px-3 py-1 text-xs ${
                           active
                             ? "bg-white/15 text-white"
-                            : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-100"
+                            : "border border-slate-200 bg-white text-slate-700"
                         }`}
                       >
                         {sub}
-                      </button>
+                      </span>
                     ))}
                   </div>
                 </button>
@@ -1373,13 +1369,12 @@ function renderPeriodisering() {
             })}
           </div>
 
-          <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-5">
-            <div className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-5">
+          {selectedWeek && (
+            <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-5">
+              <div className="mb-3 text-lg font-semibold text-slate-900">Valgt uge</div>
+
               <div className="mb-4 flex items-center justify-between">
-                <div>
-                  <div className="text-sm text-slate-500">Valgt uge</div>
-                  <div className="text-xl font-bold text-slate-900">{selectedWeek.week}</div>
-                </div>
+                <div className="text-xl font-bold text-slate-900">{selectedWeek.week}</div>
 
                 <button
                   type="button"
@@ -1441,6 +1436,7 @@ function renderPeriodisering() {
     </>
   );
 }
+  
   function renderPlaceholder(title: string) {
     return (
       <>
