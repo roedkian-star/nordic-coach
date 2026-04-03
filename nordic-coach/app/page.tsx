@@ -1592,6 +1592,8 @@ function renderSpillerprofil() {
   }
 
 function renderPeriodisering() {
+   const availableSubThemes =
+    subThemeOptionsByMainTheme[selectedWeek?.mainTheme as keyof typeof subThemeOptionsByMainTheme] || [];
   return (
     <>
       <PageHeader
