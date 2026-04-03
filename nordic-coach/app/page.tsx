@@ -830,18 +830,23 @@ function handleAddDevelopmentFocus() {
     <span>Mental</span>
     <strong>{player.mental ?? 4}/5</strong>
   </div>
+</div>     
+                 
+<div className="player-focus-box">
+  <div className="player-focus-title">Udviklingsfokus</div>
+  <div className="player-tags">
+    {(player.developmentFocus ?? []).length > 0 ? (
+      (player.developmentFocus ?? []).map((focus) => (
+        <span key={focus} className="player-tag">
+          {focus}
+        </span>
+      ))
+    ) : (
+      <span className="player-tag">Ingen fokus valgt</span>
+    )}
+  </div>
 </div>
-            
-
-                  <div className="player-focus-box">
-                    <div className="player-focus-title">Udviklingsfokus</div>
-                    <div className="player-tags">
-                      <span className="player-tag">Førsteberøring</span>
-                      <span className="player-tag">Overblik</span>
-                      <span className="player-tag">Duelspil</span>
-                    </div>
-                  </div>
-
+                  
                   <div className="player-actions">
                     <button
                       className="primary-btn"
