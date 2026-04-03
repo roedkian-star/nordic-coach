@@ -490,14 +490,19 @@ function handleAddDevelopmentFocus() {
 
   const updatedFocus = [...currentFocus, value];
 
-  setSelectedPlayer({
-    ...selectedPlayer,
-    developmentFocus: updatedFocus,
-  });
+  // 🔥 vigtigt: brug prev (sikrer korrekt state)
+  setSelectedPlayer((prev) =>
+    prev
+      ? {
+          ...prev,
+          developmentFocus: updatedFocus,
+        }
+      : prev
+  );
 
   setFocusInput("");
 }
-
+  
   function StatCard({ label, value, help }: { label: string; value: string; help: string }) {
     return (
       <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
