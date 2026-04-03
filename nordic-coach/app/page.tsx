@@ -1322,10 +1322,25 @@ function renderSpillerprofil() {
           </div>
           <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
             <h2 className="mb-5 text-2xl font-bold text-slate-900">{selectedMonth}</h2>
-            <div className="grid gap-4 md:grid-cols-2">
-             {currentWeeks.map((week) => (
-  <div
-    {selectedWeek && (
+           <div className="grid gap-4 md:grid-cols-2">
+  {currentWeeks.map((week) => (
+    <div
+      key={week.week}
+      onClick={() => setSelectedWeek(week)}
+      className="rounded-2xl border border-slate-200 bg-slate-50 p-5 cursor-pointer"
+    >
+      <div className="font-semibold text-slate-900">{week.week}</div>
+      <div className="mt-2 text-sm text-slate-600">
+        <strong>Overordnet tema:</strong> {week.mainTheme}
+      </div>
+      <div className="mt-1 text-sm text-slate-500">
+        <strong>Underfokus:</strong> {week.subTheme}
+      </div>
+    </div>
+  ))}
+</div>
+
+{selectedWeek && (
   <div style={{ marginTop: 20 }}>
     <div className="section-title">Ugens fokus</div>
 
@@ -1358,25 +1373,6 @@ function renderSpillerprofil() {
     </button>
   </div>
 )}
-    key={week.week}
-    onClick={() => setSelectedWeek(week)}
-    className="rounded-2xl border border-slate-200 bg-slate-50 p-5 cursor-pointer"
-  >
-    <div className="font-semibold text-slate-900">{week.week}</div>
-    <div className="mt-2 text-sm text-slate-600">
-      <strong>Overordnet tema:</strong> {week.mainTheme}
-    </div>
-    <div className="mt-1 text-sm text-slate-500">
-      <strong>Underfokus:</strong> {week.subTheme}
-    </div>
-  </div>
-))}
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  }
 
   function renderPlaceholder(title: string) {
     return (
