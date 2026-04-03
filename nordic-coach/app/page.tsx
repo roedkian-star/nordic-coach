@@ -1350,24 +1350,24 @@ function renderPeriodisering() {
                   <div className={`mt-3 text-sm ${active ? "text-slate-200" : "text-slate-500"}`}>
                     Underfokus
                   </div>
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {(week.subThemes || []).map((sub: string) => (
-                      <span
-                        key={sub}
-                        className={`rounded-full px-3 py-1 text-xs ${
-                          active
-                            ? "bg-white/15 text-white"
-                            : "border border-slate-200 bg-white text-slate-700"
-                        }`}
-                      >
-                        {sub}
-                      </span>
-                    ))}
-                  </div>
-                </button>
-              );
-            })}
-          </div>
+<div className="mt-2 flex flex-wrap gap-2">
+  {(week.subThemes || []).map((sub: string) => (
+    <button
+      key={sub}
+      type="button"
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
+      className={`rounded-full px-3 py-1 text-xs transition ${
+        active
+          ? "bg-white/15 text-white"
+          : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-100"
+      }`}
+    >
+      {sub}
+    </button>
+  ))}
+</div>
 
           {selectedWeek && (
             <div className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-5">
