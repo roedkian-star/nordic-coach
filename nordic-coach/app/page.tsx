@@ -1298,84 +1298,96 @@ function renderSpillerprofil() {
     );
   }
 
-  function renderPeriodisering() {
-    return (
-      <>
-        <PageHeader title="Periodisering" text="Måneder vælges i venstre side. Uger og fokusområder vises i midten som en arbejdsflade." />
-        <div className="grid gap-6 xl:grid-cols-[260px_1fr]">
-          <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
-            <div className="mb-3 text-sm font-semibold text-slate-500">Måneder</div>
-            <div className="space-y-2">
-              {Object.keys(periodization).map((month) => {
-                const active = selectedMonth === month;
-                return (
-                  <button
-                    key={month}
-                    onClick={() => setSelectedMonth(month)}
-                    className={`w-full rounded-2xl px-4 py-3 text-left transition ${active ? "bg-slate-900 text-white" : "border border-slate-200 bg-slate-50 text-slate-900 hover:bg-white"}`}
-                  >
-                    {month}
-                  </button>
-                );
-              })}
-            </div>
+function renderPeriodisering() {
+  return (
+    <>
+      <PageHeader
+        title="Periodisering"
+        text="Måneder vælges i venstre side. Uger og fokusområder vises i midten som en arbejdsflade."
+      />
+
+      <div className="grid gap-6 xl:grid-cols-[260px_1fr]">
+        <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="mb-3 text-sm font-semibold text-slate-500">Måneder</div>
+          <div className="space-y-2">
+            {Object.keys(periodization).map((month) => {
+              const active = selectedMonth === month;
+              return (
+                <button
+                  key={month}
+                  onClick={() => setSelectedMonth(month)}
+                  className={`w-full rounded-2xl px-4 py-3 text-left transition ${
+                    active
+                      ? "bg-slate-900 text-white"
+                      : "border border-slate-200 bg-slate-50 text-slate-900 hover:bg-white"
+                  }`}
+                >
+                  {month}
+                </button>
+              );
+            })}
           </div>
-          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="mb-5 text-2xl font-bold text-slate-900">{selectedMonth}</h2>
-           <div className="grid gap-4 md:grid-cols-2">
-  {currentWeeks.map((week) => (
-    <div
-      key={week.week}
-      onClick={() => setSelectedWeek(week)}
-      className="rounded-2xl border border-slate-200 bg-slate-50 p-5 cursor-pointer"
-    >
-      <div className="font-semibold text-slate-900">{week.week}</div>
-      <div className="mt-2 text-sm text-slate-600">
-        <strong>Overordnet tema:</strong> {week.mainTheme}
-      </div>
-      <div className="mt-1 text-sm text-slate-500">
-        <strong>Underfokus:</strong> {week.subTheme}
-      </div>
-    </div>
-  ))}
-</div>
-
-{selectedWeek && (
-  <div style={{ marginTop: 20 }}>
-    <div className="section-title">Ugens fokus</div>
-
-    <div style={{ marginBottom: 10 }}>
-      <strong>{selectedWeek.week}</strong>
-    </div>
-
-    <div style={{ marginBottom: 6 }}>
-      <strong>Overordnet tema:</strong> {selectedWeek.mainTheme}
-    </div>
-
-    <div style={{ marginBottom: 10 }}>
-      <strong>Underfokus:</strong> {selectedWeek.subTheme}
-    </div>
-
-    <div className="player-tags" style={{ marginBottom: 12 }}>
-      {(selectedWeek.focus ?? []).map((f: string) => (
-        <span key={f} className="player-tag">
-          {f}
-        </span>
-      ))}
-    </div>
-
-    <button
-      type="button"
-      className="primary-btn"
-      onClick={handleAssignSelectedWeekToTeam}
-    >
-      Tildel ugens fokus til hold
-    </button>
-         </div>
         </div>
-      </>
-    );
-  }
+
+        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 className="mb-5 text-2xl font-bold text-slate-900">{selectedMonth}</h2>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            {currentWeeks.map((week) => (
+              <div
+                key={week.week}
+                onClick={() => setSelectedWeek(week)}
+                className="rounded-2xl border border-slate-200 bg-slate-50 p-5 cursor-pointer"
+              >
+                <div className="font-semibold text-slate-900">{week.week}</div>
+                <div className="mt-2 text-sm text-slate-600">
+                  <strong>Overordnet tema:</strong> {week.mainTheme}
+                </div>
+                <div className="mt-1 text-sm text-slate-500">
+                  <strong>Underfokus:</strong> {week.subTheme}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {selectedWeek && (
+            <div style={{ marginTop: 20 }}>
+              <div className="section-title">Ugens fokus</div>
+
+              <div style={{ marginBottom: 10 }}>
+                <strong>{selectedWeek.week}</strong>
+              </div>
+
+              <div style={{ marginBottom: 6 }}>
+                <strong>Overordnet tema:</strong> {selectedWeek.mainTheme}
+              </div>
+
+              <div style={{ marginBottom: 10 }}>
+                <strong>Underfokus:</strong> {selectedWeek.subTheme}
+              </div>
+
+              <div className="player-tags" style={{ marginBottom: 12 }}>
+                {(selectedWeek.focus ?? []).map((f: string) => (
+                  <span key={f} className="player-tag">
+                    {f}
+                  </span>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                className="primary-btn"
+                onClick={handleAssignSelectedWeekToTeam}
+              >
+                Tildel ugens fokus til hold
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
             
   function renderPlaceholder(title: string) {
     return (
