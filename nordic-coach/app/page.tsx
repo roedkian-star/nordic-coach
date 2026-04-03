@@ -911,16 +911,41 @@ function handleAddDevelopmentFocus() {
             </div>
           </div>
 
-          <div className="profile-card">
-            <div className="section-title">Udviklingsfokus</div>
-            <div className="player-tags">
-              <span className="player-tag">Førsteberøring</span>
-              <span className="player-tag">Overblik</span>
-              <span className="player-tag">Duelspil</span>
-              <span className="player-tag">Retvendt modtagelse</span>
-            </div>
-          </div>
+<div className="profile-card">
+  <div className="section-title">Udviklingsfokus</div>
 
+  <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
+    <input
+      className="form-input"
+      value={focusInput}
+      onChange={(e) => setFocusInput(e.target.value)}
+      placeholder="Skriv et fokuspunkt"
+    />
+    <button
+      type="button"
+      className="primary-btn"
+      onClick={handleAddDevelopmentFocus}
+    >
+      Tilføj
+    </button>
+  </div>
+
+  <div className="player-tags">
+    {(selectedPlayer.developmentFocus ?? []).length > 0 ? (
+      (selectedPlayer.developmentFocus ?? []).map((focus) => (
+        <div
+          key={focus}
+          style={{ display: "inline-flex", alignItems: "center", gap: 8, marginRight: 8, marginBottom: 8 }}
+        >
+          <span className="player-tag">{focus}</span>
+        </div>
+      ))
+    ) : (
+      <span className="player-tag">Ingen fokus valgt</span>
+    )}
+  </div>
+</div>
+          
           <div className="profile-card">
             <div className="section-title">Trænernoter</div>
             <textarea
