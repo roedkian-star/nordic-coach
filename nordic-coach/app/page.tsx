@@ -1270,7 +1270,7 @@ function renderSpillerprofil() {
     );
   }
 
-   function renderPeriodisering() {
+function renderPeriodisering() {
   return (
     <>
       <PageHeader
@@ -1283,7 +1283,7 @@ function renderSpillerprofil() {
           <div className="mb-3 text-sm font-semibold text-slate-500">Måneder</div>
           <div className="space-y-2">
             {Object.keys(periodization).map((month) => {
-              const active = selectedMonth === month;
+              const isActiveMonth = selectedMonth === month;
 
               return (
                 <button
@@ -1293,7 +1293,7 @@ function renderSpillerprofil() {
                     setSelectedWeek(null);
                   }}
                   className={`w-full rounded-2xl px-4 py-3 text-left transition ${
-                    active
+                    isActiveMonth
                       ? "bg-slate-900 text-white"
                       : "border border-slate-200 bg-slate-50 text-slate-900 hover:bg-white"
                   }`}
@@ -1313,7 +1313,7 @@ function renderSpillerprofil() {
             </div>
           </div>
 
-         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             {(currentWeeks || []).map((week: any) => {
               const active = selectedWeek?.week === week.week;
 
@@ -1325,7 +1325,7 @@ function renderSpillerprofil() {
                   className={`rounded-2xl border p-5 text-left transition min-h-[140px] flex flex-col justify-between ${
                     active
                       ? "border-slate-900 bg-slate-900 text-white shadow-md"
-                      : "border-slate-200 bg-slate-50 text-slate-900 hover:bg-white hover:shadow-sm"
+                      : "border-slate-200 bg-white text-slate-900 hover:shadow-md"
                   }`}
                 >
                   <div className="mb-2 text-lg font-semibold">{week.week}</div>
@@ -1350,25 +1350,24 @@ function renderSpillerprofil() {
                   <div className={`mt-3 text-sm ${active ? "text-slate-200" : "text-slate-500"}`}>
                     Underfokus
                   </div>
-                 <div className="mt-2 flex flex-wrap gap-2">
-  {(week.subThemes || []).map((sub: string) => (
-    <button
-      key={sub}
-      type="button"
-      onClick={(e) => {
-        e.stopPropagation();
-        console.log("Klik på underfokus:", sub);
-      }}
-      className={`rounded-full px-3 py-1 text-xs transition ${
-        active
-          ? "bg-white/20 text-white"
-          : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-100"
-      }`}
-    >
-      {sub}
-    </button>
-  ))}
-</div>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {(week.subThemes || []).map((sub: string) => (
+                      <span
+                        key={sub}
+                        className={`rounded-full px-3 py-1 text-xs ${
+                          active
+                            ? "bg-white/15 text-white"
+                            : "border border-slate-200 bg-white text-slate-700"
+                        }`}
+                      >
+                        {sub}
+                      </span>
+                    ))}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
 
           {selectedWeek && (
             <div className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-5">
@@ -1406,20 +1405,6 @@ function renderSpillerprofil() {
 
               <div className="mb-4">
                 <div className="text-sm text-slate-500">Underfokus</div>
-                <div className="mt-2">
-                  <select
-                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900"
-                    value={(selectedWeek.subThemes || [])[0] || ""}
-                    disabled
-                  >
-                    {(selectedWeek.subThemes || []).map((sub: string) => (
-                      <option key={sub} value={sub}>
-                        {sub}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
                 <div className="mt-2 flex flex-wrap gap-2">
                   {(selectedWeek.subThemes || []).map((sub: string) => (
                     <span
@@ -1451,7 +1436,8 @@ function renderSpillerprofil() {
       </div>
     </>
   );
-}    
+}
+  
   function renderPlaceholder(title: string) {
     return (
       <>
