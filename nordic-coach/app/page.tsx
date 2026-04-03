@@ -247,15 +247,15 @@ export default function NordicCoachPrototype() {
     "Indstillinger",
   ];
 
-  const currentTeam = useMemo(() => teams.find((team) => team.name === selectedTeam) || teams[0], [selectedTeam]);
-  const currentPlayers = [...(savedPlayers[selectedTeam] || []), ...(teamPlayers[selectedTeam] || teamPlayers.U11)].map((player) => ({
-    technical: 4,
-    tactical: 3,
-    physical: 3,
-    mental: 4,
-    notes: "",
-    ...player,
-  }));
+const currentPlayers = (savedPlayers[selectedTeam] || []).map((player) => ({
+  technical: 4,
+  tactical: 3,
+  physical: 3,
+  mental: 4,
+  notes: "",
+  ...player,
+}));
+  
   const currentPlayStyle = playStyle.find((group) => group.title === selectedPlayStyleGroup) || playStyle[0];
   const currentWeeks = periodization[selectedMonth] || [];
 
