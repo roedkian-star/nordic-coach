@@ -44,6 +44,7 @@ export default function NordicCoachPrototype() {
   const [selectedTeam, setSelectedTeam] = useState("U11");
   const [selectedPlayStyleGroup, setSelectedPlayStyleGroup] = useState("Vi har bolden");
   const [selectedMonth, setSelectedMonth] = useState("Januar");
+  const [selectedWeek, setSelectedWeek] = useState<any>(null);
   const [drillForm, setDrillForm] = useState<DrillForm>({
     title: "",
     category: "Basic teknisk",
