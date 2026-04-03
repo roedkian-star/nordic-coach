@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { addDoc, collection, doc, getDocs, orderBy, query, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "./firebase";
 
+
 type Player = {
   id?: string;
   name: string;
