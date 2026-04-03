@@ -1680,8 +1680,8 @@ function renderPeriodisering() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-                gap: 16,
+                gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+                gap: 20,
                 marginTop: 16,
               }}
             >
@@ -1693,20 +1693,23 @@ function renderPeriodisering() {
                     key={week.week}
                     type="button"
                     onClick={() => setSelectedWeek(week)}
-                    style={{
-                      border: active ? "1px solid #0f172a" : "1px solid #cbd5e1",
-                      background: active ? "#0f172a" : "#f8fafc",
-                      color: active ? "#ffffff" : "#0f172a",
-                      borderRadius: 24,
-                      padding: 20,
-                      textAlign: "left",
-                      minHeight: 180,
-                      cursor: "pointer",
-                      transition: "all 0.2s ease",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                    }}
+                   style={{
+                  border: active ? "1px solid #0f172a" : "1px solid #e2e8f0",
+                  background: active ? "#0f172a" : "#ffffff",
+                  color: active ? "#ffffff" : "#0f172a",
+                  borderRadius: 28,
+                  padding: 24,
+                  textAlign: "left",
+                  minHeight: 200,
+                  cursor: "pointer",
+                  transition: "all 0.2s ease",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  boxShadow: active
+    ? "0 10px 25px rgba(0,0,0,0.2)"
+    : "0 4px 12px rgba(0,0,0,0.05)",
+}}        
                   >
                     <div>
                       <div
