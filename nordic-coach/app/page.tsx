@@ -1343,17 +1343,21 @@ function renderPeriodisering() {
             <div style={{ marginTop: 20 }}>
               <div className="section-title">Ugens fokus</div>
 
-             <div style={{ marginBottom: 10 }}>
-  <strong>Underfokus:</strong>
+          <div style={{ marginBottom: 10 }}>
+  <div className="text-sm text-slate-500">Underfokus</div>
 </div>
 
-<div className="player-tags" style={{ marginBottom: 12 }}>
+<div className="mt-2 flex flex-wrap gap-2" style={{ marginBottom: 12 }}>
   {(selectedWeek.subThemes || []).map((sub: string) => (
-    <span key={sub} className="player-tag">
+    <span
+      key={sub}
+      className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-700"
+    >
       {sub}
     </span>
   ))}
 </div>
+              
              <div style={{ marginBottom: 6 }}>
              <div className="text-sm text-slate-500">Overordnet tema</div>
 
