@@ -281,7 +281,19 @@ const developmentFocusOptions = {
     "Selvtillid",
   ],
 };
-  
+const mainThemeOptions = [
+  "Opbygningsspil",
+  "Afslutningsspil",
+  "Erobringsspil",
+  "Forsvarsspil",
+];
+
+const subThemeOptionsByMainTheme = {
+  Opbygningsspil: ["Pasninger", "Førsteberøring", "Vendespil", "Spilbarhed"],
+  Afslutningsspil: ["Afslutninger", "Indlæg", "Løb i felt", "Cutbacks"],
+  Erobringsspil: ["Pres", "Genpres", "Duelspil", "Aggressivitet"],
+  Forsvarsspil: ["Positionering", "Kompakthed", "Restforsvar", "1v1 defensivt"],
+};  
 const currentPlayers = (savedPlayers[selectedTeam] || []).map((player) => ({
   technical: 4,
   tactical: 3,
@@ -1303,9 +1315,26 @@ function renderPeriodisering() {
                 <div className="mt-2 text-sm text-slate-600">
                   <strong>Overordnet tema:</strong> {week.mainTheme}
                 </div>
-                <div className="mt-1 text-sm text-slate-500">
-                  <strong>Underfokus:</strong> {week.subTheme}
-                </div>
+<div className="mt-1 text-sm text-slate-500">
+  <strong>Underfokus:</strong>
+</div>
+<div className="mt-2 text-sm text-slate-500">Overordnet tema</div>
+<div className="mt-1">
+  <span className="rounded-full bg-slate-900 px-3 py-1 text-xs text-white">
+    {week.mainTheme}
+  </span>
+</div>
+
+  <div className="mt-2 flex flex-wrap gap-2">
+  {(week.subThemes || []).map((sub: string) => (
+    <span
+      key={sub}
+      className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-700"
+    >
+      {sub}
+    </span>
+  ))}
+              </div>
               </div>
             ))}
           </div>
@@ -1314,12 +1343,25 @@ function renderPeriodisering() {
             <div style={{ marginTop: 20 }}>
               <div className="section-title">Ugens fokus</div>
 
-              <div style={{ marginBottom: 10 }}>
-                <strong>{selectedWeek.week}</strong>
-              </div>
+             <div style={{ marginBottom: 10 }}>
+  <strong>Underfokus:</strong>
+</div>
 
-              <div style={{ marginBottom: 6 }}>
-                <strong>Overordnet tema:</strong> {selectedWeek.mainTheme}
+<div className="player-tags" style={{ marginBottom: 12 }}>
+  {(selectedWeek.subThemes || []).map((sub: string) => (
+    <span key={sub} className="player-tag">
+      {sub}
+    </span>
+  ))}
+</div>
+             <div style={{ marginBottom: 6 }}>
+             <div className="text-sm text-slate-500">Overordnet tema</div>
+
+<div style={{ marginTop: 4 }}>
+  <span className="rounded-full bg-slate-900 px-3 py-1 text-xs text-white">
+    {selectedWeek.mainTheme}
+  </span>
+</div>
               </div>
 
               <div style={{ marginBottom: 10 }}>
