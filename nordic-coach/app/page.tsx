@@ -1671,6 +1671,9 @@ function renderPeriodisering() {
                   <div className={`mt-3 text-sm ${active ? "text-slate-200" : "text-slate-500"}`}>
                     Underfokus
                   </div>
+                  <div className={`mt-1 text-xs ${active ? "text-slate-300" : "text-slate-400"}`}>
+                  Styres af: {week.mainTheme}
+                  </div>
                   <div className="mt-2 flex flex-wrap gap-2">
                     {(week.subThemes || []).map((sub: string) => (
                       <span
@@ -1692,11 +1695,14 @@ function renderPeriodisering() {
 
           {selectedWeek && (
             <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-5">
-              <div className="mb-3 text-lg font-semibold text-slate-900">Valgt uge</div>
-
+             <div className="mb-4 flex items-center justify-between">
+  <div>
+    <div className="text-sm text-slate-500">Valgt uge</div>
+    <div className="text-xl font-bold text-slate-900">{selectedWeek.week}</div>
+  </div>
+</div>
               <div className="mb-4 flex items-center justify-between">
-                <div className="text-xl font-bold text-slate-900">{selectedWeek.week}</div>
-
+               
                 <button
                   type="button"
                   className="primary-btn"
@@ -1723,22 +1729,37 @@ function renderPeriodisering() {
                 </div>
               </div>
 
-              <div className="mb-4">
-                <div className="text-sm text-slate-500">Underfokus</div>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  const availableSubThemes =
-                  subThemeOptionsByMainTheme[selectedWeek.mainTheme] || [];
-                  {(selectedWeek.subThemes || []).map((sub: string) => (
-                    <span
-                      key={sub}
-                      className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-700"
-                    >
-                      {sub}
-                    </span>
-                  ))}
-                </div>
-              </div>
+<div className="mb-4">
+  <div className="text-sm text-slate-500">Underfokus</div>
+  <div className="mt-1 text-xs text-slate-400">
+  Valgmuligheder styres af: {selectedWeek.mainTheme}
+</div>
+  
+  <div className="mt-2">
+    <select
+      className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900"
+      value={(selectedWeek.subThemes || [])[0] || ""}
+      disabled
+    >
+      {availableSubThemes.map((sub: string) => (
+        <option key={sub} value={sub}>
+          {sub}
+        </option>
+      ))}
+    </select>
+  </div>
 
+  <div className="mt-2 flex flex-wrap gap-2">
+    {(selectedWeek.subThemes || []).map((sub: string) => (
+      <span
+        key={sub}
+        className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-700"
+      >
+        {sub}
+      </span>
+    ))}
+  </div>
+</div>
               <div>
                 <div className="text-sm text-slate-500">Udviklingsfokus</div>
                 <div className="mt-2 flex flex-wrap gap-2">
