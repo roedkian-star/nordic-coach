@@ -45,6 +45,7 @@ export default function NordicCoachPrototype() {
   const [selectedPlayStyleGroup, setSelectedPlayStyleGroup] = useState("Vi har bolden");
   const [selectedMonth, setSelectedMonth] = useState("Januar");
   const [selectedWeek, setSelectedWeek] = useState<any>(null);
+  const [selectedSubThemes, setSelectedSubThemes] = useState<string[]>([]);
   const [drillForm, setDrillForm] = useState<DrillForm>({
     title: "",
     category: "Basic teknisk",
@@ -1692,7 +1693,9 @@ function renderPeriodisering() {
                   <button
                     key={week.week}
                     type="button"
-                    onClick={() => setSelectedWeek(week)}
+                  onClick={() => {
+                  setSelectedWeek(week);
+                  setSelectedSubThemes(week.subThemes || []);
                     style={{
                       border: active ? "1px solid #0f172a" : "1px solid #e2e8f0",
                       background: active ? "#0f172a" : "#ffffff",
@@ -1782,21 +1785,35 @@ function renderPeriodisering() {
                         gap: 8,
                       }}
                     >
-                      {(week.subThemes || []).map((sub: string) => (
-                        <span
-                          key={sub}
-                          style={{
-                            borderRadius: 9999,
-                            padding: "6px 10px",
-                            fontSize: 12,
-                            border: active ? "1px solid rgba(255,255,255,0.15)" : "1px solid #cbd5e1",
-                            background: active ? "rgba(255,255,255,0.08)" : "#ffffff",
-                            color: active ? "#ffffff" : "#334155",
-                          }}
-                        >
-                          {sub}
-                        </span>
-                      ))}
+                    {(availableSubThemes || []).map((sub: string) => {
+  const active = selectedSubThemes.includes(sub);
+
+  return (
+    <span
+      key={sub}
+      onClick={() => {
+        if (active) {
+          setSelectedSubThemes((prev) => prev.filter((s) => s !== sub));
+        } else {
+          setSelectedSubThemes((prev) => [...prev, sub]);
+        }
+      }}
+      style={{
+        cursor: "pointer",
+        borderRadius: 9999,
+        border: active ? "1px solid #0f172a" : "1px solid #cbd5e1",
+        background: active ? "#0f172a" : "#ffffff",
+        color: active ? "#ffffff" : "#334155",
+        padding: "8px 12px",
+        fontSize: 13,
+        transition: "all 0.2s ease",
+      }}
+    >
+      {sub}
+    </span>
+  );
+})}
+                    
                     </div>
                   </button>
                 );
