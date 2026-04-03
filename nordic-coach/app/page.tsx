@@ -606,6 +606,7 @@ const mainThemeOptions = [
   "Afslutningsspil",
   "Erobringsspil",
   "Forsvarsspil",
+   "Pause",
 ];
 
 const subThemeOptionsByMainTheme = {
@@ -1725,6 +1726,8 @@ function renderPeriodisering() {
               <div className="mb-4">
                 <div className="text-sm text-slate-500">Underfokus</div>
                 <div className="mt-2 flex flex-wrap gap-2">
+                  const availableSubThemes =
+                  subThemeOptionsByMainTheme[selectedWeek.mainTheme] || [];
                   {(selectedWeek.subThemes || []).map((sub: string) => (
                     <span
                       key={sub}
