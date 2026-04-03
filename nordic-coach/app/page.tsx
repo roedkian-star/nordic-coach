@@ -474,7 +474,18 @@ async function handleSaveProfile() {
     setSavedPlayersMessage("Der opstod en fejl ved gemning af profilen.");
   }
 }
+function handleRemoveDevelopmentFocus(focusToRemove: string) {
+  if (!selectedPlayer) return;
 
+  const updatedFocus = (selectedPlayer.developmentFocus ?? []).filter(
+    (focus) => focus !== focusToRemove
+  );
+
+  setSelectedPlayer({
+    ...selectedPlayer,
+    developmentFocus: updatedFocus,
+  });
+}
 function handleAddDevelopmentFocus() {
   const value = focusInput.trim();
 
@@ -983,40 +994,48 @@ function handleAddDevelopmentFocus() {
     </button>
   </div>
 
-  <div className="player-tags">
-    {(selectedPlayer.developmentFocus ?? []).length > 0 ? (
-      (selectedPlayer.developmentFocus ?? []).map((focus) => (
-        <div
-          key={focus}
-          style={{ display: "inline-flex", alignItems: "center", gap: 8, marginRight: 8, marginBottom: 8 }}
-        >
-          <span className="player-tag">{focus}</span>
-        </div>
-      ))
-    ) : (
-      <span className="player-tag">Ingen fokus valgt</span>
-    )}
-  </div>
-</div>
-          
-          <div className="profile-card">
-            <div className="section-title">Trænernoter</div>
-            <textarea
-              className="profile-notes-input"
-              value={profileForm.notes}
-              onChange={(e) => setProfileForm((prev) => ({ ...prev, notes: e.target.value }))}
-              placeholder="Skriv noter om spillerens udvikling, fokusområder og næste skridt"
-            />
-            <div className="profile-actions">
-              <button className="primary-btn" onClick={handleSaveProfile}>Gem profil</button>
-              {savedPlayersMessage ? <div className="form-feedback">{savedPlayersMessage}</div> : null}
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  }
+<div className="player-tags">
+  {(selectedPlayer.developmentFocus ?? []).length > 0 ? (
+    (selectedPlayer.developmentFocus ?? []).map((focus) => (
+      <div
+        key={focus}
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 6,
+          marginRight: 8,
+          marginBottom: 8,
+          background: "#f1f5f9",
+          borderRadius: 9999,
+          padding: "6px 10px",
+        }}
+      >
+        <span className="player-tag" style={{ margin: 0 }}>
+          {focus}
+        </span>
 
+        <button
+          type="button"
+          onClick={() => handleRemoveDevelopmentFocus(focus)}
+          style={{
+            border: "none",
+            background: "transparent",
+            cursor: "pointer",
+            fontSize: "14px",
+            fontWeight: 700,
+            lineHeight: 1,
+            padding: 0,
+          }}
+        >
+          ×
+        </button>
+      </div>
+    ))
+  ) : (
+    <span className="player-tag">Ingen fokus valgt</span>
+  )}
+</div>
+   </div>
   function renderSpillestil() {
     return (
       <>
