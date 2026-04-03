@@ -1373,7 +1373,7 @@ function renderPeriodisering() {
             })}
           </div>
 
-          {selectedWeek && (
+          <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-5">
             <div className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-5">
               <div className="mb-4 flex items-center justify-between">
                 <div>
