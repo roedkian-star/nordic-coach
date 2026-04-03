@@ -1036,6 +1036,10 @@ function handleAddDevelopmentFocus() {
   )}
 </div>
    </div>
+      </>
+    );
+  }
+
   function renderSpillestil() {
     return (
       <>
