@@ -1313,7 +1313,7 @@ function renderSpillerprofil() {
             </div>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
+         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             {(currentWeeks || []).map((week: any) => {
               const active = selectedWeek?.week === week.week;
 
@@ -1322,7 +1322,7 @@ function renderSpillerprofil() {
                   key={week.week}
                   type="button"
                   onClick={() => setSelectedWeek(week)}
-                  className={`rounded-2xl border p-5 text-left transition ${
+                  className={`rounded-2xl border p-5 text-left transition min-h-[140px] flex flex-col justify-between ${
                     active
                       ? "border-slate-900 bg-slate-900 text-white shadow-md"
                       : "border-slate-200 bg-slate-50 text-slate-900 hover:bg-white hover:shadow-sm"
