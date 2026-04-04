@@ -1450,18 +1450,262 @@ function renderSpillerprofil() {
   }
 
 function renderTraeningsbank() {
-  const combinedDrills = [...savedDrills, ...drillLibrary.filter((drill) => !savedDrills.some((saved) => saved.title === drill.title))];
+  const combinedDrills = [
+    ...savedDrills,
+    ...drillLibrary.filter(
+      (drill) => !savedDrills.some((saved) => saved.title === drill.title)
     ),
   ];
-  
+
   return (
     <>
-      <PageHeader title="Øvelsesbank" text="Opret nye øvelser i venstre side. Gemte øvelser vises i midten og kan senere bruges i træningsplaner." />
-      ...
+      <h1 className="page-title">Træningsbank</h1>
+      <p className="page-text">
+        Øvelsesbank bygget i samme stil som spillermenuen, med oprettelse af øvelser, detaljer og session builder.
+      </p>
+
+      <div className="players-layout">
+        <div className="players-sidebar">
+          <div className="section-title">Ny øvelse</div>
+          <div className="players-help">
+            Opret øvelser og vælg dem i listen nedenfor.
+          </div>
+
+          <form onSubmit={handleCreateDrill} className="player-form">
+            <div className="form-group">
+              <label className="form-label">Navn</label>
+              <input
+                className="form-input"
+                value={drillForm.title}
+                onChange={(e) => setDrillForm({ ...drillForm, title: e.target.value })}
+                placeholder="Fx 3v2 gennembrud i vingzone"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Kategori</label>
+              <select
+                className="form-input"
+                value={drillForm.category}
+                onChange={(e) => setDrillForm({ ...drillForm, category: e.target.value })}
+              >
+                <option>Basic teknisk</option>
+                <option>Basic taktisk</option>
+                <option>Pasningsspil</option>
+                <option>Afslutninger</option>
+                <option>Pres</option>
+                <option>Spiløvelser</option>
+              </select>
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">Fokus</label>
+                <input
+                  className="form-input"
+                  value={drillForm.focus}
+                  onChange={(e) => setDrillForm({ ...drillForm, focus: e.target.value })}
+                  placeholder="Fx Pasninger og orientering"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Aldersgruppe</label>
+                <input
+                  className="form-input"
+                  value={drillForm.ageGroup}
+                  onChange={(e) => setDrillForm({ ...drillForm, ageGroup: e.target.value })}
+                  placeholder="Fx U11-U12"
+                />
+              </div>
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">Intensitet</label>
+                <select
+                  className="form-input"
+                  value={drillForm.intensity}
+                  onChange={(e) => setDrillForm({ ...drillForm, intensity: e.target.value })}
+                >
+                  <option value="1">1 - meget lav</option>
+                  <option value="2">2 - lav</option>
+                  <option value="3">3 - medium</option>
+                  <option value="4">4 - høj</option>
+                  <option value="5">5 - meget høj</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Varighed</label>
+                <input
+                  type="number"
+                  className="form-input"
+                  value={drillForm.duration}
+                  onChange={(e) => setDrillForm({ ...drillForm, duration: e.target.value })}
+                  placeholder="15"
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Beskrivelse</label>
+              <textarea
+                className="profile-notes-input"
+                value={drillForm.description}
+                onChange={(e) => setDrillForm({ ...drillForm, description: e.target.value })}
+                placeholder="Beskriv øvelsen og dens formål"
+              />
+            </div>
+
+            <button type="submit" className="primary-btn form-button" disabled={isSavingDrill}>
+              {isSavingDrill ? "Gemmer..." : "Gem øvelse"}
+            </button>
+
+            {drillMessage ? <div className="form-feedback">{drillMessage}</div> : null}
+          </form>
+
+          <div className="section-title" style={{ marginTop: 24 }}>Gemte øvelser</div>
+          <div className="players-help">Klik på en øvelse for at se detaljer</div>
+
+          <div className="players-team-list">
+            {combinedDrills.map((drill, index) => {
+              const active = selectedDrill?.title === drill.title;
+
+              return (
+                <button
+                  key={drill.id || `${drill.title}-${index}`}
+                  onClick={() => setSelectedDrill(drill)}
+                  className={`players-team-btn ${active ? "active" : ""}`}
+                >
+                  <div>{drill.title}</div>
+                  <div className="players-team-year">
+                    {drill.category} · Intensitet {drill.intensity}/5
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="players-main">
+          <div className="stats-grid">
+            <div className="stat-card">
+              <div className="stat-label">Øvelser</div>
+              <div className="stat-value">{combinedDrills.length}</div>
+              <div className="stat-help">Database + bibliotek</div>
+            </div>
+
+            <div className="stat-card">
+              <div className="stat-label">Aktivt hold</div>
+              <div className="stat-value">{selectedTeam}</div>
+              <div className="stat-help">Valgt årgang</div>
+            </div>
+
+            <div className="stat-card">
+              <div className="stat-label">Måned</div>
+              <div className="stat-value">{selectedMonth}</div>
+              <div className="stat-help">Aktuel planperiode</div>
+            </div>
+
+            <div className="stat-card">
+              <div className="stat-label">Valgt uge</div>
+              <div className="stat-value">{selectedWeek?.week || "-"}</div>
+              <div className="stat-help">Kobling til periodisering</div>
+            </div>
+          </div>
+
+          <div className="dashboard-grid" style={{ marginTop: 24 }}>
+            <div className="dashboard-card">
+              <div className="section-title">Øvelsesdetaljer</div>
+
+              {selectedDrill ? (
+                <>
+                  <div className="training-list">
+                    <div className="training-item">
+                      <div className="training-top">
+                        <div>
+                          <div className="training-block">{selectedDrill.category}</div>
+                          <div className="training-title">{selectedDrill.title}</div>
+                        </div>
+                        <div className="training-duration">{selectedDrill.duration} min</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="player-stats" style={{ marginTop: 16 }}>
+                    <div className="player-stat-row">
+                      <span>Fokus</span>
+                      <strong>{selectedDrill.focus}</strong>
+                    </div>
+                    <div className="player-stat-row">
+                      <span>Intensitet</span>
+                      <strong>{selectedDrill.intensity}/5</strong>
+                    </div>
+                    <div className="player-stat-row">
+                      <span>Aldersgruppe</span>
+                      <strong>{selectedDrill.ageGroup || "Ikke angivet"}</strong>
+                    </div>
+                  </div>
+
+                  <div className="profile-card" style={{ marginTop: 20 }}>
+                    <div className="section-title">Beskrivelse</div>
+                    <textarea
+                      className="profile-notes-input"
+                      value={selectedDrill.description || ""}
+                      readOnly
+                    />
+                  </div>
+                </>
+              ) : (
+                <div className="players-help">Vælg en øvelse i venstre side</div>
+              )}
+            </div>
+
+            <div className="dashboard-card">
+              <div className="section-title">Session builder</div>
+              <div className="players-help">
+                Træningspas bygget i samme rene stil som spillermenuen.
+              </div>
+
+              <div className="training-list" style={{ marginTop: 20 }}>
+                {weekPlan.map((item) => (
+                  <div key={item.title} className="training-item">
+                    <div className="training-top">
+                      <div>
+                        <div className="training-block">{item.block}</div>
+                        <div className="training-title">{item.title}</div>
+                      </div>
+                      <div className="training-duration">{item.duration} min</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="profile-card" style={{ marginTop: 20 }}>
+                <div className="section-title">Kobling til ugeplan</div>
+
+                <div className="player-tags">
+                  {(selectedWeek?.focus || []).length > 0 ? (
+                    selectedWeek.focus.map((f: string) => (
+                      <span key={f} className="player-tag">
+                        {f}
+                      </span>
+                    ))
+                  ) : (
+                    <span className="player-tag">Ingen uge valgt</span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
-  }
 
 function renderPeriodisering() {
   const availableSubThemes =
