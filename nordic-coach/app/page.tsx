@@ -599,9 +599,6 @@ const focusAreaOptions = [
   "Styrkevedligehold",
 ];
 
-const currentTeamPlayerNames = currentPlayers.map((player) => player.name);
-const currentWeeksForDropdown = currentWeeks.map((week: any) => week.week);
-
   const navigation = [
     "Dashboard",
     "Hold",
@@ -673,6 +670,8 @@ const currentPlayers = (savedPlayers[selectedTeam] || []).map((player) => ({
   const currentTeam = teams.find((team) => team.name === selectedTeam) || teams[0];
   const currentPlayStyle = playStyle.find((group) => group.title === selectedPlayStyleGroup) || playStyle[0];
   const currentWeeks: any[] = periodization[selectedMonth] || [];
+  const currentTeamPlayerNames = currentPlayers.map((player) => player.name);
+  const currentWeeksForDropdown = currentWeeks.map((week: any) => week.week);
 
   useEffect(() => {
     async function loadDrills() {
