@@ -1500,6 +1500,22 @@ function toggleSelection(
     prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]
   );
 }
+  function addUniqueItem(
+  value: string,
+  selected: string[],
+  setSelected: React.Dispatch<React.SetStateAction<string[]>>
+) {
+  if (!value) return;
+  if (selected.includes(value)) return;
+  setSelected((prev) => [...prev, value]);
+}
+
+function removeItem(
+  value: string,
+  setSelected: React.Dispatch<React.SetStateAction<string[]>>
+) {
+  setSelected((prev) => prev.filter((item) => item !== value));
+}
 function renderTraeningsbank() {
   const combinedDrills = [
     ...savedDrills,
@@ -1586,60 +1602,122 @@ function renderTraeningsbank() {
             </select>
           </div>
 
-          <div style={{ marginTop: 18 }}>
-            <strong>Materialer:</strong>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
-              {materialOptions.map((item) => {
-                const active = selectedMaterials.includes(item);
-                return (
-                  <button
-                    key={item}
-                    type="button"
-                    onClick={() => toggleSelection(item, selectedMaterials, setSelectedMaterials)}
-                    style={{
-                      borderRadius: 9999,
-                      border: active ? "1px solid #0f172a" : "1px solid #cbd5e1",
-                      background: active ? "#0f172a" : "#ffffff",
-                      color: active ? "#ffffff" : "#334155",
-                      padding: "6px 10px",
-                      fontSize: 12,
-                      cursor: "pointer",
-                    }}
-                  >
-                    {item}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+<div style={{ marginTop: 18 }}>
+  <strong>Materialer:</strong>
 
-          <div style={{ marginTop: 18 }}>
-            <strong>Fokus:</strong>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
-              {focusAreaOptions.map((item) => {
-                const active = selectedFocusAreas.includes(item);
-                return (
-                  <button
-                    key={item}
-                    type="button"
-                    onClick={() => toggleSelection(item, selectedFocusAreas, setSelectedFocusAreas)}
-                    style={{
-                      borderRadius: 9999,
-                      border: active ? "1px solid #0f172a" : "1px solid #cbd5e1",
-                      background: active ? "#0f172a" : "#ffffff",
-                      color: active ? "#ffffff" : "#334155",
-                      padding: "6px 10px",
-                      fontSize: 12,
-                      cursor: "pointer",
-                    }}
-                  >
-                    {item}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+  <select
+    defaultValue=""
+    className="form-input"
+    style={{ marginTop: 8 }}
+    onChange={(e) => {
+      addUniqueItem(e.target.value, selectedMaterials, setSelectedMaterials);
+      e.target.value = "";
+    }}
+  >
+    <option value="">Vælg materiale</option>
+    {materialOptions.map((item) => (
+      <option key={item} value={item}>
+        {item}
+      </option>
+    ))}
+  </select>
 
+  <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 10 }}>
+    {selectedMaterials.length > 0 ? (
+      selectedMaterials.map((item) => (
+        <div
+          key={item}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            borderRadius: 9999,
+            background: "#f1f5f9",
+            padding: "6px 10px",
+            border: "1px solid #cbd5e1",
+          }}
+        >
+          <span style={{ fontSize: 12 }}>{item}</span>
+          <button
+            type="button"
+            onClick={() => removeItem(item, setSelectedMaterials)}
+            style={{
+              border: "none",
+              background: "transparent",
+              cursor: "pointer",
+              fontSize: 14,
+              fontWeight: 700,
+              lineHeight: 1,
+              padding: 0,
+            }}
+          >
+            ×
+          </button>
+        </div>
+      ))
+    ) : (
+      <div style={{ fontSize: 12, color: "#64748b" }}>Ingen materialer valgt</div>
+    )}
+  </div>
+</div>
+<div style={{ marginTop: 18 }}>
+  <strong>Fokus:</strong>
+
+  <select
+    defaultValue=""
+    className="form-input"
+    style={{ marginTop: 8 }}
+    onChange={(e) => {
+      addUniqueItem(e.target.value, selectedFocusAreas, setSelectedFocusAreas);
+      e.target.value = "";
+    }}
+  >
+    <option value="">Vælg fokusområde</option>
+    {focusAreaOptions.map((item) => (
+      <option key={item} value={item}>
+        {item}
+      </option>
+    ))}
+  </select>
+
+  <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 10 }}>
+    {selectedFocusAreas.length > 0 ? (
+      selectedFocusAreas.map((item) => (
+        <div
+          key={item}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            borderRadius: 9999,
+            background: "#f1f5f9",
+            padding: "6px 10px",
+            border: "1px solid #cbd5e1",
+          }}
+        >
+          <span style={{ fontSize: 12 }}>{item}</span>
+          <button
+            type="button"
+            onClick={() => removeItem(item, setSelectedFocusAreas)}
+            style={{
+              border: "none",
+              background: "transparent",
+              cursor: "pointer",
+              fontSize: 14,
+              fontWeight: 700,
+              lineHeight: 1,
+              padding: 0,
+            }}
+          >
+            ×
+          </button>
+        </div>
+      ))
+    ) : (
+      <div style={{ fontSize: 12, color: "#64748b" }}>Ingen fokusområder valgt</div>
+    )}
+  </div>
+</div>
           <hr style={{ margin: "18px 0", borderColor: "#94a3b8" }} />
 
           <div>
