@@ -1556,18 +1556,18 @@ function renderTraeningsbank() {
 
           <div style={{ marginBottom: 12 }}>
             <strong>Cyklus / uge:</strong>
-            <select
-              value={trainingWeek}
-              onChange={(e) => setTrainingWeek(e.target.value)}
-              className="form-input"
-              style={{ marginTop: 6 }}
-            >
-              {currentWeeksForDropdown.map((week) => (
-                <option key={week} value={week}>
-                  {week}
-                </option>
-              ))}
-            </select>
+           <select
+  value={trainingWeek}
+  onChange={(e) => setTrainingWeek(e.target.value)}
+  className="form-input"
+  style={{ marginTop: 6 }}
+>
+  {allTrainingWeeks.map((week) => (
+    <option key={week} value={week}>
+      {week}
+    </option>
+  ))}
+</select>
           </div>
 
           <div style={{ marginTop: 10 }}>
@@ -1841,6 +1841,52 @@ function renderTraeningsbank() {
               ))}
             </div>
           </div>
+          <hr style={{ margin: "18px 0", borderColor: "#94a3b8" }} />
+
+<div style={{ marginTop: 18 }}>
+  <strong>Intensitet:</strong>
+
+  <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 8 }}>
+    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+      <span
+        style={{
+          background: "#22c55e",
+          display: "inline-block",
+          width: 14,
+          height: 14,
+          borderRadius: 3,
+        }}
+      />
+      <span style={{ fontSize: 13 }}>72% - 83% HR</span>
+    </div>
+
+    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+      <span
+        style={{
+          background: "#eab308",
+          display: "inline-block",
+          width: 14,
+          height: 14,
+          borderRadius: 3,
+        }}
+      />
+      <span style={{ fontSize: 13 }}>84% - 89% HR</span>
+    </div>
+
+    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+      <span
+        style={{
+          background: "#ef4444",
+          display: "inline-block",
+          width: 14,
+          height: 14,
+          borderRadius: 3,
+        }}
+      />
+      <span style={{ fontSize: 13 }}>&gt; 90% HR</span>
+    </div>
+  </div>
+</div>
         </div>
 
         <div
