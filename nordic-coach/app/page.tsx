@@ -1529,341 +1529,6 @@ function renderTraeningsbank() {
           marginTop: 24,
         }}
       >
-{/* VENSTRE KOLONNE */}
-<div
-  style={{
-    borderRight: "1px solid #94a3b8",
-    padding: 16,
-    fontSize: 14,
-    lineHeight: 1.5,
-  }}
->
-  <div style={{ fontWeight: 700, marginBottom: 8 }}>
-    Træning
-  </div>
-
-  <div style={{ marginBottom: 12 }}>
-    <strong>Cyklus / uge:</strong>
-    <select
-      value={trainingWeek}
-      onChange={(e) => setTrainingWeek(e.target.value)}
-      className="form-input"
-      style={{ marginTop: 6 }}
-    >
-      {currentWeeksForDropdown.map((week) => (
-        <option key={week} value={week}>
-          {week}
-        </option>
-      ))}
-    </select>
-  </div>
-
-  <div style={{ marginTop: 10 }}>
-    <strong>Varighed:</strong>
-    <select
-      value={trainingDuration}
-      onChange={(e) => setTrainingDuration(e.target.value)}
-      className="form-input"
-      style={{ marginTop: 6 }}
-    >
-      <option value="60">60 min</option>
-      <option value="75">75 min</option>
-      <option value="90">90 min</option>
-      <option value="105">105 min</option>
-      <option value="120">120 min</option>
-    </select>
-  </div>
-
-  <div style={{ marginTop: 10 }}>
-    <strong>Intensitet:</strong>{" "}
-    <span style={{ background: "#22c55e", display: "inline-block", width: 18, height: 14 }} />
-    <span style={{ background: "#eab308", display: "inline-block", width: 18, height: 14 }} />
-  </div>
-
-  <div style={{ marginTop: 10 }}>
-    <strong>Bane:</strong>
-    <select
-      value={trainingPitch}
-      onChange={(e) => setTrainingPitch(e.target.value)}
-      className="form-input"
-      style={{ marginTop: 6 }}
-    >
-      {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((pitch) => (
-        <option key={pitch} value={String(pitch)}>
-          Bane {pitch}
-        </option>
-      ))}
-    </select>
-  </div>
-
-  <div style={{ marginTop: 18 }}>
-    <strong>Materialer:</strong>
-    <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
-      {materialOptions.map((item) => {
-        const active = selectedMaterials.includes(item);
-        return (
-          <button
-            key={item}
-            type="button"
-            onClick={() => toggleSelection(item, selectedMaterials, setSelectedMaterials)}
-            style={{
-              borderRadius: 9999,
-              border: active ? "1px solid #0f172a" : "1px solid #cbd5e1",
-              background: active ? "#0f172a" : "#ffffff",
-              color: active ? "#ffffff" : "#334155",
-              padding: "6px 10px",
-              fontSize: 12,
-              cursor: "pointer",
-            }}
-          >
-            {item}
-          </button>
-        );
-      })}
-    </div>
-  </div>
-
-  <div style={{ marginTop: 18 }}>
-    <strong>Fokus:</strong>
-    <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
-      {focusAreaOptions.map((item) => {
-        const active = selectedFocusAreas.includes(item);
-        return (
-          <button
-            key={item}
-            type="button"
-            onClick={() => toggleSelection(item, selectedFocusAreas, setSelectedFocusAreas)}
-            style={{
-              borderRadius: 9999,
-              border: active ? "1px solid #0f172a" : "1px solid #cbd5e1",
-              background: active ? "#0f172a" : "#ffffff",
-              color: active ? "#ffffff" : "#334155",
-              padding: "6px 10px",
-              fontSize: 12,
-              cursor: "pointer",
-            }}
-          >
-            {item}
-          </button>
-        );
-      })}
-    </div>
-  </div>
-
-  <hr style={{ margin: "18px 0", borderColor: "#94a3b8" }} />
-
-  <div>
-    <strong>Keepere</strong>
-    <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
-      {currentTeamPlayerNames.map((name) => {
-        const active = selectedKeepers.includes(name);
-        return (
-          <button
-            key={name}
-            type="button"
-            onClick={() => toggleSelection(name, selectedKeepers, setSelectedKeepers)}
-            style={{
-              borderRadius: 9999,
-              border: active ? "1px solid #0f172a" : "1px solid #cbd5e1",
-              background: active ? "#0f172a" : "#ffffff",
-              color: active ? "#ffffff" : "#334155",
-              padding: "6px 10px",
-              fontSize: 12,
-              cursor: "pointer",
-            }}
-          >
-            {name}
-          </button>
-        );
-      })}
-    </div>
-  </div>
-
-  <div style={{ marginTop: 14 }}>
-    <strong>Forsvar</strong>
-    <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
-      {currentTeamPlayerNames.map((name) => {
-        const active = selectedDefenders.includes(name);
-        return (
-          <button
-            key={name}
-            type="button"
-            onClick={() => toggleSelection(name, selectedDefenders, setSelectedDefenders)}
-            style={{
-              borderRadius: 9999,
-              border: active ? "1px solid #0f172a" : "1px solid #cbd5e1",
-              background: active ? "#0f172a" : "#ffffff",
-              color: active ? "#ffffff" : "#334155",
-              padding: "6px 10px",
-              fontSize: 12,
-              cursor: "pointer",
-            }}
-          >
-            {name}
-          </button>
-        );
-      })}
-    </div>
-  </div>
-
-  <div style={{ marginTop: 14 }}>
-    <strong>Midtbane</strong>
-    <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
-      {currentTeamPlayerNames.map((name) => {
-        const active = selectedMidfielders.includes(name);
-        return (
-          <button
-            key={name}
-            type="button"
-            onClick={() => toggleSelection(name, selectedMidfielders, setSelectedMidfielders)}
-            style={{
-              borderRadius: 9999,
-              border: active ? "1px solid #0f172a" : "1px solid #cbd5e1",
-              background: active ? "#0f172a" : "#ffffff",
-              color: active ? "#ffffff" : "#334155",
-              padding: "6px 10px",
-              fontSize: 12,
-              cursor: "pointer",
-            }}
-          >
-            {name}
-          </button>
-        );
-      })}
-    </div>
-  </div>
-
-  <div style={{ marginTop: 14 }}>
-    <strong>Angribere</strong>
-    <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
-      {currentTeamPlayerNames.map((name) => {
-        const active = selectedAttackers.includes(name);
-        return (
-          <button
-            key={name}
-            type="button"
-            onClick={() => toggleSelection(name, selectedAttackers, setSelectedAttackers)}
-            style={{
-              borderRadius: 9999,
-              border: active ? "1px solid #0f172a" : "1px solid #cbd5e1",
-              background: active ? "#0f172a" : "#ffffff",
-              color: active ? "#ffffff" : "#334155",
-              padding: "6px 10px",
-              fontSize: 12,
-              cursor: "pointer",
-            }}
-          >
-            {name}
-          </button>
-        );
-      })}
-    </div>
-  </div>
-
-  <hr style={{ margin: "18px 0", borderColor: "#94a3b8" }} />
-
-  <div>
-    <strong>SKADER / AFBUD</strong>
-    <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
-      {currentTeamPlayerNames.map((name) => {
-        const active = selectedAbsentPlayers.includes(name);
-        return (
-          <button
-            key={name}
-            type="button"
-            onClick={() => toggleSelection(name, selectedAbsentPlayers, setSelectedAbsentPlayers)}
-            style={{
-              borderRadius: 9999,
-              border: active ? "1px solid #b91c1c" : "1px solid #cbd5e1",
-              background: active ? "#fee2e2" : "#ffffff",
-              color: active ? "#b91c1c" : "#334155",
-              padding: "6px 10px",
-              fontSize: 12,
-              cursor: "pointer",
-            }}
-          >
-            {name}
-          </button>
-        );
-      })}
-    </div>
-  </div>
-</div>
-          <div style={{ fontWeight: 700 }}>
-            Træning: 18 (16) + 1. KB, CD, ML + STJ
-          </div>
-          <div>Cyklus/uge:</div>
-
-          <div style={{ marginTop: 10 }}>
-            <strong>Varighed:</strong> 90 min
-          </div>
-          <div>
-            <strong>Intensitet:</strong>{" "}
-            <span style={{ background: "#22c55e", display: "inline-block", width: 18, height: 14 }} />
-            <span style={{ background: "#eab308", display: "inline-block", width: 18, height: 14 }} />
-          </div>
-          <div><strong>Bane:</strong> 5 (hel bane)</div>
-          <div><strong>MMT:</strong> 17:00 – 17:40</div>
-
-          <div style={{ marginTop: 18 }}>
-            <strong>Materialer:</strong>
-            <div>2 x trøjer (orange + gul), 2 x toppe, 19 bolde, stænger</div>
-          </div>
-
-          <div style={{ marginTop: 18 }}>
-            <strong>Fokus:</strong>{" "}
-            {selectedWeekFocus.length > 0
-              ? selectedWeekFocus.join(", ")
-              : "Restitution, EP, styrkevedligehold"}
-          </div>
-
-          <hr style={{ margin: "18px 0", borderColor: "#94a3b8" }} />
-
-          <div>
-            <strong>Keepere: 1</strong>
-            <div>Stina, Vibeke</div>
-          </div>
-
-          <div style={{ marginTop: 14 }}>
-            <strong>Forsvar: 4</strong>
-            <div>Benedikte, Caroline S, Eriksen, Riis</div>
-          </div>
-
-          <div style={{ marginTop: 14 }}>
-            <strong>Midtbane: 7</strong>
-            <div>Mia, Cathrine, Schioldan, Thrige, Boysen, Mille, Caroline J</div>
-          </div>
-
-          <div style={{ marginTop: 14 }}>
-            <strong>Angribere: 6</strong>
-            <div>Julie O, Emma, Lykke K, Ida</div>
-          </div>
-
-          <hr style={{ margin: "18px 0", borderColor: "#94a3b8" }} />
-
-          <div>
-            <strong>SKADER/AFBUD:</strong>
-            <div style={{ color: "red" }}>Lykke S (knæ genoptræning)</div>
-            <div>Lotte (Arbejde)</div>
-            <div>Mette (syg)</div>
-          </div>
-
-          <div style={{ marginTop: 18 }}>
-            <strong>OBS:</strong>
-            <div>Caroline S (80 min i KSV kamp)</div>
-            <div>Caroline J + Julie (90 min. KSV kamp)</div>
-            <div>Julie O fuldtid</div>
-          </div>
-
-          <div style={{ marginTop: 18 }}>
-            <strong>Intensitet:</strong>
-            <div><span style={{ background: "#22c55e", display: "inline-block", width: 12, height: 12, marginRight: 6 }} />72% - 83% HR</div>
-            <div><span style={{ background: "#eab308", display: "inline-block", width: 12, height: 12, marginRight: 6 }} />84% - 89% HR</div>
-            <div><span style={{ background: "#ef4444", display: "inline-block", width: 12, height: 12, marginRight: 6 }} />&gt; 90% HR</div>
-          </div>
-        </div>
-
-        {/* MIDTER KOLONNE */}
         <div
           style={{
             borderRight: "1px solid #94a3b8",
@@ -1872,66 +1537,247 @@ function renderTraeningsbank() {
             lineHeight: 1.5,
           }}
         >
-          <div style={{ fontWeight: 700, display: "flex", justifyContent: "space-between" }}>
-            <span>17:00 – 17:30 Opvarmning (KB)</span>
-            <span>
-              <span style={{ background: "#22c55e", display: "inline-block", width: 18, height: 14 }} />
-              <span style={{ background: "#eab308", display: "inline-block", width: 18, height: 14 }} />
-            </span>
+          <div style={{ fontWeight: 700, marginBottom: 8 }}>Træning</div>
+
+          <div style={{ marginBottom: 12 }}>
+            <strong>Cyklus / uge:</strong>
+            <select
+              value={trainingWeek}
+              onChange={(e) => setTrainingWeek(e.target.value)}
+              className="form-input"
+              style={{ marginTop: 6 }}
+            >
+              {currentWeeksForDropdown.map((week) => (
+                <option key={week} value={week}>
+                  {week}
+                </option>
+              ))}
+            </select>
           </div>
 
-          <div>05 Løb og bevægelighed (samlet)</div>
-          <div style={{ marginTop: 10 }}>15 Teknisk Cirkel</div>
-          <div>10 Kant</div>
-          <div>05 Dynamisk stræk</div>
+          <div style={{ marginTop: 10 }}>
+            <strong>Varighed:</strong>
+            <select
+              value={trainingDuration}
+              onChange={(e) => setTrainingDuration(e.target.value)}
+              className="form-input"
+              style={{ marginTop: 6 }}
+            >
+              <option value="60">60 min</option>
+              <option value="75">75 min</option>
+              <option value="90">90 min</option>
+              <option value="105">105 min</option>
+              <option value="120">120 min</option>
+            </select>
+          </div>
 
-          <div style={{ marginTop: 40 }}>2 stk. stigningsløb</div>
+          <div style={{ marginTop: 10 }}>
+            <strong>Bane:</strong>
+            <select
+              value={trainingPitch}
+              onChange={(e) => setTrainingPitch(e.target.value)}
+              className="form-input"
+              style={{ marginTop: 6 }}
+            >
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((pitch) => (
+                <option key={pitch} value={String(pitch)}>
+                  Bane {pitch}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div style={{ marginTop: 18 }}>
+            <strong>Materialer:</strong>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
+              {materialOptions.map((item) => {
+                const active = selectedMaterials.includes(item);
+                return (
+                  <button
+                    key={item}
+                    type="button"
+                    onClick={() => toggleSelection(item, selectedMaterials, setSelectedMaterials)}
+                    style={{
+                      borderRadius: 9999,
+                      border: active ? "1px solid #0f172a" : "1px solid #cbd5e1",
+                      background: active ? "#0f172a" : "#ffffff",
+                      color: active ? "#ffffff" : "#334155",
+                      padding: "6px 10px",
+                      fontSize: 12,
+                      cursor: "pointer",
+                    }}
+                  >
+                    {item}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div style={{ marginTop: 18 }}>
+            <strong>Fokus:</strong>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
+              {focusAreaOptions.map((item) => {
+                const active = selectedFocusAreas.includes(item);
+                return (
+                  <button
+                    key={item}
+                    type="button"
+                    onClick={() => toggleSelection(item, selectedFocusAreas, setSelectedFocusAreas)}
+                    style={{
+                      borderRadius: 9999,
+                      border: active ? "1px solid #0f172a" : "1px solid #cbd5e1",
+                      background: active ? "#0f172a" : "#ffffff",
+                      color: active ? "#ffffff" : "#334155",
+                      padding: "6px 10px",
+                      fontSize: 12,
+                      cursor: "pointer",
+                    }}
+                  >
+                    {item}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
           <hr style={{ margin: "18px 0", borderColor: "#94a3b8" }} />
 
-          <div style={{ fontWeight: 700, display: "flex", justifyContent: "space-between" }}>
-            <span>17:40 – 17:55 3v2 gennembrud i vingzone</span>
-            <span>
-              <span style={{ background: "#22c55e", display: "inline-block", width: 18, height: 14 }} />
-              <span style={{ background: "#eab308", display: "inline-block", width: 18, height: 14 }} />
-            </span>
-          </div>
-
-          <div
-            style={{
-              marginTop: 10,
-              width: 140,
-              height: 140,
-              background: "#16a34a",
-              border: "1px solid #94a3b8",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#fff",
-              fontWeight: 700,
-            }}
-          >
-            Øvelsesbillede
-          </div>
-
-          <div style={{ marginTop: 8 }}>Rotation: skiftevis forsvar og angriber.</div>
-
-          <div style={{ marginTop: 14 }}>
-            <strong>Venstre side:</strong>
-            <div>Midtstopper: BS (rotation med IG + STA)</div>
-            <div>Kant: Schioldan, Mia, Boysen</div>
-            <div>CM: Thrige, Ida</div>
+          <div>
+            <strong>Keepere</strong>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
+              {currentTeamPlayerNames.map((name) => (
+                <button
+                  key={name}
+                  type="button"
+                  onClick={() => toggleSelection(name, selectedKeepers, setSelectedKeepers)}
+                  style={{
+                    borderRadius: 9999,
+                    border: selectedKeepers.includes(name) ? "1px solid #0f172a" : "1px solid #cbd5e1",
+                    background: selectedKeepers.includes(name) ? "#0f172a" : "#ffffff",
+                    color: selectedKeepers.includes(name) ? "#ffffff" : "#334155",
+                    padding: "6px 10px",
+                    fontSize: 12,
+                    cursor: "pointer",
+                  }}
+                >
+                  {name}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div style={{ marginTop: 14 }}>
-            <strong>Højre side:</strong>
-            <div>Midtstopper: ML, CS</div>
-            <div>Kant: CBG, CJ</div>
-            <div>CM: Louise, Mille</div>
+            <strong>Forsvar</strong>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
+              {currentTeamPlayerNames.map((name) => (
+                <button
+                  key={name}
+                  type="button"
+                  onClick={() => toggleSelection(name, selectedDefenders, setSelectedDefenders)}
+                  style={{
+                    borderRadius: 9999,
+                    border: selectedDefenders.includes(name) ? "1px solid #0f172a" : "1px solid #cbd5e1",
+                    background: selectedDefenders.includes(name) ? "#0f172a" : "#ffffff",
+                    color: selectedDefenders.includes(name) ? "#ffffff" : "#334155",
+                    padding: "6px 10px",
+                    fontSize: 12,
+                    cursor: "pointer",
+                  }}
+                >
+                  {name}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ marginTop: 14 }}>
+            <strong>Midtbane</strong>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
+              {currentTeamPlayerNames.map((name) => (
+                <button
+                  key={name}
+                  type="button"
+                  onClick={() => toggleSelection(name, selectedMidfielders, setSelectedMidfielders)}
+                  style={{
+                    borderRadius: 9999,
+                    border: selectedMidfielders.includes(name) ? "1px solid #0f172a" : "1px solid #cbd5e1",
+                    background: selectedMidfielders.includes(name) ? "#0f172a" : "#ffffff",
+                    color: selectedMidfielders.includes(name) ? "#ffffff" : "#334155",
+                    padding: "6px 10px",
+                    fontSize: 12,
+                    cursor: "pointer",
+                  }}
+                >
+                  {name}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ marginTop: 14 }}>
+            <strong>Angribere</strong>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
+              {currentTeamPlayerNames.map((name) => (
+                <button
+                  key={name}
+                  type="button"
+                  onClick={() => toggleSelection(name, selectedAttackers, setSelectedAttackers)}
+                  style={{
+                    borderRadius: 9999,
+                    border: selectedAttackers.includes(name) ? "1px solid #0f172a" : "1px solid #cbd5e1",
+                    background: selectedAttackers.includes(name) ? "#0f172a" : "#ffffff",
+                    color: selectedAttackers.includes(name) ? "#ffffff" : "#334155",
+                    padding: "6px 10px",
+                    fontSize: 12,
+                    cursor: "pointer",
+                  }}
+                >
+                  {name}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <hr style={{ margin: "18px 0", borderColor: "#94a3b8" }} />
+
+          <div>
+            <strong>SKADER / AFBUD</strong>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
+              {currentTeamPlayerNames.map((name) => (
+                <button
+                  key={name}
+                  type="button"
+                  onClick={() => toggleSelection(name, selectedAbsentPlayers, setSelectedAbsentPlayers)}
+                  style={{
+                    borderRadius: 9999,
+                    border: selectedAbsentPlayers.includes(name) ? "1px solid #b91c1c" : "1px solid #cbd5e1",
+                    background: selectedAbsentPlayers.includes(name) ? "#fee2e2" : "#ffffff",
+                    color: selectedAbsentPlayers.includes(name) ? "#b91c1c" : "#334155",
+                    padding: "6px 10px",
+                    fontSize: 12,
+                    cursor: "pointer",
+                  }}
+                >
+                  {name}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* HØJRE KOLONNE */}
+        <div
+          style={{
+            borderRight: "1px solid #94a3b8",
+            padding: 16,
+            fontSize: 14,
+            lineHeight: 1.5,
+          }}
+        >
+          <div style={{ fontWeight: 700 }}>Midterkolonne</div>
+          <div style={{ marginTop: 8 }}>Her bygger vi næste trin med øvelsestid, varighed og intensitet.</div>
+        </div>
+
         <div
           style={{
             padding: 16,
@@ -1939,67 +1785,8 @@ function renderTraeningsbank() {
             lineHeight: 1.5,
           }}
         >
-          <div style={{ fontWeight: 700, display: "flex", justifyContent: "space-between" }}>
-            <span>17:55 – 18:05 6v6 + 1N</span>
-            <span>
-              <span style={{ background: "#eab308", display: "inline-block", width: 18, height: 14 }} />
-              <span style={{ background: "#ef4444", display: "inline-block", width: 18, height: 14 }} />
-            </span>
-          </div>
-
-          <div>På to store mål (Kian på mål?)</div>
-
-          <div style={{ marginTop: 10 }}>
-            <div>A: Bene, Thrige + Louise, Emma + Lykke, Boysen</div>
-            <div>B: Mille + Cathrine, Schioldan + Ida, Mia, Riis.</div>
-            <div>N:</div>
-          </div>
-
-          <div style={{ marginTop: 16 }}>
-            <strong>Fokus:</strong>
-            <div>DEF: Sid tæt i duellerne - aggressivitet</div>
-            <div>OFF: Få touch på bolden</div>
-          </div>
-
-          <div style={{ marginTop: 16 }}>
-            <div>TT: 3 x 2 ½ min</div>
-            <div>TP: 1 – 1 ½ min</div>
-          </div>
-
-          <hr style={{ margin: "18px 0", borderColor: "#94a3b8" }} />
-
-          <div style={{ fontWeight: 700, display: "flex", justifyContent: "space-between" }}>
-            <span>17:55 – 18:05 Fodboldtennis (restitution)</span>
-            <span>
-              <span style={{ background: "#22c55e", display: "inline-block", width: 18, height: 14 }} />
-            </span>
-          </div>
-
-          <div>CJ, CS, JO</div>
-
-          <hr style={{ margin: "18px 0", borderColor: "#94a3b8" }} />
-
-          <div style={{ fontWeight: 700, display: "flex", justifyContent: "space-between" }}>
-            <span>18:10 – 18:30 Styrkevedligehold (1 sæt)</span>
-            <span>
-              <span style={{ background: "#22c55e", display: "inline-block", width: 18, height: 14 }} />
-            </span>
-          </div>
-
-          <div>8 rep Squat med vægtstang</div>
-          <div>8 rep Kettlesving</div>
-          <div>8 rep lunges med vægtstang</div>
-          <div>8 rep kettlebell skulder</div>
-          <div>15 rep swiss ball hamstring curls</div>
-          <div>25 rep armstrækninger</div>
-          <div>25 rep Mavebøjninger på bold</div>
-          <div>Planke 2 min</div>
-
-          <div style={{ marginTop: 14 }}>
-            Dem med lår og/eller lyskeproblemer laver IKKE squat, lunges og hamstring curls.
-          </div>
-
-          <div style={{ marginTop: 18 }}>
+          <div style={{ fontWeight: 700 }}>Højre kolonne</div>
+          <div style={{ marginTop: 8 }}>
             <strong>INFO:</strong>
           </div>
         </div>
