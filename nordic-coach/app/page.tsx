@@ -562,12 +562,14 @@ const periodization = {
   ],
 };
   
-  const weekPlan = [
-    { block: "Opvarmning", title: "3v1 possession", duration: 15 },
-    { block: "Teknisk", title: "1v1 retvendt", duration: 20 },
-    { block: "Afslutning", title: "Afslutninger 1", duration: 20 },
-    { block: "Spil", title: "Horst Wein 4v4", duration: 25 },
-    const materialOptions = [
+const weekPlan = [
+  { block: "Opvarmning", title: "3v1 possession", duration: 15 },
+  { block: "Teknisk", title: "1v1 retvendt", duration: 20 },
+  { block: "Afslutning", title: "Afslutninger 1", duration: 20 },
+  { block: "Spil", title: "Horst Wein 4v4", duration: 25 },
+];
+
+const materialOptions = [
   "Bolde",
   "Kegler",
   "Stænger",
