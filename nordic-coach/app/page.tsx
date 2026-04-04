@@ -1221,51 +1221,6 @@ function handleAddDevelopmentFocus() {
     );
   }
   
-async function handleAssignSelectedWeekToTeam() {
-  return;
-}
-
-  try {
-    const focusToAssign =
-      selectedSubThemes.length > 0
-        ? selectedSubThemes
-        : selectedWeek.focus ?? [];
-
-    let updatedCount = 0;
-
-    for (const player of teamPlayersList) {
-      if (!player.id) continue;
-
-      const existingFocus = player.developmentFocus ?? [];
-      const mergedFocus = [...new Set([...existingFocus, ...focusToAssign])];
-
-      await updateDoc(doc(db, "players", player.id), {
-        developmentFocus: mergedFocus,
-      });
-
-      updatedCount++;
-    }
-
-    setSavedPlayers((prev) => ({
-      ...prev,
-      [selectedTeam]: (prev[selectedTeam] || []).map((player) => {
-        const existingFocus = player.developmentFocus ?? [];
-        const mergedFocus = [...new Set([...existingFocus, ...focusToAssign])];
-
-        return {
-          ...player,
-          developmentFocus: mergedFocus,
-        };
-      }),
-    }));
-
-    alert(`Fokus er tildelt til ${updatedCount} spillere på ${selectedTeam}.`);
- } catch (error) {
-    console.error(error);
-    alert("Der opstod en fejl ved tildeling til holdet.");
-  }
-}
-
 function renderSpillerprofil() {
   if (!selectedPlayer) {
     return (
@@ -1634,31 +1589,22 @@ function renderPeriodisering() {
         </div>
 
         <div className="hold-main">
-          <div className="hold-header-card">
-            <div>
-              <div className="hold-main-title">{selectedMonth}</div>
-              <div className="hold-main-sub">
-                {(currentWeeks || []).length} uger i denne måned
-              </div>
-            </div>
+<div className="hold-header-card">
+  <div>
+    <div className="hold-main-title">{selectedMonth}</div>
+    <div className="hold-main-sub">
+      {(currentWeeks || []).length} uger i denne måned
+    </div>
+  </div>
 
-            {selectedWeek ? (
-              <button
-                type="button"
-                className="primary-btn"
-                onClick={handleAssignSelectedWeekToTeam}
-              >
-                Tildel ugens fokus til hold
-             <button
-  type="button"
-  className="primary-btn"
-  disabled
->
-  Kommer senere
-</button>
-            )}
-          </div>
-
+  <button
+    type="button"
+    className="primary-btn"
+    disabled
+  >
+    Kommer senere
+  </button>
+</div>
           <div className="stats-grid">
             <div className="stat-card">
               <div className="stat-label">Aktiv måned</div>
