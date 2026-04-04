@@ -1266,9 +1266,23 @@ async function handleAssignSelectedWeekToTeam() {
     }));
 
     alert(`Fokus er tildelt til ${updatedCount} spillere på ${selectedTeam}.`);
-  } catch (error) {
+ } catch (error) {
     console.error(error);
     alert("Der opstod en fejl ved tildeling til holdet.");
+  }
+}
+
+function renderSpillerprofil() {
+  if (!selectedPlayer) {
+    return (
+      <>
+        <h1 className="page-title">Spillerprofil</h1>
+        <p className="page-text">Vælg først en spiller fra spillersiden.</p>
+        <button className="primary-btn" onClick={() => setActivePage("Spillere")}>
+          Gå til spillere
+        </button>
+      </>
+    );
   }
   
   const profileStats = [
@@ -1977,7 +1991,7 @@ function renderPlaceholder(title: string) {
   );
 }
   
-  function renderPage() {
+   function renderPage() {
     switch (activePage) {
       case "Dashboard":
         return renderDashboard();
@@ -1996,6 +2010,7 @@ function renderPlaceholder(title: string) {
       default:
         return renderPlaceholder(activePage);
     }
+  }
 
  return (
   <div className="app-shell">
