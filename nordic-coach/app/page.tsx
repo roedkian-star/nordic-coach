@@ -601,7 +601,6 @@ const focusAreaOptions = [
 
 const currentTeamPlayerNames = currentPlayers.map((player) => player.name);
 const currentWeeksForDropdown = currentWeeks.map((week: any) => week.week);
-  ];
 
   const navigation = [
     "Dashboard",
