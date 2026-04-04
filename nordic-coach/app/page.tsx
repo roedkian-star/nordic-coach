@@ -599,6 +599,8 @@ const focusAreaOptions = [
   "Styrkevedligehold",
 ];
 
+  const allTrainingWeeks = Array.from({ length: 51 }, (_, i) => `Uge ${i + 1}`);
+  
   const navigation = [
     "Dashboard",
     "Hold",
