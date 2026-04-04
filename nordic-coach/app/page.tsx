@@ -1996,7 +1996,6 @@ function renderPlaceholder(title: string) {
       default:
         return renderPlaceholder(activePage);
     }
-  }
 
  return (
   <div className="app-shell">
