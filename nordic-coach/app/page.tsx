@@ -1451,7 +1451,9 @@ function renderSpillerprofil() {
 
 function renderTraeningsbank() {
   const combinedDrills = [...savedDrills, ...drillLibrary.filter((drill) => !savedDrills.some((saved) => saved.title === drill.title))];
-
+    ),
+  ];
+  
   return (
     <>
       <PageHeader title="Øvelsesbank" text="Opret nye øvelser i venstre side. Gemte øvelser vises i midten og kan senere bruges i træningsplaner." />
