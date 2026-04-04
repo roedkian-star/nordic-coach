@@ -1270,7 +1270,7 @@ async function handleAssignSelectedWeekToTeam() {
     console.error(error);
     alert("Der opstod en fejl ved tildeling til holdet.");
   }
-}
+  
   const profileStats = [
     { key: "technical", label: "Teknik", value: profileForm.technical },
     { key: "tactical", label: "Taktik", value: profileForm.tactical },
