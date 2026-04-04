@@ -46,6 +46,16 @@ export default function NordicCoachPrototype() {
   const [selectedMonth, setSelectedMonth] = useState("Januar");
   const [selectedWeek, setSelectedWeek] = useState<any>(null);
   const [selectedDrill, setSelectedDrill] = useState<SavedDrill | null>(null);
+  const [trainingWeek, setTrainingWeek] = useState("Uge 1");
+const [trainingDuration, setTrainingDuration] = useState("90");
+const [trainingPitch, setTrainingPitch] = useState("5");
+const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
+const [selectedFocusAreas, setSelectedFocusAreas] = useState<string[]>([]);
+const [selectedKeepers, setSelectedKeepers] = useState<string[]>([]);
+const [selectedDefenders, setSelectedDefenders] = useState<string[]>([]);
+const [selectedMidfielders, setSelectedMidfielders] = useState<string[]>([]);
+const [selectedAttackers, setSelectedAttackers] = useState<string[]>([]);
+const [selectedAbsentPlayers, setSelectedAbsentPlayers] = useState<string[]>([]);
   const [selectedSubThemes, setSelectedSubThemes] = useState<string[]>([]);
   const [drillForm, setDrillForm] = useState<DrillForm>({
     title: "",
@@ -557,6 +567,38 @@ const periodization = {
     { block: "Teknisk", title: "1v1 retvendt", duration: 20 },
     { block: "Afslutning", title: "Afslutninger 1", duration: 20 },
     { block: "Spil", title: "Horst Wein 4v4", duration: 25 },
+    const materialOptions = [
+  "Bolde",
+  "Kegler",
+  "Stænger",
+  "Toppe",
+  "Trøjer",
+  "Små mål",
+  "Store mål",
+  "Hække",
+  "Vægtstænger",
+  "Kettlebells",
+  "Måtter",
+  "Swiss ball",
+];
+
+const focusAreaOptions = [
+  "Pasninger",
+  "Førsteberøring",
+  "Vendespil",
+  "Spilbarhed",
+  "Afslutninger",
+  "Løb i felt",
+  "Pres og genpres",
+  "Positionering",
+  "Kommunikation",
+  "Restitution",
+  "EP",
+  "Styrkevedligehold",
+];
+
+const currentTeamPlayerNames = currentPlayers.map((player) => player.name);
+const currentWeeksForDropdown = currentWeeks.map((week: any) => week.week);
   ];
 
   const navigation = [
@@ -1448,7 +1490,16 @@ function renderSpillerprofil() {
       </>
     );
   }
-
+  
+function toggleSelection(
+  value: string,
+  selected: string[],
+  setSelected: React.Dispatch<React.SetStateAction<string[]>>
+) {
+  setSelected((prev) =>
+    prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]
+  );
+}
 function renderTraeningsbank() {
   const combinedDrills = [
     ...savedDrills,
@@ -1477,15 +1528,266 @@ function renderTraeningsbank() {
           marginTop: 24,
         }}
       >
-        {/* VENSTRE KOLONNE */}
-        <div
-          style={{
-            borderRight: "1px solid #94a3b8",
-            padding: 16,
-            fontSize: 14,
-            lineHeight: 1.5,
-          }}
-        >
+{/* VENSTRE KOLONNE */}
+<div
+  style={{
+    borderRight: "1px solid #94a3b8",
+    padding: 16,
+    fontSize: 14,
+    lineHeight: 1.5,
+  }}
+>
+  <div style={{ fontWeight: 700, marginBottom: 8 }}>
+    Træning
+  </div>
+
+  <div style={{ marginBottom: 12 }}>
+    <strong>Cyklus / uge:</strong>
+    <select
+      value={trainingWeek}
+      onChange={(e) => setTrainingWeek(e.target.value)}
+      className="form-input"
+      style={{ marginTop: 6 }}
+    >
+      {currentWeeksForDropdown.map((week) => (
+        <option key={week} value={week}>
+          {week}
+        </option>
+      ))}
+    </select>
+  </div>
+
+  <div style={{ marginTop: 10 }}>
+    <strong>Varighed:</strong>
+    <select
+      value={trainingDuration}
+      onChange={(e) => setTrainingDuration(e.target.value)}
+      className="form-input"
+      style={{ marginTop: 6 }}
+    >
+      <option value="60">60 min</option>
+      <option value="75">75 min</option>
+      <option value="90">90 min</option>
+      <option value="105">105 min</option>
+      <option value="120">120 min</option>
+    </select>
+  </div>
+
+  <div style={{ marginTop: 10 }}>
+    <strong>Intensitet:</strong>{" "}
+    <span style={{ background: "#22c55e", display: "inline-block", width: 18, height: 14 }} />
+    <span style={{ background: "#eab308", display: "inline-block", width: 18, height: 14 }} />
+  </div>
+
+  <div style={{ marginTop: 10 }}>
+    <strong>Bane:</strong>
+    <select
+      value={trainingPitch}
+      onChange={(e) => setTrainingPitch(e.target.value)}
+      className="form-input"
+      style={{ marginTop: 6 }}
+    >
+      {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((pitch) => (
+        <option key={pitch} value={String(pitch)}>
+          Bane {pitch}
+        </option>
+      ))}
+    </select>
+  </div>
+
+  <div style={{ marginTop: 18 }}>
+    <strong>Materialer:</strong>
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
+      {materialOptions.map((item) => {
+        const active = selectedMaterials.includes(item);
+        return (
+          <button
+            key={item}
+            type="button"
+            onClick={() => toggleSelection(item, selectedMaterials, setSelectedMaterials)}
+            style={{
+              borderRadius: 9999,
+              border: active ? "1px solid #0f172a" : "1px solid #cbd5e1",
+              background: active ? "#0f172a" : "#ffffff",
+              color: active ? "#ffffff" : "#334155",
+              padding: "6px 10px",
+              fontSize: 12,
+              cursor: "pointer",
+            }}
+          >
+            {item}
+          </button>
+        );
+      })}
+    </div>
+  </div>
+
+  <div style={{ marginTop: 18 }}>
+    <strong>Fokus:</strong>
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
+      {focusAreaOptions.map((item) => {
+        const active = selectedFocusAreas.includes(item);
+        return (
+          <button
+            key={item}
+            type="button"
+            onClick={() => toggleSelection(item, selectedFocusAreas, setSelectedFocusAreas)}
+            style={{
+              borderRadius: 9999,
+              border: active ? "1px solid #0f172a" : "1px solid #cbd5e1",
+              background: active ? "#0f172a" : "#ffffff",
+              color: active ? "#ffffff" : "#334155",
+              padding: "6px 10px",
+              fontSize: 12,
+              cursor: "pointer",
+            }}
+          >
+            {item}
+          </button>
+        );
+      })}
+    </div>
+  </div>
+
+  <hr style={{ margin: "18px 0", borderColor: "#94a3b8" }} />
+
+  <div>
+    <strong>Keepere</strong>
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
+      {currentTeamPlayerNames.map((name) => {
+        const active = selectedKeepers.includes(name);
+        return (
+          <button
+            key={name}
+            type="button"
+            onClick={() => toggleSelection(name, selectedKeepers, setSelectedKeepers)}
+            style={{
+              borderRadius: 9999,
+              border: active ? "1px solid #0f172a" : "1px solid #cbd5e1",
+              background: active ? "#0f172a" : "#ffffff",
+              color: active ? "#ffffff" : "#334155",
+              padding: "6px 10px",
+              fontSize: 12,
+              cursor: "pointer",
+            }}
+          >
+            {name}
+          </button>
+        );
+      })}
+    </div>
+  </div>
+
+  <div style={{ marginTop: 14 }}>
+    <strong>Forsvar</strong>
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
+      {currentTeamPlayerNames.map((name) => {
+        const active = selectedDefenders.includes(name);
+        return (
+          <button
+            key={name}
+            type="button"
+            onClick={() => toggleSelection(name, selectedDefenders, setSelectedDefenders)}
+            style={{
+              borderRadius: 9999,
+              border: active ? "1px solid #0f172a" : "1px solid #cbd5e1",
+              background: active ? "#0f172a" : "#ffffff",
+              color: active ? "#ffffff" : "#334155",
+              padding: "6px 10px",
+              fontSize: 12,
+              cursor: "pointer",
+            }}
+          >
+            {name}
+          </button>
+        );
+      })}
+    </div>
+  </div>
+
+  <div style={{ marginTop: 14 }}>
+    <strong>Midtbane</strong>
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
+      {currentTeamPlayerNames.map((name) => {
+        const active = selectedMidfielders.includes(name);
+        return (
+          <button
+            key={name}
+            type="button"
+            onClick={() => toggleSelection(name, selectedMidfielders, setSelectedMidfielders)}
+            style={{
+              borderRadius: 9999,
+              border: active ? "1px solid #0f172a" : "1px solid #cbd5e1",
+              background: active ? "#0f172a" : "#ffffff",
+              color: active ? "#ffffff" : "#334155",
+              padding: "6px 10px",
+              fontSize: 12,
+              cursor: "pointer",
+            }}
+          >
+            {name}
+          </button>
+        );
+      })}
+    </div>
+  </div>
+
+  <div style={{ marginTop: 14 }}>
+    <strong>Angribere</strong>
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
+      {currentTeamPlayerNames.map((name) => {
+        const active = selectedAttackers.includes(name);
+        return (
+          <button
+            key={name}
+            type="button"
+            onClick={() => toggleSelection(name, selectedAttackers, setSelectedAttackers)}
+            style={{
+              borderRadius: 9999,
+              border: active ? "1px solid #0f172a" : "1px solid #cbd5e1",
+              background: active ? "#0f172a" : "#ffffff",
+              color: active ? "#ffffff" : "#334155",
+              padding: "6px 10px",
+              fontSize: 12,
+              cursor: "pointer",
+            }}
+          >
+            {name}
+          </button>
+        );
+      })}
+    </div>
+  </div>
+
+  <hr style={{ margin: "18px 0", borderColor: "#94a3b8" }} />
+
+  <div>
+    <strong>SKADER / AFBUD</strong>
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
+      {currentTeamPlayerNames.map((name) => {
+        const active = selectedAbsentPlayers.includes(name);
+        return (
+          <button
+            key={name}
+            type="button"
+            onClick={() => toggleSelection(name, selectedAbsentPlayers, setSelectedAbsentPlayers)}
+            style={{
+              borderRadius: 9999,
+              border: active ? "1px solid #b91c1c" : "1px solid #cbd5e1",
+              background: active ? "#fee2e2" : "#ffffff",
+              color: active ? "#b91c1c" : "#334155",
+              padding: "6px 10px",
+              fontSize: 12,
+              cursor: "pointer",
+            }}
+          >
+            {name}
+          </button>
+        );
+      })}
+    </div>
+  </div>
+</div>
           <div style={{ fontWeight: 700 }}>
             Træning: 18 (16) + 1. KB, CD, ML + STJ
           </div>
