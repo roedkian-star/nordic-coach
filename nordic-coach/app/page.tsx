@@ -1801,13 +1801,13 @@ function renderPeriodisering() {
                   </div>
                 </div>
 
-                <button
-                  type="button"
-                  className="primary-btn"
-                  onClick={handleAssignSelectedWeekToTeam}
-                >
-                  Tildel fokus
-                </button>
+               <button
+  type="button"
+  className="primary-btn"
+  disabled
+>
+  Kommer senere
+</button>
               </div>
 
               <div className="stats-grid" style={{ marginTop: 24 }}>
