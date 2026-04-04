@@ -1457,249 +1457,247 @@ function renderTraeningsbank() {
     ),
   ];
 
+  const selectedWeekFocus = selectedWeek?.focus || [];
+  const selectedWeekLabel = selectedWeek?.week || "Uge ikke valgt";
+
   return (
     <>
-      <h1 className="page-title">Træningsbank</h1>
+      <h1 className="page-title">Træningsskabelon</h1>
       <p className="page-text">
-        Øvelsesbank bygget i samme stil som spillermenuen, med oprettelse af øvelser, detaljer og session builder.
+        Træningspas vist som et rigtigt trænerark, så øvelser og fokus står som i den skabelon du sendte.
       </p>
 
-      <div className="players-layout">
-        <div className="players-sidebar">
-          <div className="section-title">Ny øvelse</div>
-          <div className="players-help">
-            Opret øvelser og vælg dem i listen nedenfor.
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "320px 1fr 1fr",
+          gap: 0,
+          border: "1px solid #94a3b8",
+          background: "#fff",
+          marginTop: 24,
+        }}
+      >
+        {/* VENSTRE KOLONNE */}
+        <div
+          style={{
+            borderRight: "1px solid #94a3b8",
+            padding: 16,
+            fontSize: 14,
+            lineHeight: 1.5,
+          }}
+        >
+          <div style={{ fontWeight: 700 }}>
+            Træning: 18 (16) + 1. KB, CD, ML + STJ
+          </div>
+          <div>Cyklus/uge:</div>
+
+          <div style={{ marginTop: 10 }}>
+            <strong>Varighed:</strong> 90 min
+          </div>
+          <div>
+            <strong>Intensitet:</strong>{" "}
+            <span style={{ background: "#22c55e", display: "inline-block", width: 18, height: 14 }} />
+            <span style={{ background: "#eab308", display: "inline-block", width: 18, height: 14 }} />
+          </div>
+          <div><strong>Bane:</strong> 5 (hel bane)</div>
+          <div><strong>MMT:</strong> 17:00 – 17:40</div>
+
+          <div style={{ marginTop: 18 }}>
+            <strong>Materialer:</strong>
+            <div>2 x trøjer (orange + gul), 2 x toppe, 19 bolde, stænger</div>
           </div>
 
-          <form onSubmit={handleCreateDrill} className="player-form">
-            <div className="form-group">
-              <label className="form-label">Navn</label>
-              <input
-                className="form-input"
-                value={drillForm.title}
-                onChange={(e) => setDrillForm({ ...drillForm, title: e.target.value })}
-                placeholder="Fx 3v2 gennembrud i vingzone"
-                required
-              />
-            </div>
+          <div style={{ marginTop: 18 }}>
+            <strong>Fokus:</strong>{" "}
+            {selectedWeekFocus.length > 0
+              ? selectedWeekFocus.join(", ")
+              : "Restitution, EP, styrkevedligehold"}
+          </div>
 
-            <div className="form-group">
-              <label className="form-label">Kategori</label>
-              <select
-                className="form-input"
-                value={drillForm.category}
-                onChange={(e) => setDrillForm({ ...drillForm, category: e.target.value })}
-              >
-                <option>Basic teknisk</option>
-                <option>Basic taktisk</option>
-                <option>Pasningsspil</option>
-                <option>Afslutninger</option>
-                <option>Pres</option>
-                <option>Spiløvelser</option>
-              </select>
-            </div>
+          <hr style={{ margin: "18px 0", borderColor: "#94a3b8" }} />
 
-            <div className="form-row">
-              <div className="form-group">
-                <label className="form-label">Fokus</label>
-                <input
-                  className="form-input"
-                  value={drillForm.focus}
-                  onChange={(e) => setDrillForm({ ...drillForm, focus: e.target.value })}
-                  placeholder="Fx Pasninger og orientering"
-                  required
-                />
-              </div>
+          <div>
+            <strong>Keepere: 1</strong>
+            <div>Stina, Vibeke</div>
+          </div>
 
-              <div className="form-group">
-                <label className="form-label">Aldersgruppe</label>
-                <input
-                  className="form-input"
-                  value={drillForm.ageGroup}
-                  onChange={(e) => setDrillForm({ ...drillForm, ageGroup: e.target.value })}
-                  placeholder="Fx U11-U12"
-                />
-              </div>
-            </div>
+          <div style={{ marginTop: 14 }}>
+            <strong>Forsvar: 4</strong>
+            <div>Benedikte, Caroline S, Eriksen, Riis</div>
+          </div>
 
-            <div className="form-row">
-              <div className="form-group">
-                <label className="form-label">Intensitet</label>
-                <select
-                  className="form-input"
-                  value={drillForm.intensity}
-                  onChange={(e) => setDrillForm({ ...drillForm, intensity: e.target.value })}
-                >
-                  <option value="1">1 - meget lav</option>
-                  <option value="2">2 - lav</option>
-                  <option value="3">3 - medium</option>
-                  <option value="4">4 - høj</option>
-                  <option value="5">5 - meget høj</option>
-                </select>
-              </div>
+          <div style={{ marginTop: 14 }}>
+            <strong>Midtbane: 7</strong>
+            <div>Mia, Cathrine, Schioldan, Thrige, Boysen, Mille, Caroline J</div>
+          </div>
 
-              <div className="form-group">
-                <label className="form-label">Varighed</label>
-                <input
-                  type="number"
-                  className="form-input"
-                  value={drillForm.duration}
-                  onChange={(e) => setDrillForm({ ...drillForm, duration: e.target.value })}
-                  placeholder="15"
-                />
-              </div>
-            </div>
+          <div style={{ marginTop: 14 }}>
+            <strong>Angribere: 6</strong>
+            <div>Julie O, Emma, Lykke K, Ida</div>
+          </div>
 
-            <div className="form-group">
-              <label className="form-label">Beskrivelse</label>
-              <textarea
-                className="profile-notes-input"
-                value={drillForm.description}
-                onChange={(e) => setDrillForm({ ...drillForm, description: e.target.value })}
-                placeholder="Beskriv øvelsen og dens formål"
-              />
-            </div>
+          <hr style={{ margin: "18px 0", borderColor: "#94a3b8" }} />
 
-            <button type="submit" className="primary-btn form-button" disabled={isSavingDrill}>
-              {isSavingDrill ? "Gemmer..." : "Gem øvelse"}
-            </button>
+          <div>
+            <strong>SKADER/AFBUD:</strong>
+            <div style={{ color: "red" }}>Lykke S (knæ genoptræning)</div>
+            <div>Lotte (Arbejde)</div>
+            <div>Mette (syg)</div>
+          </div>
 
-            {drillMessage ? <div className="form-feedback">{drillMessage}</div> : null}
-          </form>
+          <div style={{ marginTop: 18 }}>
+            <strong>OBS:</strong>
+            <div>Caroline S (80 min i KSV kamp)</div>
+            <div>Caroline J + Julie (90 min. KSV kamp)</div>
+            <div>Julie O fuldtid</div>
+          </div>
 
-          <div className="section-title" style={{ marginTop: 24 }}>Gemte øvelser</div>
-          <div className="players-help">Klik på en øvelse for at se detaljer</div>
-
-          <div className="players-team-list">
-            {combinedDrills.map((drill, index) => {
-              const active = selectedDrill?.title === drill.title;
-
-              return (
-                <button
-                  key={drill.id || `${drill.title}-${index}`}
-                  onClick={() => setSelectedDrill(drill)}
-                  className={`players-team-btn ${active ? "active" : ""}`}
-                >
-                  <div>{drill.title}</div>
-                  <div className="players-team-year">
-                    {drill.category} · Intensitet {drill.intensity}/5
-                  </div>
-                </button>
-              );
-            })}
+          <div style={{ marginTop: 18 }}>
+            <strong>Intensitet:</strong>
+            <div><span style={{ background: "#22c55e", display: "inline-block", width: 12, height: 12, marginRight: 6 }} />72% - 83% HR</div>
+            <div><span style={{ background: "#eab308", display: "inline-block", width: 12, height: 12, marginRight: 6 }} />84% - 89% HR</div>
+            <div><span style={{ background: "#ef4444", display: "inline-block", width: 12, height: 12, marginRight: 6 }} />&gt; 90% HR</div>
           </div>
         </div>
 
-        <div className="players-main">
-          <div className="stats-grid">
-            <div className="stat-card">
-              <div className="stat-label">Øvelser</div>
-              <div className="stat-value">{combinedDrills.length}</div>
-              <div className="stat-help">Database + bibliotek</div>
-            </div>
-
-            <div className="stat-card">
-              <div className="stat-label">Aktivt hold</div>
-              <div className="stat-value">{selectedTeam}</div>
-              <div className="stat-help">Valgt årgang</div>
-            </div>
-
-            <div className="stat-card">
-              <div className="stat-label">Måned</div>
-              <div className="stat-value">{selectedMonth}</div>
-              <div className="stat-help">Aktuel planperiode</div>
-            </div>
-
-            <div className="stat-card">
-              <div className="stat-label">Valgt uge</div>
-              <div className="stat-value">{selectedWeek?.week || "-"}</div>
-              <div className="stat-help">Kobling til periodisering</div>
-            </div>
+        {/* MIDTER KOLONNE */}
+        <div
+          style={{
+            borderRight: "1px solid #94a3b8",
+            padding: 16,
+            fontSize: 14,
+            lineHeight: 1.5,
+          }}
+        >
+          <div style={{ fontWeight: 700, display: "flex", justifyContent: "space-between" }}>
+            <span>17:00 – 17:30 Opvarmning (KB)</span>
+            <span>
+              <span style={{ background: "#22c55e", display: "inline-block", width: 18, height: 14 }} />
+              <span style={{ background: "#eab308", display: "inline-block", width: 18, height: 14 }} />
+            </span>
           </div>
 
-          <div className="dashboard-grid" style={{ marginTop: 24 }}>
-            <div className="dashboard-card">
-              <div className="section-title">Øvelsesdetaljer</div>
+          <div>05 Løb og bevægelighed (samlet)</div>
+          <div style={{ marginTop: 10 }}>15 Teknisk Cirkel</div>
+          <div>10 Kant</div>
+          <div>05 Dynamisk stræk</div>
 
-              {selectedDrill ? (
-                <>
-                  <div className="training-list">
-                    <div className="training-item">
-                      <div className="training-top">
-                        <div>
-                          <div className="training-block">{selectedDrill.category}</div>
-                          <div className="training-title">{selectedDrill.title}</div>
-                        </div>
-                        <div className="training-duration">{selectedDrill.duration} min</div>
-                      </div>
-                    </div>
-                  </div>
+          <div style={{ marginTop: 40 }}>2 stk. stigningsløb</div>
 
-                  <div className="player-stats" style={{ marginTop: 16 }}>
-                    <div className="player-stat-row">
-                      <span>Fokus</span>
-                      <strong>{selectedDrill.focus}</strong>
-                    </div>
-                    <div className="player-stat-row">
-                      <span>Intensitet</span>
-                      <strong>{selectedDrill.intensity}/5</strong>
-                    </div>
-                    <div className="player-stat-row">
-                      <span>Aldersgruppe</span>
-                      <strong>{selectedDrill.ageGroup || "Ikke angivet"}</strong>
-                    </div>
-                  </div>
+          <hr style={{ margin: "18px 0", borderColor: "#94a3b8" }} />
 
-                  <div className="profile-card" style={{ marginTop: 20 }}>
-                    <div className="section-title">Beskrivelse</div>
-                    <textarea
-                      className="profile-notes-input"
-                      value={selectedDrill.description || ""}
-                      readOnly
-                    />
-                  </div>
-                </>
-              ) : (
-                <div className="players-help">Vælg en øvelse i venstre side</div>
-              )}
-            </div>
+          <div style={{ fontWeight: 700, display: "flex", justifyContent: "space-between" }}>
+            <span>17:40 – 17:55 3v2 gennembrud i vingzone</span>
+            <span>
+              <span style={{ background: "#22c55e", display: "inline-block", width: 18, height: 14 }} />
+              <span style={{ background: "#eab308", display: "inline-block", width: 18, height: 14 }} />
+            </span>
+          </div>
 
-            <div className="dashboard-card">
-              <div className="section-title">Session builder</div>
-              <div className="players-help">
-                Træningspas bygget i samme rene stil som spillermenuen.
-              </div>
+          <div
+            style={{
+              marginTop: 10,
+              width: 140,
+              height: 140,
+              background: "#16a34a",
+              border: "1px solid #94a3b8",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#fff",
+              fontWeight: 700,
+            }}
+          >
+            Øvelsesbillede
+          </div>
 
-              <div className="training-list" style={{ marginTop: 20 }}>
-                {weekPlan.map((item) => (
-                  <div key={item.title} className="training-item">
-                    <div className="training-top">
-                      <div>
-                        <div className="training-block">{item.block}</div>
-                        <div className="training-title">{item.title}</div>
-                      </div>
-                      <div className="training-duration">{item.duration} min</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+          <div style={{ marginTop: 8 }}>Rotation: skiftevis forsvar og angriber.</div>
 
-              <div className="profile-card" style={{ marginTop: 20 }}>
-                <div className="section-title">Kobling til ugeplan</div>
+          <div style={{ marginTop: 14 }}>
+            <strong>Venstre side:</strong>
+            <div>Midtstopper: BS (rotation med IG + STA)</div>
+            <div>Kant: Schioldan, Mia, Boysen</div>
+            <div>CM: Thrige, Ida</div>
+          </div>
 
-                <div className="player-tags">
-                  {(selectedWeek?.focus || []).length > 0 ? (
-                    selectedWeek.focus.map((f: string) => (
-                      <span key={f} className="player-tag">
-                        {f}
-                      </span>
-                    ))
-                  ) : (
-                    <span className="player-tag">Ingen uge valgt</span>
-                  )}
-                </div>
-              </div>
-            </div>
+          <div style={{ marginTop: 14 }}>
+            <strong>Højre side:</strong>
+            <div>Midtstopper: ML, CS</div>
+            <div>Kant: CBG, CJ</div>
+            <div>CM: Louise, Mille</div>
+          </div>
+        </div>
+
+        {/* HØJRE KOLONNE */}
+        <div
+          style={{
+            padding: 16,
+            fontSize: 14,
+            lineHeight: 1.5,
+          }}
+        >
+          <div style={{ fontWeight: 700, display: "flex", justifyContent: "space-between" }}>
+            <span>17:55 – 18:05 6v6 + 1N</span>
+            <span>
+              <span style={{ background: "#eab308", display: "inline-block", width: 18, height: 14 }} />
+              <span style={{ background: "#ef4444", display: "inline-block", width: 18, height: 14 }} />
+            </span>
+          </div>
+
+          <div>På to store mål (Kian på mål?)</div>
+
+          <div style={{ marginTop: 10 }}>
+            <div>A: Bene, Thrige + Louise, Emma + Lykke, Boysen</div>
+            <div>B: Mille + Cathrine, Schioldan + Ida, Mia, Riis.</div>
+            <div>N:</div>
+          </div>
+
+          <div style={{ marginTop: 16 }}>
+            <strong>Fokus:</strong>
+            <div>DEF: Sid tæt i duellerne - aggressivitet</div>
+            <div>OFF: Få touch på bolden</div>
+          </div>
+
+          <div style={{ marginTop: 16 }}>
+            <div>TT: 3 x 2 ½ min</div>
+            <div>TP: 1 – 1 ½ min</div>
+          </div>
+
+          <hr style={{ margin: "18px 0", borderColor: "#94a3b8" }} />
+
+          <div style={{ fontWeight: 700, display: "flex", justifyContent: "space-between" }}>
+            <span>17:55 – 18:05 Fodboldtennis (restitution)</span>
+            <span>
+              <span style={{ background: "#22c55e", display: "inline-block", width: 18, height: 14 }} />
+            </span>
+          </div>
+
+          <div>CJ, CS, JO</div>
+
+          <hr style={{ margin: "18px 0", borderColor: "#94a3b8" }} />
+
+          <div style={{ fontWeight: 700, display: "flex", justifyContent: "space-between" }}>
+            <span>18:10 – 18:30 Styrkevedligehold (1 sæt)</span>
+            <span>
+              <span style={{ background: "#22c55e", display: "inline-block", width: 18, height: 14 }} />
+            </span>
+          </div>
+
+          <div>8 rep Squat med vægtstang</div>
+          <div>8 rep Kettlesving</div>
+          <div>8 rep lunges med vægtstang</div>
+          <div>8 rep kettlebell skulder</div>
+          <div>15 rep swiss ball hamstring curls</div>
+          <div>25 rep armstrækninger</div>
+          <div>25 rep Mavebøjninger på bold</div>
+          <div>Planke 2 min</div>
+
+          <div style={{ marginTop: 14 }}>
+            Dem med lår og/eller lyskeproblemer laver IKKE squat, lunges og hamstring curls.
+          </div>
+
+          <div style={{ marginTop: 18 }}>
+            <strong>INFO:</strong>
           </div>
         </div>
       </div>
