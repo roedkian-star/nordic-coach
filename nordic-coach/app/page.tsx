@@ -1225,14 +1225,19 @@ async function handleAssignSelectedWeekToTeam() {
   if (!selectedWeek) return;
 
   const teamPlayersList = savedPlayers[selectedTeam] || [];
+
   if (teamPlayersList.length === 0) {
-    setSavedPlayersMessage("Der er ingen spillere på holdet.");
+    alert(`Der er ingen gemte spillere på ${selectedTeam}.`);
     return;
   }
 
   try {
-    const focusToAssign: string[] =
-      selectedSubThemes.length > 0 ? selectedSubThemes : selectedWeek.focus ?? [];
+    const focusToAssign =
+      selectedSubThemes.length > 0
+        ? selectedSubThemes
+        : selectedWeek.focus ?? [];
+
+    let updatedCount = 0;
 
     for (const player of teamPlayersList) {
       if (!player.id) continue;
@@ -1243,6 +1248,8 @@ async function handleAssignSelectedWeekToTeam() {
       await updateDoc(doc(db, "players", player.id), {
         developmentFocus: mergedFocus,
       });
+
+      updatedCount++;
     }
 
     setSavedPlayers((prev) => ({
@@ -1258,25 +1265,12 @@ async function handleAssignSelectedWeekToTeam() {
       }),
     }));
 
-    setSavedPlayersMessage(`Fokus er tildelt til ${selectedTeam}.`);
+    alert(`Fokus er tildelt til ${updatedCount} spillere på ${selectedTeam}.`);
   } catch (error) {
     console.error(error);
-    setSavedPlayersMessage("Der opstod en fejl ved tildeling til holdet.");
+    alert("Der opstod en fejl ved tildeling til holdet.");
   }
 }
-function renderSpillerprofil() {
-  if (!selectedPlayer) {
-    return (
-      <>
-        <h1 className="page-title">Spillerprofil</h1>
-        <p className="page-text">Vælg først en spiller fra spillersiden.</p>
-        <button className="primary-btn" onClick={() => setActivePage("Spillere")}>
-          Gå til spillere
-        </button>
-      </>
-    );
-  }
-
   const profileStats = [
     { key: "technical", label: "Teknik", value: profileForm.technical },
     { key: "tactical", label: "Taktik", value: profileForm.tactical },
