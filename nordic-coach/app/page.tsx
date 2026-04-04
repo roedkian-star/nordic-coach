@@ -1222,14 +1222,8 @@ function handleAddDevelopmentFocus() {
   }
   
 async function handleAssignSelectedWeekToTeam() {
-  if (!selectedWeek) return;
-
-  const teamPlayersList = savedPlayers[selectedTeam] || [];
-
-  if (teamPlayersList.length === 0) {
-    alert(`Der er ingen gemte spillere på ${selectedTeam}.`);
-    return;
-  }
+  return;
+}
 
   try {
     const focusToAssign =
@@ -1655,11 +1649,13 @@ function renderPeriodisering() {
                 onClick={handleAssignSelectedWeekToTeam}
               >
                 Tildel ugens fokus til hold
-              </button>
-            ) : (
-              <button type="button" className="primary-btn" disabled>
-                Vælg en uge først
-              </button>
+             <button
+  type="button"
+  className="primary-btn"
+  disabled
+>
+  Kommer senere
+</button>
             )}
           </div>
 
