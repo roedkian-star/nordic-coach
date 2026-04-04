@@ -45,6 +45,7 @@ export default function NordicCoachPrototype() {
   const [selectedPlayStyleGroup, setSelectedPlayStyleGroup] = useState("Vi har bolden");
   const [selectedMonth, setSelectedMonth] = useState("Januar");
   const [selectedWeek, setSelectedWeek] = useState<any>(null);
+  const [selectedDrill, setSelectedDrill] = useState<SavedDrill | null>(null);
   const [selectedSubThemes, setSelectedSubThemes] = useState<string[]>([]);
   const [drillForm, setDrillForm] = useState<DrillForm>({
     title: "",
@@ -1448,105 +1449,16 @@ function renderSpillerprofil() {
     );
   }
 
-  function renderTraeningsbank() {
-    const combinedDrills = [...savedDrills, ...drillLibrary.filter((drill) => !savedDrills.some((saved) => saved.title === drill.title))];
+function renderTraeningsbank() {
+  const combinedDrills = [...savedDrills, ...drillLibrary.filter((drill) => !savedDrills.some((saved) => saved.title === drill.title))];
 
-    return (
-      <>
-        <PageHeader title="Øvelsesbank" text="Opret nye øvelser i venstre side. Gemte øvelser vises i midten og kan senere bruges i træningsplaner." />
-        <div className="grid gap-6 xl:grid-cols-[380px_1fr]">
-          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="mb-4 text-lg font-semibold">Ny øvelse</h2>
-            <form onSubmit={handleCreateDrill} className="space-y-4">
-              <div>
-                <label className="mb-1 block text-sm text-slate-600">Navn</label>
-                <input value={drillForm.title} onChange={(e) => setDrillForm({ ...drillForm, title: e.target.value })} className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm" required />
-              </div>
-              <div className="grid gap-3 md:grid-cols-2">
-                <div>
-                  <label className="mb-1 block text-sm text-slate-600">Kategori</label>
-                  <select value={drillForm.category} onChange={(e) => setDrillForm({ ...drillForm, category: e.target.value })} className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm">
-                    <option>Basic teknisk</option>
-                    <option>Basic taktisk</option>
-                    <option>Pasningsspil</option>
-                    <option>Afslutninger</option>
-                    <option>Pres</option>
-                    <option>Spiløvelser</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="mb-1 block text-sm text-slate-600">Aldersgruppe</label>
-                  <input value={drillForm.ageGroup} onChange={(e) => setDrillForm({ ...drillForm, ageGroup: e.target.value })} className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm" />
-                </div>
-              </div>
-              <div>
-                <label className="mb-1 block text-sm text-slate-600">Fokus</label>
-                <input value={drillForm.focus} onChange={(e) => setDrillForm({ ...drillForm, focus: e.target.value })} className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm" required />
-              </div>
-              <div className="grid gap-3 md:grid-cols-2">
-                <div>
-                  <label className="mb-1 block text-sm text-slate-600">Intensitet</label>
-                  <select value={drillForm.intensity} onChange={(e) => setDrillForm({ ...drillForm, intensity: e.target.value })} className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm">
-                    <option value="1">1 - meget lav</option>
-                    <option value="2">2 - lav</option>
-                    <option value="3">3 - medium</option>
-                    <option value="4">4 - høj</option>
-                    <option value="5">5 - meget høj</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="mb-1 block text-sm text-slate-600">Varighed</label>
-                  <input type="number" value={drillForm.duration} onChange={(e) => setDrillForm({ ...drillForm, duration: e.target.value })} className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm" />
-                </div>
-              </div>
-              <div>
-                <label className="mb-1 block text-sm text-slate-600">Beskrivelse</label>
-                <textarea value={drillForm.description} onChange={(e) => setDrillForm({ ...drillForm, description: e.target.value })} className="min-h-[120px] w-full rounded-xl border border-slate-200 px-3 py-2 text-sm" />
-              </div>
-              <button type="submit" disabled={isSavingDrill} className="w-full rounded-2xl bg-slate-900 px-4 py-3 text-sm font-medium text-white disabled:opacity-60">
-                {isSavingDrill ? "Gemmer..." : "Gem øvelse"}
-              </button>
-              {drillMessage ? <div className="rounded-xl bg-slate-100 px-3 py-2 text-sm text-slate-700">{drillMessage}</div> : null}
-            </form>
-          </div>
-
-          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Gemte øvelser</h2>
-              <div className="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-600">{combinedDrills.length} øvelser</div>
-            </div>
-            <div className="grid gap-4 xl:grid-cols-2">
-              {combinedDrills.map((drill, index) => (
-                <div key={drill.id || `${drill.title}-${index}`} className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                  <div className="mb-4 flex items-start justify-between gap-4">
-                    <div>
-                      <div className="text-lg font-semibold text-slate-900">{drill.title}</div>
-                      <div className="text-sm text-slate-500">{drill.category}</div>
-                    </div>
-                    <div className="rounded-full bg-white px-3 py-1 text-sm text-slate-700">Intensitet {drill.intensity}/5</div>
-                  </div>
-                  <div className="grid gap-3 md:grid-cols-3">
-                    <div className="rounded-xl bg-white px-3 py-3 text-sm">
-                      <div className="text-slate-400">Fokus</div>
-                      <div className="mt-1 font-medium text-slate-900">{drill.focus}</div>
-                    </div>
-                    <div className="rounded-xl bg-white px-3 py-3 text-sm">
-                      <div className="text-slate-400">Varighed</div>
-                      <div className="mt-1 font-medium text-slate-900">{String(drill.duration)} min</div>
-                    </div>
-                    <div className="rounded-xl bg-white px-3 py-3 text-sm">
-                      <div className="text-slate-400">Aldersgruppe</div>
-                      <div className="mt-1 font-medium text-slate-900">{drill.ageGroup || "Ikke angivet"}</div>
-                    </div>
-                  </div>
-                  <div className="mt-4 rounded-xl bg-white px-3 py-3 text-sm text-slate-700">{drill.description || "Beskrivelse kommer her."}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </>
-    );
+  return (
+    <>
+      <PageHeader title="Øvelsesbank" text="Opret nye øvelser i venstre side. Gemte øvelser vises i midten og kan senere bruges i træningsplaner." />
+      ...
+    </>
+  );
+}
   }
 
 function renderPeriodisering() {
